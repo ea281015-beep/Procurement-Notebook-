@@ -5,746 +5,754 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ProcureX | الرئيسية</title>
+    <title>مساعد عبدالله الشحات للمشتريات</title>
 
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+    <!-- =====================================================
+         MAIN APP
+    ====================================================== -->
 
-    <header class="topbar">
+    <div class="app">
 
-        <div class="brand">
-            <div class="brand-icon">P</div>
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
 
-            <div>
-                <h1>ProcureX</h1>
-                <span>Procurement System</span>
-            </div>
-        </div>
+        <aside class="sidebar">
 
-        <div class="topbar-user">
-            <span>مسؤول المشتريات</span>
-            <div class="user-avatar">م</div>
-        </div>
+            <div class="brand">
 
-    </header>
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main class="dashboard">
-
-        <!-- HERO -->
-
-        <section class="dashboard-hero">
-
-            <div>
-
-                <span class="hero-badge">
-                    PROCUREMENT PLATFORM
-                </span>
-
-                <h2>
-                    مرحبًا بك في ProcureX
-                </h2>
-
-                <p>
-                    نظام موحد لإدارة الموردين والبحث عن المواد
-                    وقطع الغيار والوصول إلى المورد المناسب بسرعة.
-                </p>
-
-            </div>
-
-            <div class="hero-icon">
-                🏢
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             STATISTICS
-        ========================== -->
-
-        <section class="stats-grid">
-
-            <div class="stat-card">
-
-                <div class="stat-icon suppliers">
-                    🏢
+                <div class="brand-logo">
+                    AS
                 </div>
 
-                <div>
-                    <span>إجمالي الموردين</span>
-                    <strong id="dashboard-suppliers">0</strong>
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon materials">
-                    🧱
-                </div>
-
-                <div>
-                    <span>المواد المحفوظة</span>
-                    <strong id="dashboard-materials">0</strong>
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon searches">
-                    🔎
-                </div>
-
-                <div>
-                    <span>عمليات البحث</span>
-                    <strong id="dashboard-searches">0</strong>
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon cities">
-                    📍
-                </div>
-
-                <div>
-                    <span>المدن</span>
-                    <strong id="dashboard-cities">0</strong>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             QUICK ACTIONS
-        ========================== -->
-
-        <section class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h3>الوصول السريع</h3>
-                    <span>Quick Actions</span>
-                </div>
-
-            </div>
-
-
-            <div class="actions-grid">
-
-
-                <!-- MATERIAL FINDER -->
-
-                <a
-                    href="Material.finder.html"
-                    class="action-card"
-                >
-
-                    <div class="action-card-icon">
-                        🔎
-                    </div>
-
-                    <div class="action-card-content">
-
-                        <h4>
-                            Material Finder
-                        </h4>
-
-                        <p>
-                            ابحث عن مادة أو قطعة غيار
-                            بالاسم أو الصورة أو رقم القطعة.
-                        </p>
-
-                    </div>
-
-                    <div class="action-arrow">
-                        ←
-                    </div>
-
-                </a>
-
-
-                <!-- SUPPLIER FINDER -->
-
-                <a
-                    href="Supplier.finder.html"
-                    class="action-card"
-                >
-
-                    <div class="action-card-icon">
-                        🏢
-                    </div>
-
-                    <div class="action-card-content">
-
-                        <h4>
-                            Supplier Finder
-                        </h4>
-
-                        <p>
-                            ابحث عن الموردين حسب المادة
-                            أو النشاط أو المدينة.
-                        </p>
-
-                    </div>
-
-                    <div class="action-arrow">
-                        ←
-                    </div>
-
-                </a>
-
-
-                <!-- SUPPLIERS -->
-
-                <a
-                    href="الموردون.html"
-                    class="action-card"
-                >
-
-                    <div class="action-card-icon">
-                        👥
-                    </div>
-
-                    <div class="action-card-content">
-
-                        <h4>
-                            الموردون
-                        </h4>
-
-                        <p>
-                            عرض وإدارة جميع الموردين
-                            المحفوظين في النظام.
-                        </p>
-
-                    </div>
-
-                    <div class="action-arrow">
-                        ←
-                    </div>
-
-                </a>
-
-
-                <!-- ADD SUPPLIER -->
-
-                <a
-                    href="تعريف_الموردين.html"
-                    class="action-card"
-                >
-
-                    <div class="action-card-icon">
-                        ➕
-                    </div>
-
-                    <div class="action-card-content">
-
-                        <h4>
-                            تعريف مورد
-                        </h4>
-
-                        <p>
-                            إضافة مورد جديد وحفظ بياناته
-                            في قاعدة بيانات ProcureX.
-                        </p>
-
-                    </div>
-
-                    <div class="action-arrow">
-                        ←
-                    </div>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             SYSTEM FEATURES
-        ========================== -->
-
-        <section class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h3>ماذا يوفر النظام؟</h3>
-                    <span>System Features</span>
-                </div>
-
-            </div>
-
-
-            <div class="features-grid">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🗃️
-                    </div>
-
-                    <h4>
-                        قاعدة بيانات الموردين
-                    </h4>
-
-                    <p>
-                        حفظ بيانات الموردين واستخدامها
-                        في جميع صفحات النظام.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🧱
-                    </div>
-
-                    <h4>
-                        البحث عن المواد
-                    </h4>
-
-                    <p>
-                        البحث عن المواد وقطع الغيار
-                        باستخدام الاسم أو الصورة أو المواصفات.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🌐
-                    </div>
-
-                    <h4>
-                        البحث الخارجي
-                    </h4>
-
-                    <p>
-                        سيتم ربط النظام لاحقًا بمحرك بحث
-                        لجلب موردين جدد ببيانات حقيقية.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🔗
-                    </div>
-
-                    <h4>
-                        نظام موحد
-                    </h4>
-
-                    <p>
-                        جميع الصفحات تعتمد على نفس
-                        قاعدة البيانات المركزية.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             RECENT SUPPLIERS
-        ========================== -->
-
-        <section class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h3>آخر الموردين</h3>
-                    <span>Recent Suppliers</span>
-                </div>
-
-                <a
-                    href="الموردون.html"
-                    class="section-link"
-                >
-                    عرض الكل
-                </a>
-
-            </div>
-
-
-            <div
-                id="recent-suppliers"
-                class="recent-list"
-            >
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-                        🏢
-                    </div>
+                <div class="brand-text">
 
                     <strong>
-                        لا يوجد موردون حتى الآن
+                        مساعد عبدالله
                     </strong>
 
                     <span>
-                        أضف أول مورد ليظهر هنا.
+                        Procurement Assistant
                     </span>
 
-                    <a
-                        href="تعريف_الموردين.html"
-                        class="empty-button"
+                </div>
+
+            </div>
+
+
+            <nav class="main-nav">
+
+                <a href="index.html" class="nav-item active">
+                    <span>⌂</span>
+                    الرئيسية
+                </a>
+
+                <a href="pages/search.html" class="nav-item">
+                    <span>⌕</span>
+                    البحث الذكي
+                </a>
+
+                <a href="pages/materials.html" class="nav-item">
+                    <span>▦</span>
+                    مكتبة المواد
+                </a>
+
+                <a href="pages/suppliers.html" class="nav-item">
+                    <span>♙</span>
+                    الموردون
+                </a>
+
+                <a href="pages/reminders.html" class="nav-item">
+                    <span>◷</span>
+                    التذكيرات
+                </a>
+
+                <a href="pages/assistant.html" class="nav-item">
+                    <span>✦</span>
+                    مساعد عبدالله
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <div class="system-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+                        <strong>
+                            النظام يعمل
+                        </strong>
+
+                        <small>
+                            Procurement Workspace
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <span class="topbar-label">
+                        PROCUREMENT INTELLIGENCE
+                    </span>
+
+                    <h1>
+                        مساعد عبدالله الشحات
+                    </h1>
+
+                </div>
+
+
+                <div class="topbar-actions">
+
+                    <button
+                        type="button"
+                        class="icon-button"
+                        id="notifications-button"
+                        title="التذكيرات"
                     >
-                        إضافة مورد
+                        🔔
+                    </button>
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar">
+                            ع
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                عبدالله الشحات
+                            </strong>
+
+                            <span>
+                                Procurement
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <span class="hero-badge">
+                        ✦ SMART PROCUREMENT ASSISTANT
+                    </span>
+
+                    <h2>
+                        مساعد عبدالله الشحات
+                        <br>
+                        <strong>
+                            الذكي للمشتريات
+                        </strong>
+                    </h2>
+
+                    <p>
+                        ابحث عن أي مادة، اكتشف الموردين، احفظ بيانات
+                        المواد والموردين، تابع مهامك، وتحدث مع مساعدك
+                        بصوتك أو بالكتابة.
+                    </p>
+
+
+                    <div class="hero-search">
+
+                        <div class="search-icon">
+                            ⌕
+                        </div>
+
+                        <input
+                            type="text"
+                            id="global-search"
+                            placeholder="مثال: ابحث عن موردين أسفلت في الرياض..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="voice-button"
+                            class="voice-button"
+                            title="التحدث مع المساعد"
+                        >
+                            🎙️
+                        </button>
+
+                        <button
+                            type="button"
+                            id="global-search-button"
+                            class="hero-search-button"
+                        >
+                            بحث
+                        </button>
+
+                    </div>
+
+
+                    <div class="search-hint">
+
+                        <span>
+                            جرّب:
+                        </span>
+
+                        <button type="button" class="quick-search">
+                            موردين MC-1 في الرياض
+                        </button>
+
+                        <button type="button" class="quick-search">
+                            خرطوم هيدروليك 2 بوصة
+                        </button>
+
+                        <button type="button" class="quick-search">
+                            موردين مواد طرق
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span>
+                            QUICK ACTIONS
+                        </span>
+
+                        <h2>
+                            أبدأ من هنا
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <button
+                        type="button"
+                        class="action-card"
+                        data-action="material"
+                    >
+
+                        <div class="action-icon blue">
+                            🧱
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ابحث عن مادة
+                            </strong>
+
+                            <span>
+                                أي مادة أو منتج أو خامة
+                            </span>
+
+                        </div>
+
+                        <b>
+                            ←
+                        </b>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="action-card"
+                        data-action="supplier"
+                    >
+
+                        <div class="action-icon green">
+                            🏢
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ابحث عن مورد
+                            </strong>
+
+                            <span>
+                                موردين محليين وخارجيين
+                            </span>
+
+                        </div>
+
+                        <b>
+                            ←
+                        </b>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="action-card"
+                        data-action="save-material"
+                    >
+
+                        <div class="action-icon orange">
+                            📚
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                سجل مادة
+                            </strong>
+
+                            <span>
+                                احفظ بيانات المادة لاستخدامها لاحقًا
+                            </span>
+
+                        </div>
+
+                        <b>
+                            ←
+                        </b>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="action-card"
+                        data-action="reminder"
+                    >
+
+                        <div class="action-icon purple">
+                            🔔
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                أضف تذكير
+                            </strong>
+
+                            <span>
+                                فكرني بمهام المشتريات
+                            </span>
+
+                        </div>
+
+                        <b>
+                            ←
+                        </b>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SMART WORKSPACE
+            ================================================== -->
+
+            <section class="workspace-grid">
+
+
+                <!-- ASSISTANT -->
+
+                <div class="workspace-card assistant-card">
+
+                    <div class="workspace-header">
+
+                        <div class="workspace-title">
+
+                            <div class="workspace-icon">
+                                ✦
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    AI ASSISTANT
+                                </span>
+
+                                <h3>
+                                    ماذا تريد أن أفعل لك؟
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <span class="online">
+                            ● متصل
+                        </span>
+
+                    </div>
+
+
+                    <div class="assistant-message">
+
+                        <div class="assistant-avatar">
+                            AS
+                        </div>
+
+                        <div class="message-bubble">
+
+                            <strong>
+                                مساعد عبدالله
+                            </strong>
+
+                            <p>
+                                أنا جاهز أساعدك في البحث عن المواد
+                                والموردين، حفظ المعلومات، المقارنة،
+                                والمتابعة والتذكيرات.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="assistant-input">
+
+                        <input
+                            type="text"
+                            id="assistant-input"
+                            placeholder="اكتب ما تريد مني فعله..."
+                        >
+
+                        <button
+                            type="button"
+                            id="assistant-send"
+                        >
+                            ➤
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REMINDERS -->
+
+                <div class="workspace-card">
+
+                    <div class="workspace-header">
+
+                        <div>
+
+                            <span>
+                                REMINDERS
+                            </span>
+
+                            <h3>
+                                تذكيراتك
+                            </h3>
+
+                        </div>
+
+                        <a href="pages/reminders.html">
+                            عرض الكل
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="home-reminders"
+                        class="reminders-list"
+                    >
+
+                        <div class="empty-state">
+
+                            <div>
+                                ✓
+                            </div>
+
+                            <span>
+                                لا توجد تذكيرات حالياً
+                            </span>
+
+                            <small>
+                                قل للمساعد: فكرني بكرة بمتابعة المورد
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RECENT MATERIALS
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span>
+                            MATERIAL LIBRARY
+                        </span>
+
+                        <h2>
+                            المواد المحفوظة
+                        </h2>
+
+                    </div>
+
+                    <a
+                        href="pages/materials.html"
+                        class="section-link"
+                    >
+                        عرض المكتبة ←
                     </a>
 
                 </div>
 
-            </div>
 
-        </section>
+                <div
+                    id="recent-materials"
+                    class="material-list"
+                >
 
-    </main>
+                    <div class="empty-library">
 
+                        <div class="empty-library-icon">
+                            🧱
+                        </div>
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+                        <strong>
+                            مكتبة المواد فارغة
+                        </strong>
 
-    <footer class="footer">
+                        <span>
+                            عندما تبحث عن مادة أو تسجلها،
+                            ستجد بياناتها هنا للرجوع إليها لاحقًا.
+                        </span>
 
-        <span>
-            ProcureX
-        </span>
+                        <button
+                            type="button"
+                            data-action="material"
+                            class="empty-action"
+                        >
+                            ابدأ البحث عن مادة
+                        </button>
 
-        <span>
-            Procurement Management System
-        </span>
+                    </div>
 
-    </footer>
+                </div>
 
+            </section>
 
-    <!-- =========================
-         SCRIPTS
-    ========================== -->
 
-    <script src="data.store.js"></script>
-    <script src="App.js"></script>
+            <!-- =================================================
+                 PROCUREMENT IDEAS
+            ================================================== -->
 
+            <section class="section">
 
-    <script>
+                <div class="section-heading">
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+                    <div>
 
-                /*
-                 * البيانات ستأتي من data.store.js
-                 * بعد أن ننتهي من بناء الملفات الأساسية.
-                 */
+                        <span>
+                            WHAT I CAN DO
+                        </span>
 
-                try {
+                        <h2>
+                            مساعدك في المشتريات
+                        </h2>
 
-                    if (
-                        typeof ProcureXStore !== "undefined"
-                    ) {
+                    </div>
 
-                        updateDashboard();
+                </div>
 
-                    }
 
-                } catch (error) {
+                <div class="capabilities">
 
-                    console.error(
-                        "ProcureX Dashboard Error:",
-                        error
-                    );
 
-                }
+                    <div class="capability">
 
-            }
-        );
+                        <span class="capability-number">
+                            01
+                        </span>
 
+                        <div>
+                            <strong>
+                                البحث عن المواد
+                            </strong>
 
-        function updateDashboard() {
+                            <p>
+                                ابحث عن أي مادة بالاسم أو المواصفات
+                                أو الاستخدام أو الصورة.
+                            </p>
+                        </div>
 
-            const suppliers =
-                getStoredSuppliers();
+                    </div>
 
-            const materials =
-                getStoredMaterials();
 
-            const searches =
-                getStoredSearches();
+                    <div class="capability">
 
+                        <span class="capability-number">
+                            02
+                        </span>
 
-            const suppliersElement =
-                document.getElementById(
-                    "dashboard-suppliers"
-                );
+                        <div>
+                            <strong>
+                                البحث الخارجي
+                            </strong>
 
-            const materialsElement =
-                document.getElementById(
-                    "dashboard-materials"
-                );
+                            <p>
+                                البحث عن موردين حقيقيين على الإنترنت
+                                حسب المادة والمدينة والتخصص.
+                            </p>
+                        </div>
 
-            const searchesElement =
-                document.getElementById(
-                    "dashboard-searches"
-                );
+                    </div>
 
-            const citiesElement =
-                document.getElementById(
-                    "dashboard-cities"
-                );
 
+                    <div class="capability">
 
-            if (suppliersElement) {
+                        <span class="capability-number">
+                            03
+                        </span>
 
-                suppliersElement.textContent =
-                    suppliers.length;
+                        <div>
+                            <strong>
+                                ذاكرة المشتريات
+                            </strong>
 
-            }
+                            <p>
+                                حفظ المواد والموردين والملاحظات
+                                للرجوع إليها في أي وقت.
+                            </p>
+                        </div>
 
+                    </div>
 
-            if (materialsElement) {
 
-                materialsElement.textContent =
-                    materials.length;
+                    <div class="capability">
 
-            }
+                        <span class="capability-number">
+                            04
+                        </span>
 
+                        <div>
+                            <strong>
+                                مساعد صوتي
+                            </strong>
 
-            if (searchesElement) {
+                            <p>
+                                تحدث مع مساعد عبدالله بدل الكتابة
+                                عندما تكون مشغولاً.
+                            </p>
+                        </div>
 
-                searchesElement.textContent =
-                    searches.length;
+                    </div>
 
-            }
 
+                </div>
 
-            if (citiesElement) {
+            </section>
 
-                const cities =
-                    new Set(
-                        suppliers
-                            .map(
-                                supplier =>
-                                    supplier.city
-                            )
-                            .filter(Boolean)
-                    );
 
-                citiesElement.textContent =
-                    cities.size;
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
 
-            }
+            <footer class="footer">
 
+                <div>
 
-            renderRecentSuppliers(
-                suppliers
-            );
+                    <strong>
+                        عبدالله الشحات
+                    </strong>
 
-        }
+                    <span>
+                        Procurement Intelligence
+                    </span>
 
+                </div>
 
-        function getStoredSuppliers() {
+                <span>
+                    مساعدك في كل خطوة من خطوات الشراء.
+                </span>
 
-            try {
+            </footer>
 
-                const data =
-                    localStorage.getItem(
-                        "procurex_suppliers"
-                    );
 
-                return data
-                    ? JSON.parse(data)
-                    : [];
+        </main>
 
-            } catch (error) {
+    </div>
 
-                console.error(error);
 
-                return [];
+    <!-- =====================================================
+         GLOBAL MESSAGE
+    ====================================================== -->
 
-            }
+    <div
+        id="app-message"
+        class="app-message"
+        aria-live="polite"
+    ></div>
 
-        }
 
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-        function getStoredMaterials() {
-
-            try {
-
-                const data =
-                    localStorage.getItem(
-                        "procurex_materials"
-                    );
-
-                return data
-                    ? JSON.parse(data)
-                    : [];
-
-            } catch (error) {
-
-                console.error(error);
-
-                return [];
-
-            }
-
-        }
-
-
-        function getStoredSearches() {
-
-            try {
-
-                const data =
-                    localStorage.getItem(
-                        "procurex_search_history"
-                    );
-
-                return data
-                    ? JSON.parse(data)
-                    : [];
-
-            } catch (error) {
-
-                console.error(error);
-
-                return [];
-
-            }
-
-        }
-
-
-        function renderRecentSuppliers(
-            suppliers
-        ) {
-
-            const container =
-                document.getElementById(
-                    "recent-suppliers"
-                );
-
-
-            if (!container) {
-                return;
-            }
-
-
-            if (!suppliers.length) {
-
-                return;
-
-            }
-
-
-            const recent =
-                suppliers
-                    .slice(-5)
-                    .reverse();
-
-
-            container.innerHTML =
-                recent
-                    .map(
-                        supplier => {
-
-                            const name =
-                                supplier.name ||
-                                supplier.companyName ||
-                                "مورد بدون اسم";
-
-
-                            const city =
-                                supplier.city ||
-                                "غير محدد";
-
-
-                            const category =
-                                supplier.category ||
-                                supplier.activity ||
-                                "غير محدد";
-
-
-                            return `
-
-                                <div class="recent-supplier">
-
-                                    <div class="recent-avatar">
-                                        🏢
-                                    </div>
-
-                                    <div class="recent-info">
-
-                                        <strong>
-                                            ${escapeHTML(name)}
-                                        </strong>
-
-                                        <span>
-                                            ${escapeHTML(city)}
-                                            •
-                                            ${escapeHTML(category)}
-                                        </span>
-
-                                    </div>
-
-                                    <div class="recent-status">
-                                        محفوظ
-                                    </div>
-
-                                </div>
-
-                            `;
-
-                        }
-                    )
-                    .join("");
-
-        }
-
-
-        function escapeHTML(value) {
-
-            const div =
-                document.createElement("div");
-
-            div.textContent =
-                String(value ?? "");
-
-            return div.innerHTML;
-
-        }
-
-    </script>
+    <script src="js/database.js"></script>
+    <script src="js/app.js"></script>
 
 </body>
 
