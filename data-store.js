@@ -1,1637 +1,1088 @@
 /* =========================================================
    ProcureX - DATA STORE
-   حفظ كل بيانات نظام المشتريات
-========================================================= */
+   الملف المسؤول عن حفظ وإدارة:
+   الموردين - جهات الاتصال - المواد - عمليات البحث
+   ========================================================= */
 
-const PX_STORAGE_KEY = "procurex_database_v2";
+(function () {
 
+    "use strict";
 
-/* =========================================================
-   DATABASE
-========================================================= */
-
-const ProcureXStore = {
-
-    defaultData: {
-
-        materials: [],
-        suppliers: [],
-        searches: [],
-        priceHistory: [],
-        quotations: [],
-        evaluations: [],
-        comparisons: [],
-        attachments: [],
-        activities: [],
-
-        settings: {
-            version: 2,
-            createdAt: new Date().toISOString()
-        }
-
-    },
+    const STORAGE_KEYS = {
+        suppliers: "procurex_suppliers",
+        contacts: "procurex_contacts",
+        materials: "procurex_materials",
+        searches: "procurex_material_searches"
+    };
 
 
-    /* ================= LOAD ================= */
+    /* =====================================================
+       BASIC STORAGE
+    ===================================================== */
 
-    load() {
+    function getData(key) {
 
         try {
 
-            const saved =
-                localStorage.getItem(
-                    PX_STORAGE_KEY
-                );
+            const data = localStorage.getItem(key);
 
-            if (!saved) {
-
-                this.save(
-                    this.defaultData
-                );
-
-                return structuredClone(
-                    this.defaultData
-                );
-
+            if (!data) {
+                return [];
             }
 
-            const data =
-                JSON.parse(saved);
+            const parsed = JSON.parse(data);
 
-
-            return {
-
-                ...structuredClone(
-                    this.defaultData
-                ),
-
-                ...data,
-
-                settings: {
-
-                    ...this.defaultData.settings,
-
-                    ...(data.settings || {})
-
-                }
-
-            };
+            return Array.isArray(parsed) ? parsed : [];
 
         } catch (error) {
 
             console.error(
-                "ProcureX database error:",
+                "ProcureX Storage Error:",
                 error
             );
 
-            return structuredClone(
-                this.defaultData
+            return [];
+
+        }
+    }
+
+
+    function setData(key, data) {
+
+        try {
+
+            localStorage.setItem(
+                key,
+                JSON.stringify(data)
             );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "ProcureX Save Error:",
+                error
+            );
+
+            return false;
 
         }
 
-    },
+    }
 
 
-    /* ================= SAVE ================= */
+    /* =====================================================
+       ID GENERATOR
+    ===================================================== */
 
-    save(data) {
-
-        localStorage.setItem(
-
-            PX_STORAGE_KEY,
-
-            JSON.stringify(data)
-
-        );
-
-    },
-
-
-    /* ================= UPDATE ================= */
-
-    update(callback) {
-
-        const data =
-            this.load();
-
-        callback(data);
-
-        this.save(data);
-
-        return data;
-
-    },
-
-
-    /* ================= ID ================= */
-
-    id(prefix) {
+    function generateId(prefix) {
 
         return (
-
             prefix +
             "-" +
             Date.now() +
             "-" +
             Math.random()
                 .toString(36)
-                .substring(2,7)
-
-        );
-
-    },
-
-
-    /* ================= DATE ================= */
-
-    now() {
-
-        return new Date()
-            .toISOString();
-
-    }
-
-};
-
-
-/* =========================================================
-   MATERIALS
-========================================================= */
-
-const MaterialStore = {
-
-    all() {
-
-        return ProcureXStore
-            .load()
-            .materials;
-
-    },
-
-
-    find(id) {
-
-        return this
-            .all()
-            .find(
-                item =>
-                    item.id === id
-            );
-
-    },
-
-
-    findByName(name) {
-
-        const search =
-            String(name)
-                .trim()
-                .toLowerCase();
-
-
-        return this
-            .all()
-            .filter(
-                item =>
-                    String(
-                        item.name || ""
-                    )
-                    .toLowerCase()
-                    .includes(search)
-            );
-
-    },
-
-
-    save(material) {
-
-        return ProcureXStore.update(
-            data => {
-
-                const existing =
-                    data.materials.find(
-                        item =>
-                            item.id ===
-                            material.id
-                    );
-
-
-                if (existing) {
-
-                    Object.assign(
-                        existing,
-                        material,
-                        {
-                            updatedAt:
-                                ProcureXStore.now()
-                        }
-                    );
-
-                } else {
-
-                    data.materials.push({
-
-                        id:
-                            material.id ||
-                            ProcureXStore.id(
-                                "MAT"
-                            ),
-
-                        name:
-                            material.name || "",
-
-                        type:
-                            material.type || "",
-
-                        partNumber:
-                            material.partNumber ||
-                            "",
-
-                        category:
-                            material.category ||
-                            "",
-
-                        unit:
-                            material.unit || "",
-
-                        city:
-                            material.city || "",
-
-                        image:
-                            material.image || "",
-
-                        suppliers:
-                            material.suppliers ||
-                            [],
-
-                        notes:
-                            material.notes || "",
-
-                        createdAt:
-                            ProcureXStore.now(),
-
-                        updatedAt:
-                            ProcureXStore.now()
-
-                    });
-
-                }
-
-            }
-
+                .substring(2, 8)
+                .toUpperCase()
         );
 
     }
 
-};
 
+    /* =====================================================
+       SUPPLIERS
+    ===================================================== */
 
-/* =========================================================
-   SUPPLIERS
-========================================================= */
+    function getSuppliers() {
 
-const SupplierStore = {
-
-    all() {
-
-        return ProcureXStore
-            .load()
-            .suppliers;
-
-    },
-
-
-    find(id) {
-
-        return this
-            .all()
-            .find(
-                item =>
-                    item.id === id
-            );
-
-    },
-
-
-    search(text, city = "") {
-
-        const search =
-            String(text || "")
-                .trim()
-                .toLowerCase();
-
-        const location =
-            String(city || "")
-                .trim()
-                .toLowerCase();
-
-
-        return this
-            .all()
-            .filter(supplier => {
-
-                const textMatch =
-
-                    !search ||
-
-                    String(
-                        supplier.name || ""
-                    )
-                    .toLowerCase()
-                    .includes(search)
-
-                    ||
-
-                    String(
-                        supplier.category || ""
-                    )
-                    .toLowerCase()
-                    .includes(search)
-
-                    ||
-
-                    String(
-                        supplier.materials || ""
-                    )
-                    .toLowerCase()
-                    .includes(search);
-
-
-                const cityMatch =
-
-                    !location ||
-
-                    String(
-                        supplier.city || ""
-                    )
-                    .toLowerCase()
-                    .includes(location);
-
-
-                return (
-                    textMatch &&
-                    cityMatch
-                );
-
-            });
-
-    },
-
-
-    save(supplier) {
-
-        return ProcureXStore.update(
-            data => {
-
-                const existing =
-                    data.suppliers.find(
-                        item =>
-                            item.id ===
-                            supplier.id
-                    );
-
-
-                if (existing) {
-
-                    Object.assign(
-                        existing,
-                        supplier,
-                        {
-                            updatedAt:
-                                ProcureXStore.now()
-                        }
-                    );
-
-                } else {
-
-                    data.suppliers.push({
-
-                        id:
-                            supplier.id ||
-                            ProcureXStore.id(
-                                "SUP"
-                            ),
-
-                        name:
-                            supplier.name || "",
-
-                        category:
-                            supplier.category ||
-                            "",
-
-                        city:
-                            supplier.city || "",
-
-                        phone:
-                            supplier.phone || "",
-
-                        email:
-                            supplier.email || "",
-
-                        website:
-                            supplier.website || "",
-
-                        location:
-                            supplier.location || "",
-
-                        materials:
-                            supplier.materials ||
-                            [],
-
-                        rating:
-                            Number(
-                                supplier.rating || 0
-                            ),
-
-                        notes:
-                            supplier.notes || "",
-
-                        status:
-                            supplier.status ||
-                            "active",
-
-                        createdAt:
-                            ProcureXStore.now(),
-
-                        updatedAt:
-                            ProcureXStore.now()
-
-                    });
-
-                }
-
-            }
-
+        return getData(
+            STORAGE_KEYS.suppliers
         );
 
     }
 
-};
 
+    function getSupplier(id) {
 
-/* =========================================================
-   SEARCH HISTORY
-========================================================= */
+        const suppliers =
+            getSuppliers();
 
-const SearchStore = {
-
-    save(search) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.searches.unshift({
-
-                    id:
-                        ProcureXStore.id(
-                            "SEARCH"
-                        ),
-
-                    keyword:
-                        search.keyword || "",
-
-                    type:
-                        search.type || "material",
-
-                    city:
-                        search.city || "",
-
-                    results:
-                        search.results || [],
-
-                    searchedAt:
-                        ProcureXStore.now()
-
-                });
-
-
-                /*
-                 * الاحتفاظ بآخر 500 عملية بحث
-                 */
-
-                data.searches =
-                    data.searches.slice(
-                        0,
-                        500
-                    );
-
-            }
-        );
-
-    },
-
-
-    all() {
-
-        return ProcureXStore
-            .load()
-            .searches;
-
-    },
-
-
-    recent(limit = 20) {
-
-        return this
-            .all()
-            .slice(
-                0,
-                limit
-            );
+        return suppliers.find(
+            supplier =>
+                supplier.id === id
+        ) || null;
 
     }
 
-};
+
+    function saveSupplier(supplier) {
+
+        if (!supplier) {
+            return null;
+        }
+
+        const suppliers =
+            getSuppliers();
 
 
-/* =========================================================
-   PRICE HISTORY
-========================================================= */
-
-const PriceStore = {
-
-    save(price) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.priceHistory.unshift({
-
-                    id:
-                        ProcureXStore.id(
-                            "PRICE"
-                        ),
-
-                    materialId:
-                        price.materialId ||
-                        "",
-
-                    material:
-                        price.material ||
-                        "",
-
-                    supplierId:
-                        price.supplierId ||
-                        "",
-
-                    supplier:
-                        price.supplier ||
-                        "",
-
-                    unitPrice:
-                        Number(
-                            price.unitPrice || 0
-                        ),
-
-                    currency:
-                        price.currency ||
-                        "SAR",
-
-                    unit:
-                        price.unit ||
-                        "",
-
-                    quantity:
-                        Number(
-                            price.quantity || 0
-                        ),
-
-                    source:
-                        price.source ||
-                        "manual",
-
-                    date:
-                        price.date ||
-                        ProcureXStore.now(),
-
-                    notes:
-                        price.notes ||
-                        ""
-
-                });
-
-            }
-        );
-
-    },
+        const now =
+            new Date().toISOString();
 
 
-    forMaterial(materialId) {
+        const newSupplier = {
 
-        return ProcureXStore
-            .load()
-            .priceHistory
-            .filter(
+            id:
+                supplier.id ||
+                generateId("SUP"),
+
+            companyName:
+                supplier.companyName ||
+                "",
+
+            supplierName:
+                supplier.supplierName ||
+                "",
+
+            category:
+                supplier.category ||
+                "",
+
+            city:
+                supplier.city ||
+                "",
+
+            address:
+                supplier.address ||
+                "",
+
+            phone:
+                supplier.phone ||
+                "",
+
+            mobile:
+                supplier.mobile ||
+                "",
+
+            email:
+                supplier.email ||
+                "",
+
+            website:
+                supplier.website ||
+                "",
+
+            taxNumber:
+                supplier.taxNumber ||
+                "",
+
+            commercialRegister:
+                supplier.commercialRegister ||
+                "",
+
+            materials:
+                Array.isArray(
+                    supplier.materials
+                )
+                    ? supplier.materials
+                    : [],
+
+            notes:
+                supplier.notes ||
+                "",
+
+            createdAt:
+                supplier.createdAt ||
+                now,
+
+            updatedAt:
+                now
+
+        };
+
+
+        const existingIndex =
+            suppliers.findIndex(
                 item =>
-                    item.materialId ===
-                    materialId
-            );
-
-    },
-
-
-    forMaterialName(material) {
-
-        const name =
-            String(material)
-                .trim()
-                .toLowerCase();
-
-
-        return ProcureXStore
-            .load()
-            .priceHistory
-            .filter(
-                item =>
-                    String(
-                        item.material || ""
-                    )
-                    .toLowerCase() ===
-                    name
-            );
-
-    },
-
-
-    statistics(material) {
-
-        const prices =
-            this.forMaterialName(
-                material
-            )
-            .map(
-                item =>
-                    Number(
-                        item.unitPrice
-                    )
-            )
-            .filter(
-                price =>
-                    price > 0
+                    item.id ===
+                    newSupplier.id
             );
 
 
-        if (!prices.length) {
+        if (existingIndex >= 0) {
 
-            return {
+            suppliers[
+                existingIndex
+            ] = newSupplier;
 
-                count: 0,
-                lowest: 0,
-                highest: 0,
-                average: 0,
-                latest: 0
+        } else {
 
-            };
+            suppliers.push(
+                newSupplier
+            );
 
         }
 
 
-        const sorted =
-            [...prices]
-                .sort(
-                    (a,b) =>
-                        a - b
+        setData(
+            STORAGE_KEYS.suppliers,
+            suppliers
+        );
+
+
+        return newSupplier;
+
+    }
+
+
+    function deleteSupplier(id) {
+
+        const suppliers =
+            getSuppliers();
+
+
+        const filtered =
+            suppliers.filter(
+                supplier =>
+                    supplier.id !== id
+            );
+
+
+        setData(
+            STORAGE_KEYS.suppliers,
+            filtered
+        );
+
+
+        return true;
+
+    }
+
+
+    function searchSuppliers(query) {
+
+        const suppliers =
+            getSuppliers();
+
+
+        if (!query) {
+            return suppliers;
+        }
+
+
+        const text =
+            String(query)
+                .trim()
+                .toLowerCase();
+
+
+        return suppliers.filter(
+            supplier => {
+
+                const searchable = [
+
+                    supplier.companyName,
+
+                    supplier.supplierName,
+
+                    supplier.category,
+
+                    supplier.city,
+
+                    supplier.address,
+
+                    supplier.phone,
+
+                    supplier.mobile,
+
+                    supplier.email,
+
+                    supplier.website,
+
+                    supplier.taxNumber,
+
+                    supplier.commercialRegister,
+
+                    ...(supplier.materials || [])
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return searchable.includes(
+                    text
                 );
 
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CONTACTS / PEOPLE
+    ===================================================== */
+
+    function getContacts() {
+
+        return getData(
+            STORAGE_KEYS.contacts
+        );
+
+    }
+
+
+    function getContact(id) {
+
+        const contacts =
+            getContacts();
+
+
+        return contacts.find(
+            contact =>
+                contact.id === id
+        ) || null;
+
+    }
+
+
+    function saveContact(contact) {
+
+        if (!contact) {
+            return null;
+        }
+
+
+        const contacts =
+            getContacts();
+
+
+        const now =
+            new Date().toISOString();
+
+
+        const newContact = {
+
+            id:
+                contact.id ||
+                generateId("CON"),
+
+            supplierId:
+                contact.supplierId ||
+                "",
+
+            companyName:
+                contact.companyName ||
+                "",
+
+            name:
+                contact.name ||
+                "",
+
+            jobTitle:
+                contact.jobTitle ||
+                "",
+
+            department:
+                contact.department ||
+                "",
+
+            phone:
+                contact.phone ||
+                "",
+
+            mobile:
+                contact.mobile ||
+                "",
+
+            whatsapp:
+                contact.whatsapp ||
+                "",
+
+            email:
+                contact.email ||
+                "",
+
+            notes:
+                contact.notes ||
+                "",
+
+            createdAt:
+                contact.createdAt ||
+                now,
+
+            updatedAt:
+                now
+
+        };
+
+
+        const existingIndex =
+            contacts.findIndex(
+                item =>
+                    item.id ===
+                    newContact.id
+            );
+
+
+        if (existingIndex >= 0) {
+
+            contacts[
+                existingIndex
+            ] = newContact;
+
+        } else {
+
+            contacts.push(
+                newContact
+            );
+
+        }
+
+
+        setData(
+            STORAGE_KEYS.contacts,
+            contacts
+        );
+
+
+        return newContact;
+
+    }
+
+
+    function deleteContact(id) {
+
+        const contacts =
+            getContacts();
+
+
+        const filtered =
+            contacts.filter(
+                contact =>
+                    contact.id !== id
+            );
+
+
+        setData(
+            STORAGE_KEYS.contacts,
+            filtered
+        );
+
+
+        return true;
+
+    }
+
+
+    function getSupplierContacts(
+        supplierId
+    ) {
+
+        return getContacts().filter(
+            contact =>
+                contact.supplierId ===
+                supplierId
+        );
+
+    }
+
+
+    /* =====================================================
+       MATERIALS
+    ===================================================== */
+
+    function getMaterials() {
+
+        return getData(
+            STORAGE_KEYS.materials
+        );
+
+    }
+
+
+    function getMaterial(id) {
+
+        const materials =
+            getMaterials();
+
+
+        return materials.find(
+            material =>
+                material.id === id
+        ) || null;
+
+    }
+
+
+    function saveMaterial(material) {
+
+        if (!material) {
+            return null;
+        }
+
+
+        const materials =
+            getMaterials();
+
+
+        const now =
+            new Date().toISOString();
+
+
+        const newMaterial = {
+
+            id:
+                material.id ||
+                generateId("MAT"),
+
+            name:
+                material.name ||
+                "",
+
+            englishName:
+                material.englishName ||
+                "",
+
+            type:
+                material.type ||
+                "",
+
+            category:
+                material.category ||
+                "",
+
+            partNumber:
+                material.partNumber ||
+                "",
+
+            brand:
+                material.brand ||
+                "",
+
+            model:
+                material.model ||
+                "",
+
+            material:
+                material.material ||
+                "",
+
+            size:
+                material.size ||
+                "",
+
+            pressure:
+                material.pressure ||
+                "",
+
+            application:
+                material.application ||
+                "",
+
+            specifications:
+                material.specifications ||
+                "",
+
+            description:
+                material.description ||
+                "",
+
+            image:
+                material.image ||
+                "",
+
+            aliases:
+                Array.isArray(
+                    material.aliases
+                )
+                    ? material.aliases
+                    : [],
+
+            createdAt:
+                material.createdAt ||
+                now,
+
+            updatedAt:
+                now
+
+        };
+
+
+        const existingIndex =
+            materials.findIndex(
+                item =>
+                    item.id ===
+                    newMaterial.id
+            );
+
+
+        if (existingIndex >= 0) {
+
+            materials[
+                existingIndex
+            ] = newMaterial;
+
+        } else {
+
+            materials.push(
+                newMaterial
+            );
+
+        }
+
+
+        setData(
+            STORAGE_KEYS.materials,
+            materials
+        );
+
+
+        return newMaterial;
+
+    }
+
+
+    function deleteMaterial(id) {
+
+        const materials =
+            getMaterials();
+
+
+        const filtered =
+            materials.filter(
+                material =>
+                    material.id !== id
+            );
+
+
+        setData(
+            STORAGE_KEYS.materials,
+            filtered
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       MATERIAL SEARCH
+    ===================================================== */
+
+    function searchMaterials(query) {
+
+        const materials =
+            getMaterials();
+
+
+        if (!query) {
+            return materials;
+        }
+
+
+        const text =
+            String(query)
+                .trim()
+                .toLowerCase();
+
+
+        return materials.filter(
+            material => {
+
+                const searchable = [
+
+                    material.name,
+
+                    material.englishName,
+
+                    material.type,
+
+                    material.category,
+
+                    material.partNumber,
+
+                    material.brand,
+
+                    material.model,
+
+                    material.material,
+
+                    material.size,
+
+                    material.pressure,
+
+                    material.application,
+
+                    material.specifications,
+
+                    material.description,
+
+                    ...(material.aliases || [])
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return searchable.includes(
+                    text
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MATERIAL SEARCH HISTORY
+    ===================================================== */
+
+    function saveMaterialSearch(
+        search
+    ) {
+
+        if (!search) {
+            return null;
+        }
+
+
+        const searches =
+            getData(
+                STORAGE_KEYS.searches
+            );
+
+
+        const item = {
+
+            id:
+                generateId("SEARCH"),
+
+            query:
+                search.query ||
+                "",
+
+            name:
+                search.name ||
+                "",
+
+            type:
+                search.type ||
+                "",
+
+            partNumber:
+                search.partNumber ||
+                "",
+
+            city:
+                search.city ||
+                "",
+
+            image:
+                search.image ||
+                "",
+
+            resultCount:
+                Number(
+                    search.resultCount || 0
+                ),
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        searches.unshift(
+            item
+        );
+
+
+        /* آخر 100 عملية بحث فقط */
+
+        const limited =
+            searches.slice(
+                0,
+                100
+            );
+
+
+        setData(
+            STORAGE_KEYS.searches,
+            limited
+        );
+
+
+        return item;
+
+    }
+
+
+    function getMaterialSearches() {
+
+        return getData(
+            STORAGE_KEYS.searches
+        );
+
+    }
+
+
+    /* =====================================================
+       CITY
+    ===================================================== */
+
+    function getArabicCity(city) {
+
+        const cities = {
+
+            Riyadh:
+                "الرياض",
+
+            Jeddah:
+                "جدة",
+
+            Dammam:
+                "الدمام",
+
+            Khobar:
+                "الخبر",
+
+            Makkah:
+                "مكة",
+
+            Madinah:
+                "المدينة المنورة",
+
+            Abha:
+                "أبها",
+
+            Tabuk:
+                "تبوك",
+
+            Qassim:
+                "القصيم",
+
+            Other:
+                "أخرى"
+
+        };
+
+
+        return (
+            cities[city] ||
+            city ||
+            ""
+        );
+
+    }
+
+
+    /* =====================================================
+       DATABASE EXPORT
+    ===================================================== */
+
+    function exportDatabase() {
 
         return {
 
-            count:
-                prices.length,
+            suppliers:
+                getSuppliers(),
 
-            lowest:
-                sorted[0],
+            contacts:
+                getContacts(),
 
-            highest:
-                sorted[
-                    sorted.length - 1
-                ],
+            materials:
+                getMaterials(),
 
-            average:
-                prices.reduce(
-                    (a,b) =>
-                        a + b,
-                    0
-                ) /
-                prices.length,
+            searches:
+                getMaterialSearches(),
 
-            latest:
-                prices[
-                    0
-                ]
+            exportedAt:
+                new Date().toISOString()
 
         };
 
     }
 
-};
+
+    /* =====================================================
+       DATABASE IMPORT
+    ===================================================== */
+
+    function importDatabase(data) {
+
+        if (!data) {
+            return false;
+        }
 
 
-/* =========================================================
-   QUOTATIONS
-========================================================= */
+        if (
+            Array.isArray(
+                data.suppliers
+            )
+        ) {
 
-const QuotationStore = {
-
-    save(quotation) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.quotations.push({
-
-                    id:
-                        quotation.id ||
-                        ProcureXStore.id(
-                            "QTN"
-                        ),
-
-                    material:
-                        quotation.material ||
-                        "",
-
-                    materialId:
-                        quotation.materialId ||
-                        "",
-
-                    supplierId:
-                        quotation.supplierId ||
-                        "",
-
-                    supplier:
-                        quotation.supplier ||
-                        "",
-
-                    quantity:
-                        Number(
-                            quotation.quantity || 0
-                        ),
-
-                    unitPrice:
-                        Number(
-                            quotation.unitPrice || 0
-                        ),
-
-                    currency:
-                        quotation.currency ||
-                        "SAR",
-
-                    deliveryDays:
-                        Number(
-                            quotation.deliveryDays ||
-                            0
-                        ),
-
-                    paymentTerms:
-                        quotation.paymentTerms ||
-                        "",
-
-                    notes:
-                        quotation.notes ||
-                        "",
-
-                    date:
-                        ProcureXStore.now()
-
-                });
-
-            }
-        );
-
-
-        /*
-         * تسجيل السعر تلقائيًا
-         */
-
-        PriceStore.save({
-
-            materialId:
-                quotation.materialId,
-
-            material:
-                quotation.material,
-
-            supplierId:
-                quotation.supplierId,
-
-            supplier:
-                quotation.supplier,
-
-            unitPrice:
-                quotation.unitPrice,
-
-            currency:
-                quotation.currency,
-
-            quantity:
-                quotation.quantity,
-
-            unit:
-                quotation.unit,
-
-            source:
-                "quotation"
-
-        });
-
-    },
-
-
-    all() {
-
-        return ProcureXStore
-            .load()
-            .quotations;
-
-    }
-
-};
-
-
-/* =========================================================
-   SUPPLIER EVALUATION
-========================================================= */
-
-const EvaluationStore = {
-
-    save(evaluation) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.evaluations.push({
-
-                    id:
-                        ProcureXStore.id(
-                            "EVAL"
-                        ),
-
-                    supplierId:
-                        evaluation.supplierId ||
-                        "",
-
-                    supplier:
-                        evaluation.supplier ||
-                        "",
-
-                    price:
-                        Number(
-                            evaluation.price || 0
-                        ),
-
-                    quality:
-                        Number(
-                            evaluation.quality || 0
-                        ),
-
-                    response:
-                        Number(
-                            evaluation.response || 0
-                        ),
-
-                    delivery:
-                        Number(
-                            evaluation.delivery || 0
-                        ),
-
-                    notes:
-                        evaluation.notes ||
-                        "",
-
-                    date:
-                        ProcureXStore.now()
-
-                });
-
-            }
-        );
-
-    },
-
-
-    forSupplier(supplierId) {
-
-        return ProcureXStore
-            .load()
-            .evaluations
-            .filter(
-                item =>
-                    item.supplierId ===
-                    supplierId
+            setData(
+                STORAGE_KEYS.suppliers,
+                data.suppliers
             );
-
-    },
-
-
-    average(supplierId) {
-
-        const list =
-            this.forSupplier(
-                supplierId
-            );
-
-
-        if (!list.length) {
-
-            return 0;
 
         }
 
 
-        const totals =
-            list.map(
-                item =>
-                    (
-                        item.price +
-                        item.quality +
-                        item.response +
-                        item.delivery
-                    ) / 4
+        if (
+            Array.isArray(
+                data.contacts
+            )
+        ) {
+
+            setData(
+                STORAGE_KEYS.contacts,
+                data.contacts
             );
-
-
-        return (
-
-            totals.reduce(
-                (a,b) =>
-                    a + b,
-                0
-            ) /
-            totals.length
-
-        ).toFixed(1);
-
-    }
-
-};
-
-
-/* =========================================================
-   COMPARISON HISTORY
-========================================================= */
-
-const ComparisonStore = {
-
-    save(comparison) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.comparisons.unshift({
-
-                    id:
-                        ProcureXStore.id(
-                            "CMP"
-                        ),
-
-                    material:
-                        comparison.material ||
-                        "",
-
-                    materialId:
-                        comparison.materialId ||
-                        "",
-
-                    suppliers:
-                        comparison.suppliers ||
-                        [],
-
-                    winner:
-                        comparison.winner ||
-                        "",
-
-                    reason:
-                        comparison.reason ||
-                        "",
-
-                    date:
-                        ProcureXStore.now()
-
-                });
-
-            }
-        );
-
-    },
-
-
-    all() {
-
-        return ProcureXStore
-            .load()
-            .comparisons;
-
-    }
-
-};
-
-
-/* =========================================================
-   ATTACHMENTS
-========================================================= */
-
-const AttachmentStore = {
-
-    save(fileData) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.attachments.push({
-
-                    id:
-                        ProcureXStore.id(
-                            "FILE"
-                        ),
-
-                    name:
-                        fileData.name ||
-                        "",
-
-                    type:
-                        fileData.type ||
-                        "",
-
-                    size:
-                        fileData.size ||
-                        0,
-
-                    relatedType:
-                        fileData.relatedType ||
-                        "",
-
-                    relatedId:
-                        fileData.relatedId ||
-                        "",
-
-                    data:
-                        fileData.data ||
-                        "",
-
-                    date:
-                        ProcureXStore.now()
-
-                });
-
-            }
-        );
-
-    },
-
-
-    forRecord(
-        relatedType,
-        relatedId
-    ) {
-
-        return ProcureXStore
-            .load()
-            .attachments
-            .filter(
-                item =>
-
-                    item.relatedType ===
-                    relatedType
-
-                    &&
-
-                    item.relatedId ===
-                    relatedId
-            );
-
-    }
-
-};
-
-
-/* =========================================================
-   ACTIVITY LOG
-========================================================= */
-
-const ActivityStore = {
-
-    add(
-        action,
-        description,
-        extra = {}
-    ) {
-
-        ProcureXStore.update(
-            data => {
-
-                data.activities.unshift({
-
-                    id:
-                        ProcureXStore.id(
-                            "ACT"
-                        ),
-
-                    action,
-
-                    description,
-
-                    ...extra,
-
-                    date:
-                        ProcureXStore.now()
-
-                });
-
-
-                data.activities =
-                    data.activities.slice(
-                        0,
-                        1000
-                    );
-
-            }
-        );
-
-    },
-
-
-    all(limit = 100) {
-
-        return ProcureXStore
-            .load()
-            .activities
-            .slice(
-                0,
-                limit
-            );
-
-    }
-
-};
-
-
-/* =========================================================
-   UNIVERSAL MATERIAL SEARCH
-========================================================= */
-
-function searchMaterial(
-    keyword,
-    city = ""
-) {
-
-    const text =
-        String(keyword || "")
-            .trim()
-            .toLowerCase();
-
-
-    const location =
-        String(city || "")
-            .trim()
-            .toLowerCase();
-
-
-    const materials =
-        MaterialStore.all();
-
-
-    const suppliers =
-        SupplierStore.all();
-
-
-    const materialResults =
-        materials.filter(
-            material => {
-
-                const matchesText =
-
-                    !text ||
-
-                    String(
-                        material.name || ""
-                    )
-                    .toLowerCase()
-                    .includes(text)
-
-                    ||
-
-                    String(
-                        material.type || ""
-                    )
-                    .toLowerCase()
-                    .includes(text)
-
-                    ||
-
-                    String(
-                        material.partNumber || ""
-                    )
-                    .toLowerCase()
-                    .includes(text)
-
-                    ||
-
-                    String(
-                        material.category || ""
-                    )
-                    .toLowerCase()
-                    .includes(text);
-
-
-                const matchesCity =
-
-                    !location ||
-
-                    String(
-                        material.city || ""
-                    )
-                    .toLowerCase()
-                    .includes(location);
-
-
-                return (
-                    matchesText &&
-                    matchesCity
-                );
-
-            }
-        );
-
-
-    const supplierResults =
-        suppliers.filter(
-            supplier => {
-
-                const supplierText =
-
-                    !text ||
-
-                    String(
-                        supplier.name || ""
-                    )
-                    .toLowerCase()
-                    .includes(text)
-
-                    ||
-
-                    String(
-                        supplier.category || ""
-                    )
-                    .toLowerCase()
-                    .includes(text)
-
-                    ||
-
-                    String(
-                        supplier.materials || ""
-                    )
-                    .toLowerCase()
-                    .includes(text);
-
-
-                const supplierCity =
-
-                    !location ||
-
-                    String(
-                        supplier.city || ""
-                    )
-                    .toLowerCase()
-                    .includes(location);
-
-
-                return (
-                    supplierText &&
-                    supplierCity
-                );
-
-            }
-        );
-
-
-    /*
-     * حفظ عملية البحث
-     */
-
-    SearchStore.save({
-
-        keyword,
-
-        city,
-
-        type:
-            "material",
-
-        results: {
-
-            materials:
-                materialResults.map(
-                    item =>
-                        item.id
-                ),
-
-            suppliers:
-                supplierResults.map(
-                    item =>
-                        item.id
-                )
 
         }
 
-    });
 
+        if (
+            Array.isArray(
+                data.materials
+            )
+        ) {
 
-    /*
-     * تسجيل النشاط
-     */
+            setData(
+                STORAGE_KEYS.materials,
+                data.materials
+            );
 
-    ActivityStore.add(
-
-        "search",
-
-        `البحث عن: ${keyword}`,
-
-        {
-            keyword,
-            city
         }
 
-    );
+
+        if (
+            Array.isArray(
+                data.searches
+            )
+        ) {
+
+            setData(
+                STORAGE_KEYS.searches,
+                data.searches
+            );
+
+        }
 
 
-    return {
+        return true;
 
-        materials:
-            materialResults,
+    }
 
-        suppliers:
-            supplierResults
+
+    /* =====================================================
+       CLEAR DATABASE
+    ===================================================== */
+
+    function clearDatabase() {
+
+        localStorage.removeItem(
+            STORAGE_KEYS.suppliers
+        );
+
+        localStorage.removeItem(
+            STORAGE_KEYS.contacts
+        );
+
+        localStorage.removeItem(
+            STORAGE_KEYS.materials
+        );
+
+        localStorage.removeItem(
+            STORAGE_KEYS.searches
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       PUBLIC API
+    ===================================================== */
+
+    window.ProcureXStore = {
+
+        /* Storage */
+
+        getData,
+
+        setData,
+
+        generateId,
+
+        /* Suppliers */
+
+        getSuppliers,
+
+        getSupplier,
+
+        saveSupplier,
+
+        deleteSupplier,
+
+        searchSuppliers,
+
+        /* Contacts */
+
+        getContacts,
+
+        getContact,
+
+        saveContact,
+
+        deleteContact,
+
+        getSupplierContacts,
+
+        /* Materials */
+
+        getMaterials,
+
+        getMaterial,
+
+        saveMaterial,
+
+        deleteMaterial,
+
+        searchMaterials,
+
+        /* Searches */
+
+        saveMaterialSearch,
+
+        getMaterialSearches,
+
+        /* Helpers */
+
+        getArabicCity,
+
+        /* Database */
+
+        exportDatabase,
+
+        importDatabase,
+
+        clearDatabase
 
     };
 
-}
 
-
-/* =========================================================
-   SAVE MATERIAL FROM SEARCH
-========================================================= */
-
-function rememberMaterialFromSearch(
-    material
-) {
-
-    const existing =
-        MaterialStore
-            .findByName(
-                material.name
-            );
-
-
-    if (
-        existing.length
-    ) {
-
-        return existing[0];
-
-    }
-
-
-    MaterialStore.save(
-        material
+    console.log(
+        "ProcureX Data Store Loaded Successfully."
     );
 
-
-    ActivityStore.add(
-
-        "material_saved",
-
-        `تم حفظ المادة: ${material.name}`
-
-    );
-
-
-    return MaterialStore
-        .findByName(
-            material.name
-        )[0];
-
-}
-
-
-/* =========================================================
-   AUTO SAVE SEARCH RESULT
-========================================================= */
-
-function saveSearchResult(
-    result
-) {
-
-    if (
-        !result
-    ) {
-
-        return;
-
-    }
-
-
-    if (
-        result.material
-    ) {
-
-        rememberMaterialFromSearch(
-            result.material
-        );
-
-    }
-
-
-    if (
-        result.supplier
-    ) {
-
-        SupplierStore.save(
-            result.supplier
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   BACKUP
-========================================================= */
-
-function backupProcureX() {
-
-    const data =
-        ProcureXStore.load();
-
-
-    const blob =
-        new Blob(
-
-            [
-                JSON.stringify(
-                    data,
-                    null,
-                    2
-                )
-            ],
-
-            {
-                type:
-                    "application/json"
-            }
-
-        );
-
-
-    const url =
-        URL.createObjectURL(
-            blob
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-
-    link.href =
-        url;
-
-
-    link.download =
-        `ProcureX-Backup-${new Date()
-            .toISOString()
-            .slice(0,10)
-        }.json`;
-
-
-    document.body.appendChild(
-        link
-    );
-
-
-    link.click();
-
-
-    link.remove();
-
-
-    URL.revokeObjectURL(
-        url
-    );
-
-
-    ActivityStore.add(
-
-        "backup",
-
-        "تم إنشاء نسخة احتياطية من النظام."
-
-    );
-
-}
-
-
-/* =========================================================
-   CLEAR DATABASE
-   لا تستخدمها إلا لو عايز تمسح كل البيانات
-========================================================= */
-
-function clearProcureXData() {
-
-    const confirmDelete =
-        confirm(
-            "هل أنت متأكد؟ سيتم حذف جميع بيانات ProcureX."
-        );
-
-
-    if (!confirmDelete) {
-
-        return;
-
-    }
-
-
-    localStorage.removeItem(
-        PX_STORAGE_KEY
-    );
-
-
-    location.reload();
-
-}
-
-
-/* =========================================================
-   GLOBAL API
-========================================================= */
-
-window.ProcureXStore =
-    ProcureXStore;
-
-window.MaterialStore =
-    MaterialStore;
-
-window.SupplierStore =
-    SupplierStore;
-
-window.SearchStore =
-    SearchStore;
-
-window.PriceStore =
-    PriceStore;
-
-window.QuotationStore =
-    QuotationStore;
-
-window.EvaluationStore =
-    EvaluationStore;
-
-window.ComparisonStore =
-    ComparisonStore;
-
-window.AttachmentStore =
-    AttachmentStore;
-
-window.ActivityStore =
-    ActivityStore;
-
-window.searchMaterial =
-    searchMaterial;
-
-window.rememberMaterialFromSearch =
-    rememberMaterialFromSearch;
-
-window.saveSearchResult =
-    saveSearchResult;
-
-window.backupProcureX =
-    backupProcureX;
-
-window.clearProcureXData =
-    clearProcureXData;
-
-
-/* =========================================================
-   START
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        ProcureXStore.load();
-
-        console.log(
-            "✅ ProcureX Data Store Ready"
-        );
-
-        console.log(
-            "📦 Database:",
-            ProcureXStore.load()
-        );
-
-    }
-);
+})();
