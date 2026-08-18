@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Suppliers | ProcureX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .suppliers-page {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #101827, #183b6d);
+            color: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 18px;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #c4d0e2;
+            font-size: 11px;
+        }
+
+        .toolbar {
+            background: #fff;
+            border: 1px solid #e5e9f0;
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 18px rgba(16,24,40,.04);
+        }
+
+        .toolbar input,
+        .toolbar select {
+            height: 40px;
+            border: 1px solid #dce2ea;
+            border-radius: 8px;
+            padding: 0 11px;
+            background: #fbfcfe;
+            outline: none;
+            font-size: 10px;
+        }
+
+        .toolbar input {
+            flex: 1;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: #1769e0;
+        }
+
+        .supplier-count {
+            background: #eaf2ff;
+            color: #1769e0;
+            padding: 8px 11px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .supplier-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .supplier-card {
+            background: #fff;
+            border: 1px solid #e5e9f0;
+            border-radius: 13px;
+            padding: 16px;
+            transition: .2s;
+        }
+
+        .supplier-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,24,40,.08);
+        }
+
+        .supplier-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .supplier-identity {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+        }
+
+        .supplier-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eef4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .supplier-identity h3 {
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .supplier-identity span {
+            font-size: 8px;
+            color: #98a2b3;
+        }
+
+        .status {
+            height: fit-content;
+            padding: 5px 7px;
+            border-radius: 6px;
+            font-size: 7px;
+            font-weight: 700;
+        }
+
+        .status.active {
+            background: #e9f8f1;
+            color: #087443;
+        }
+
+        .status.pending {
+            background: #fff7e6;
+            color: #b54708;
+        }
+
+        .details {
+            margin-top: 13px;
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 7px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            border-radius: 7px;
+            padding: 8px;
+        }
+
+        .detail span {
+            display: block;
+            color: #98a2b3;
+            font-size: 7px;
+            margin-bottom: 3px;
+        }
+
+        .detail strong {
+            font-size: 8px;
+        }
+
+        .supplier-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #f2f4f7;
+            color: #475467;
+            padding: 4px 6px;
+            border-radius: 5px;
+            font-size: 7px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #eef1f5;
+        }
+
+        .card-actions button {
+            flex: 1;
+            height: 32px;
+            border-radius: 7px;
+            border: 1px solid #dfe4ea;
+            background: #fff;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .card-actions .primary {
+            background: #1769e0;
+            color: #fff;
+            border-color: #1769e0;
+        }
+
+        .empty {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 45px 20px;
+            text-align: center;
+            color: #98a2b3;
+            font-size: 10px;
+            grid-column: 1 / -1;
+        }
+
+        .bottom-bar {
+            margin-top: 15px;
+            background: #f8fafc;
+            border: 1px solid #e6eaf0;
+            border-radius: 9px;
+            padding: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .export-button {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid #dfe4ea;
+            border-radius: 7px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        @media(max-width:1000px) {
+            .supplier-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+
+        @media(max-width:650px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .supplier-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="suppliers-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <h2>
+            🏢 دفتر الموردين
+        </h2>
+
+        <p>
+            إدارة الموردين المحفوظين ومراجعة بياناتهم
+            وتصنيفهم والرجوع إليهم بسرعة أثناء عمليات الشراء.
+        </p>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <input
+            type="search"
+            id="supplier-search"
+            placeholder="🔎 ابحث باسم المورد أو النشاط أو المدينة..."
+        >
+
+        <select id="supplier-category">
+
+            <option value="">
+                كل التصنيفات
+            </option>
+
+            <option value="قطع غيار">
+                قطع غيار
+            </option>
+
+            <option value="ميكانيكا">
+                ميكانيكا
+            </option>
+
+            <option value="كهرباء">
+                كهرباء
+            </option>
+
+            <option value="هيدروليك">
+                هيدروليك
+            </option>
+
+            <option value="خراطيم">
+                خراطيم
+            </option>
+
+            <option value="مواد إنشائية">
+                مواد إنشائية
+            </option>
+
+            <option value="سلامة">
+                سلامة
+            </option>
+
+        </select>
+
+
+        <div
+            class="supplier-count"
+            id="supplier-count"
+        >
+            0 مورد
+        </div>
+
+    </div>
+
+
+    <!-- SUPPLIERS -->
+
+    <div
+        class="supplier-grid"
+        id="supplier-grid"
+    >
+
+        <div class="empty">
+
+            🏢
+
+            <br><br>
+
+            لا يوجد موردون محفوظون حتى الآن.
+
+            <br><br>
+
+            يمكنك حفظ المورد من شاشة
+            <strong>البحث عن الموردين</strong>.
+
+        </div>
+
+    </div>
+
+
+    <!-- EXPORT -->
+
+    <div class="bottom-bar">
+
+        <span style="
+            font-size:9px;
+            color:#667085;
+            font-weight:600;
+        ">
+            📄 إدارة قائمة الموردين
+        </span>
+
+
+        <div class="export-buttons">
+
+            <button
+                class="export-button"
+                onclick="window.print()"
+            >
+                🖨️ طباعة
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSuppliers('pdf')"
+            >
+                📄 PDF
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSuppliers('excel')"
+            >
+                📊 Excel
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSuppliers('word')"
+            >
+                📝 Word
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * الموردون الأساسيون.
+     *
+     * في المرحلة النهائية سيتم استبدال هذه
+     * البيانات بقاعدة بيانات حقيقية.
+     */
+
+    const supplierDatabase = [
+
+        {
+            id: "SUP-001",
+            name: "شركة الخليج للأنظمة الهيدروليكية",
+            city: "الرياض",
+            category: "هيدروليك",
+            phone: "0500000000",
+            email: "info@example.com",
+            status: "active",
+            rating: "4.8",
+            tags: [
+                "Hydraulic",
+                "Hoses",
+                "Fittings"
+            ]
+        },
+
+        {
+            id: "SUP-002",
+            name: "مؤسسة التوريد الصناعي",
+            city: "الرياض",
+            category: "قطع غيار",
+            phone: "0511111111",
+            email: "sales@example.com",
+            status: "active",
+            rating: "4.6",
+            tags: [
+                "Spare Parts",
+                "معدات",
+                "صيانة"
+            ]
+        },
+
+        {
+            id: "SUP-003",
+            name: "شركة المعدات المتقدمة",
+            city: "جدة",
+            category: "قطع غيار",
+            phone: "0522222222",
+            email: "info@example.com",
+            status: "active",
+            rating: "4.9",
+            tags: [
+                "Heavy Equipment",
+                "Spare Parts"
+            ]
+        },
+
+        {
+            id: "SUP-004",
+            name: "مؤسسة الشرق للكهرباء",
+            city: "الرياض",
+            category: "كهرباء",
+            phone: "0533333333",
+            email: "sales@example.com",
+            status: "pending",
+            rating: "4.5",
+            tags: [
+                "Cables",
+                "Electrical",
+                "Panels"
+            ]
+        }
+
+    ];
+
+
+    /*
+     * تحميل الموردين المحفوظين
+     */
+
+    function getSavedSuppliers() {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "procurex_saved_supplier_objects"
+            )
+        ) || [];
+
+    }
+
+
+    /*
+     * دمج الموردين الأساسيين
+     * مع الموردين الذين حفظهم المستخدم.
+     */
+
+    function getAllSuppliers() {
+
+        const saved =
+            getSavedSuppliers();
+
+        const all = [
+            ...supplierDatabase
+        ];
+
+
+        saved.forEach(savedSupplier => {
+
+            const exists =
+                all.some(
+                    supplier =>
+                        supplier.name ===
+                        savedSupplier.name
+                );
+
+
+            if (!exists) {
+
+                const original =
+                    findSupplier(
+                        savedSupplier.name
+                    );
+
+
+                if (original) {
+
+                    all.push(original);
+
+                }
+
+            }
+
+        });
+
+
+        return all;
+
+    }
+
+
+    function findSupplier(name) {
+
+        /*
+         * البحث في بيانات الموردين
+         */
+
+        const found =
+            supplierDatabase.find(
+                supplier =>
+                    supplier.name === name
+            );
+
+
+        if (found) {
+            return found;
+        }
+
+
+        return null;
+
+    }
+
+
+    /*
+     * عرض الموردين
+     */
+
+    function renderSuppliers(
+        suppliers
+    ) {
+
+        const grid =
+            document.getElementById(
+                "supplier-grid"
+            );
+
+
+        const count =
+            document.getElementById(
+                "supplier-count"
+            );
+
+
+        count.textContent =
+            `${suppliers.length} مورد`;
+
+
+        if (!suppliers.length) {
+
+            grid.innerHTML = `
+
+                <div class="empty">
+
+                    🔍
+
+                    <br><br>
+
+                    لا توجد نتائج مطابقة للبحث.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        grid.innerHTML =
+            suppliers
+                .map(
+                    supplier =>
+                        supplierCard(
+                            supplier
+                        )
+                )
+                .join("");
+
+    }
+
+
+    /*
+     * بطاقة المورد
+     */
+
+    function supplierCard(
+        supplier
+    ) {
+
+        const statusText =
+            supplier.status === "active"
+                ? "مورد نشط"
+                : "قيد المراجعة";
+
+
+        return `
+
+            <div class="supplier-card">
+
+                <div class="supplier-head">
+
+                    <div class="supplier-identity">
+
+                        <div class="supplier-icon">
+                            🏢
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                ${supplier.name}
+                            </h3>
+
+                            <span>
+                                ${supplier.city}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="status ${
+                        supplier.status
+                    }">
+
+                        ${statusText}
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>
+                            التصنيف
+                        </span>
+
+                        <strong>
+                            ${supplier.category}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            التقييم
+                        </span>
+
+                        <strong>
+                            ⭐ ${supplier.rating}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            الهاتف
+                        </span>
+
+                        <strong>
+                            ${supplier.phone}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            البريد الإلكتروني
+                        </span>
+
+                        <strong>
+                            ${supplier.email}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="supplier-tags">
+
+                    ${
+                        supplier.tags
+                            .map(
+                                tag =>
+                                    `<span class="tag">${tag}</span>`
+                            )
+                            .join("")
+                    }
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button
+                        class="primary"
+                        onclick="callSupplier('${supplier.phone}')"
+                    >
+                        📞 اتصال
+                    </button>
+
+
+                    <button
+                        onclick="emailSupplier('${supplier.email}')"
+                    >
+                        ✉️ إيميل
+                    </button>
+
+
+                    <button
+                        onclick="removeSupplier('${supplier.name}')"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+     * البحث
+     */
+
+    function filterSuppliers() {
+
+        const search =
+            document
+                .getElementById(
+                    "supplier-search"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const category =
+            document
+                .getElementById(
+                    "supplier-category"
+                )
+                .value;
+
+
+        const all =
+            getAllSuppliers();
+
+
+        const filtered =
+            all.filter(
+                supplier => {
+
+                    const text = (
+
+                        supplier.name +
+                        " " +
+                        supplier.city +
+                        " " +
+                        supplier.category +
+                        " " +
+                        supplier.tags.join(" ")
+
+                    ).toLowerCase();
+
+
+                    const matchesSearch =
+                        !search ||
+                        text.includes(search);
+
+
+                    const matchesCategory =
+                        !category ||
+                        supplier.category ===
+                        category;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory
+                    );
+
+                }
+            );
+
+
+        renderSuppliers(
+            filtered
+        );
+
+    }
+
+
+    document
+        .getElementById(
+            "supplier-search"
+        )
+        .addEventListener(
+            "input",
+            filterSuppliers
+        );
+
+
+    document
+        .getElementById(
+            "supplier-category"
+        )
+        .addEventListener(
+            "change",
+            filterSuppliers
+        );
+
+
+    /*
+     * الاتصال
+     */
+
+    function callSupplier(
+        phone
+    ) {
+
+        window.location.href =
+            "tel:" + phone;
+
+    }
+
+
+    /*
+     * البريد الإلكتروني
+     */
+
+    function emailSupplier(
+        email
+    ) {
+
+        window.location.href =
+            "mailto:" + email;
+
+    }
+
+
+    /*
+     * حذف المورد
+     */
+
+    function removeSupplier(
+        name
+    ) {
+
+        const confirmDelete =
+            confirm(
+                "هل تريد حذف المورد من القائمة؟"
+            );
+
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        let saved =
+            getSavedSuppliers();
+
+
+        saved =
+            saved.filter(
+                supplier =>
+                    supplier.name !== name
+            );
+
+
+        localStorage.setItem(
+            "procurex_saved_supplier_objects",
+            JSON.stringify(saved)
+        );
+
+
+        /*
+         * كذلك نحذف من قائمة الأسماء
+         */
+
+        let names =
+            JSON.parse(
+                localStorage.getItem(
+                    "procurex_saved_suppliers"
+                )
+            ) || [];
+
+
+        names =
+            names.filter(
+                supplierName =>
+                    supplierName !== name
+            );
+
+
+        localStorage.setItem(
+            "procurex_saved_suppliers",
+            JSON.stringify(names)
+        );
+
+
+        filterSuppliers();
+
+    }
+
+
+    /*
+     * التصدير
+     */
+
+    function exportSuppliers(
+        type
+    ) {
+
+        const suppliers =
+            getAllSuppliers();
+
+
+        if (!suppliers.length) {
+
+            alert(
+                "لا توجد بيانات لتصديرها."
+            );
+
+            return;
+
+        }
+
+
+        if (type === "pdf") {
+
+            alert(
+                "سيتم ربط تصدير PDF بمحرك المستندات."
+            );
+
+            return;
+
+        }
+
+
+        if (type === "excel") {
+
+            alert(
+                "سيتم ربط تصدير Excel بمحرك المستندات."
+            );
+
+            return;
+
+        }
+
+
+        if (type === "word") {
+
+            alert(
+                "سيتم ربط تصدير Word بمحرك المستندات."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * تشغيل أولي
+     */
+
+    renderSuppliers(
+        getAllSuppliers()
+    );
+
+</script>
+
+</body>
+
+</html>
