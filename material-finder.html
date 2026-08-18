@@ -2,668 +2,1361 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Material Finder | ProcureX</title>
 
-    <link rel="stylesheet" href="style.css">
+    <!-- IMPORTANT:
+         data.store.js must be loaded BEFORE this page script -->
+    <script src="data.store.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
-        .material-page {
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 10px;
+        body {
+            margin: 0;
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            background: #f5f7fa;
+
+            color: #182230;
         }
 
-        /* =========================
+
+        .material-page {
+
+            width: min(
+                1250px,
+                calc(100% - 30px)
+            );
+
+            margin: 25px auto 50px;
+
+        }
+
+
+        /* =====================================================
            HERO
-        ========================== */
+        ===================================================== */
 
         .material-hero {
-            background: linear-gradient(135deg, #101827, #183b6d);
-            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #101827,
+                    #183b6d
+                );
+
+            color: white;
+
             border-radius: 18px;
-            padding: 28px;
+
+            padding: 30px;
+
             margin-bottom: 20px;
+
             position: relative;
+
             overflow: hidden;
+
+            box-shadow:
+                0 10px 30px
+                rgba(16,24,40,.12);
+
         }
+
 
         .material-hero::after {
+
             content: "";
+
             position: absolute;
-            width: 280px;
-            height: 280px;
+
+            width: 300px;
+            height: 300px;
+
             border-radius: 50%;
-            left: -100px;
-            bottom: -180px;
-            background: rgba(255, 255, 255, .05);
+
+            left: -120px;
+            bottom: -190px;
+
+            background:
+                rgba(255,255,255,.05);
+
         }
 
-        .material-hero h2 {
+
+        .material-hero h1 {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin: 0 0 8px;
+
             font-size: 25px;
-            margin: 0 0 7px;
+
         }
+
 
         .material-hero p {
-            color: #b9c7dc;
-            font-size: 12px;
-            max-width: 700px;
-            line-height: 1.8;
+
+            position: relative;
+
+            z-index: 2;
+
             margin: 0;
+
+            color: #c4d0e2;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            max-width: 760px;
+
         }
 
-        /* =========================
-           LAYOUT
-        ========================== */
 
-        .material-layout {
-            display: grid;
-            grid-template-columns: .9fr 1.1fr;
-            gap: 18px;
-        }
+        /* =====================================================
+           CARDS
+        ===================================================== */
 
         .material-card {
-            background: #fff;
-            border: 1px solid #e5e9f0;
+
+            background: white;
+
+            border:
+                1px solid #e5e9f0;
+
             border-radius: 15px;
-            box-shadow: 0 5px 18px rgba(16, 24, 40, .05);
+
             padding: 20px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(16,24,40,.05);
+
+            margin-bottom: 20px;
+
         }
 
-        .material-card-title {
+
+        .card-title {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #eef1f5;
+
+            gap: 15px;
+
+            border-bottom:
+                1px solid #eef1f5;
+
+            padding-bottom: 13px;
+
+            margin-bottom: 17px;
+
         }
 
-        .material-card-title h3 {
-            font-size: 15px;
+
+        .card-title h2 {
+
             margin: 0;
+
+            font-size: 16px;
+
         }
 
-        .material-card-title span {
-            display: block;
+
+        .card-title span {
+
             color: #98a2b3;
+
             font-size: 9px;
-            margin-top: 3px;
+
         }
 
-        /* =========================
-           IMAGE UPLOAD
-        ========================== */
 
-        .image-upload {
-            width: 100%;
-            min-height: 270px;
-            border: 2px dashed #cbd5e1;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            cursor: pointer;
-            background: #fafcff;
-            transition: .25s ease;
-            overflow: hidden;
-            position: relative;
-        }
+        /* =====================================================
+           SEARCH AREA
+        ===================================================== */
 
-        .image-upload:hover,
-        .image-upload.dragover {
-            border-color: #1769e0;
-            background: #f5f9ff;
-        }
+        .search-grid {
 
-        .image-upload-icon {
-            width: 65px;
-            height: 65px;
-            border-radius: 17px;
-            background: #eaf2ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 29px;
-            margin-bottom: 12px;
-        }
-
-        .image-upload strong {
-            font-size: 13px;
-        }
-
-        .image-upload span {
-            color: #98a2b3;
-            font-size: 9px;
-            margin-top: 5px;
-        }
-
-        #material-image-input {
-            display: none;
-        }
-
-        #image-preview {
-            display: none;
-            width: 100%;
-            height: 270px;
-            object-fit: contain;
-            background: #f8fafc;
-        }
-
-        /* =========================
-           FORM
-        ========================== */
-
-        .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 13px;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            gap: 12px;
+
         }
+
 
         .form-group {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 6px;
+
         }
+
 
         .form-group.full {
-            grid-column: 1 / -1;
+
+            grid-column:
+                1 / -1;
+
         }
+
 
         .form-group label {
+
             font-size: 10px;
+
             font-weight: 700;
+
             color: #344054;
+
         }
 
-        .required {
-            color: #f04438;
-        }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
+
             width: 100%;
-            border: 1px solid #dce2ea;
+
+            border:
+                1px solid #dce2ea;
+
             border-radius: 9px;
+
             background: #fbfcfe;
+
             padding: 11px 12px;
+
             font-size: 11px;
+
             color: #182230;
+
             outline: none;
-            transition: .2s ease;
-            font-family: inherit;
+
+            transition: .2s;
+
         }
 
+
         .form-group textarea {
+
             min-height: 90px;
+
             resize: vertical;
-            line-height: 1.7;
+
         }
+
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
+
             border-color: #1769e0;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(23, 105, 224, .08);
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(23,105,224,.08);
+
         }
 
-        /* =========================
+
+        /* =====================================================
            MATERIAL TYPES
-        ========================== */
+        ===================================================== */
 
         .material-types {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 7px;
+
         }
+
 
         .material-type {
-            border: 1px solid #e0e5ec;
-            background: #fff;
-            border-radius: 8px;
-            padding: 8px 5px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 9px;
+
+            border:
+                1px solid #e0e5ec;
+
+            background: white;
+
             color: #667085;
-            transition: .2s ease;
-            font-family: inherit;
+
+            border-radius: 8px;
+
+            padding: 10px 6px;
+
+            cursor: pointer;
+
+            font-size: 9px;
+
+            transition: .2s;
+
         }
+
 
         .material-type:hover {
+
             border-color: #1769e0;
+
             color: #1769e0;
+
         }
+
 
         .material-type.selected {
+
             background: #eaf2ff;
+
             border-color: #1769e0;
+
             color: #1769e0;
+
             font-weight: 700;
+
         }
 
-        /* =========================
-           ACTIONS
-        ========================== */
 
-        .material-actions {
+        /* =====================================================
+           IMAGE
+        ===================================================== */
+
+        .image-area {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+        .upload-box {
+
+            min-height: 230px;
+
+            border:
+                2px dashed #cbd5e1;
+
+            border-radius: 14px;
+
+            background: #fafcff;
+
             display: flex;
-            gap: 8px;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid #eef1f5;
-        }
 
-        .action-button {
-            height: 42px;
-            border: 0;
-            border-radius: 9px;
-            padding: 0 16px;
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
             cursor: pointer;
-            font-size: 10px;
-            font-weight: 700;
-            transition: .2s ease;
-            font-family: inherit;
+
+            transition: .2s;
+
+            overflow: hidden;
+
         }
 
-        .search-material {
-            flex: 1;
-            color: #fff;
-            background: linear-gradient(135deg, #1769e0, #2d7be8);
-            box-shadow: 0 6px 15px rgba(23, 105, 224, .18);
+
+        .upload-box:hover {
+
+            border-color: #1769e0;
+
+            background: #f5f9ff;
+
         }
 
-        .search-material:hover {
-            transform: translateY(-1px);
+
+        .upload-icon {
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 16px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf2ff;
+
+            font-size: 28px;
+
+            margin-bottom: 12px;
+
         }
 
-        .secondary-button {
-            background: #f2f4f7;
-            color: #344054;
+
+        .upload-box strong {
+
+            font-size: 13px;
+
         }
 
-        .secondary-button:hover {
-            background: #e9edf2;
+
+        .upload-box small {
+
+            margin-top: 7px;
+
+            color: #98a2b3;
+
+            font-size: 9px;
+
         }
 
-        /* =========================
-           RESULTS
-        ========================== */
 
-        .result-section {
+        #material-image {
+
             display: none;
-            margin-top: 20px;
+
         }
 
-        .result-section.show {
-            display: block;
-        }
 
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 13px;
-        }
+        .image-preview {
 
-        .result-header h3 {
-            font-size: 15px;
-            margin: 0;
-        }
+            min-height: 230px;
 
-        .result-subtitle {
-            color: #98a2b3;
-            font-size: 9px;
-            margin-top: 4px;
-        }
+            border:
+                1px solid #e5e9f0;
 
-        .confidence {
-            background: #e9f8f1;
-            color: #087443;
-            padding: 6px 10px;
-            border-radius: 7px;
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
+            border-radius: 14px;
 
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 9px;
-        }
-
-        .result-item {
             background: #f8fafc;
-            border: 1px solid #edf0f4;
-            border-radius: 9px;
-            padding: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
         }
 
-        .result-item span {
-            display: block;
+
+        .image-preview img {
+
+            width: 100%;
+
+            height: 230px;
+
+            object-fit: contain;
+
+            display: none;
+
+        }
+
+
+        .image-placeholder {
+
             color: #98a2b3;
-            font-size: 8px;
-        }
 
-        .result-item strong {
-            display: block;
             font-size: 10px;
-            margin-top: 3px;
-            word-break: break-word;
+
         }
 
-        /* =========================
-           SUPPLIERS
-        ========================== */
 
-        .supplier-empty {
-            color: #667085;
-            font-size: 11px;
-            padding: 20px 0;
-            text-align: center;
-            line-height: 1.8;
-        }
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
 
-        .supplier-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
+        .actions {
 
-        .supplier-placeholder {
-            border: 1px solid #e6eaf0;
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .supplier-placeholder strong {
-            display: block;
-            font-size: 11px;
-            margin-bottom: 5px;
-        }
-
-        .supplier-placeholder span {
-            font-size: 9px;
-            color: #98a2b3;
-        }
-
-        /* =========================
-           EXPORT
-        ========================== */
-
-        .export-bar {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 16px;
-            padding: 11px 13px;
-            background: #f8fafc;
-            border: 1px solid #e6eaf0;
-            border-radius: 10px;
+
+            gap: 8px;
+
+            margin-top: 18px;
+
+            padding-top: 16px;
+
+            border-top:
+                1px solid #eef1f5;
+
         }
 
-        .export-title {
-            font-size: 9px;
-            color: #667085;
-            font-weight: 600;
-        }
 
-        .export-buttons {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        button {
 
-        .export-button {
-            height: 32px;
-            padding: 0 10px;
-            border: 1px solid #dfe4ea;
-            border-radius: 7px;
-            background: #fff;
-            color: #344054;
-            cursor: pointer;
-            font-size: 8px;
-            font-weight: 700;
             font-family: inherit;
+
         }
 
-        .export-button:hover {
-            border-color: #1769e0;
-            color: #1769e0;
+
+        .btn {
+
+            height: 42px;
+
+            padding: 0 18px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: .2s;
+
         }
 
-        /* =========================
-           TOAST
-        ========================== */
 
-        #material-toast {
-            position: fixed;
-            left: 20px;
-            bottom: 20px;
-            z-index: 99999;
-            min-width: 250px;
-            max-width: 380px;
-            padding: 13px 16px;
+        .btn-primary {
+
+            flex: 1;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1769e0,
+                    #2d7be8
+                );
+
+            box-shadow:
+                0 6px 15px
+                rgba(23,105,224,.18);
+
+        }
+
+
+        .btn-primary:hover {
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .btn-secondary {
+
+            background: #f2f4f7;
+
+            color: #344054;
+
+        }
+
+
+        .btn-secondary:hover {
+
+            background: #e7ebf0;
+
+        }
+
+
+        /* =====================================================
+           RESULTS
+        ===================================================== */
+
+        .results {
+
+            display: none;
+
+        }
+
+
+        .results.show {
+
+            display: block;
+
+        }
+
+
+        .result-summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+        }
+
+
+        .result-box {
+
+            background: #f8fafc;
+
+            border:
+                1px solid #edf0f4;
+
             border-radius: 10px;
-            background: #101828;
-            color: #fff;
+
+            padding: 13px;
+
+        }
+
+
+        .result-box span {
+
+            display: block;
+
+            color: #98a2b3;
+
+            font-size: 8px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .result-box strong {
+
+            display: block;
+
             font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           MATERIAL INFORMATION
+        ===================================================== */
+
+        .material-information {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .info-item {
+
+            border:
+                1px solid #edf0f4;
+
+            background: white;
+
+            border-radius: 9px;
+
+            padding: 12px;
+
+        }
+
+
+        .info-item span {
+
+            display: block;
+
+            color: #98a2b3;
+
+            font-size: 8px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .info-item strong {
+
+            font-size: 10px;
+
             line-height: 1.6;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-            transform: translateY(30px);
-            opacity: 0;
-            pointer-events: none;
-            transition: .25s ease;
+
         }
 
-        #material-toast.show {
-            transform: translateY(0);
-            opacity: 1;
+
+        /* =====================================================
+           SUPPLIERS
+        ===================================================== */
+
+        .supplier-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
         }
 
-        #material-toast.success {
-            background: #087443;
+
+        .supplier-card {
+
+            border:
+                1px solid #e5e9f0;
+
+            border-radius: 11px;
+
+            padding: 14px;
+
+            background: white;
+
         }
 
-        #material-toast.warning {
-            background: #b54708;
+
+        .supplier-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+
         }
 
-        #material-toast.error {
-            background: #b42318;
+
+        .supplier-line {
+
+            display: flex;
+
+            gap: 7px;
+
+            margin-top: 5px;
+
+            color: #667085;
+
+            font-size: 9px;
+
         }
 
-        /* =========================
-           PRINT
-        ========================== */
 
-        @media print {
+        .supplier-line strong {
 
-            body {
-                background: #fff !important;
-            }
+            color: #344054;
 
-            .material-page {
-                max-width: 100%;
-            }
-
-            .material-actions,
-            .export-bar,
-            #material-toast {
-                display: none !important;
-            }
-
-            .result-section {
-                display: block !important;
-            }
-
-            .material-hero {
-                color: #000;
-                background: #fff;
-                border: 1px solid #ddd;
-            }
-
-            .material-hero p {
-                color: #555;
-            }
         }
 
-        /* =========================
+
+        .no-suppliers {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px dashed #d5dbe4;
+
+            border-radius: 10px;
+
+            color: #98a2b3;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+
+            display: none;
+
+            margin-bottom: 15px;
+
+            padding: 12px 14px;
+
+            border-radius: 9px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .message.show {
+
+            display: block;
+
+        }
+
+
+        .message.success {
+
+            background: #e9f8f1;
+
+            color: #087443;
+
+        }
+
+
+        .message.warning {
+
+            background: #fff5e6;
+
+            color: #a15c00;
+
+        }
+
+
+        .message.error {
+
+            background: #fff0ef;
+
+            color: #b42318;
+
+        }
+
+
+        .message.info {
+
+            background: #eaf2ff;
+
+            color: #175cd3;
+
+        }
+
+
+        /* =====================================================
            RESPONSIVE
-        ========================== */
+        ===================================================== */
 
         @media (max-width: 900px) {
 
-            .material-layout {
-                grid-template-columns: 1fr;
+            .search-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
             }
 
-            .result-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .image-area {
+
+                grid-template-columns:
+                    1fr;
+
             }
 
-            .supplier-info {
-                grid-template-columns: 1fr;
+            .result-summary {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
             }
+
+            .material-information {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            .supplier-list {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
         }
+
 
         @media (max-width: 600px) {
 
             .material-page {
-                padding: 7px;
+
+                width:
+                    calc(100% - 20px);
+
+                margin-top: 10px;
+
             }
 
             .material-hero {
-                padding: 21px;
+
+                padding: 22px;
+
             }
 
-            .material-hero h2 {
+            .material-hero h1 {
+
                 font-size: 21px;
+
             }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+            .search-grid {
 
-            .form-group.full {
-                grid-column: auto;
+                grid-template-columns:
+                    1fr;
+
             }
 
             .material-types {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
             }
 
-            .result-grid {
-                grid-template-columns: 1fr;
+            .result-summary {
+
+                grid-template-columns:
+                    1fr;
+
             }
 
-            .material-actions {
+            .material-information {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+            .actions {
+
                 flex-direction: column;
+
             }
 
-            .export-bar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
+            .btn {
 
-            .export-buttons {
                 width: 100%;
+
             }
 
-            .export-button {
-                flex: 1;
-            }
-
-            .result-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            #material-toast {
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                min-width: auto;
-            }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="material-page">
 
-    <!-- =========================
+
+    <!-- =====================================================
          HERO
-    ========================== -->
+    ====================================================== -->
 
-    <div class="material-hero">
+    <section class="material-hero">
 
-        <h2>🧱 Material Finder</h2>
+        <h1>
+            🧱 Material Finder
+        </h1>
 
         <p>
-            ابحث عن المادة أو قطعة الغيار باستخدام الصورة أو الاسم
-            أو رقم القطعة، وحدد نوع المادة والمدينة للوصول إلى
-            الموردين المناسبين.
+            ابحث عن المادة أو قطعة الغيار بالاسم،
+            رقم القطعة أو المواصفات. يمكنك أيضاً رفع
+            صورة للقطعة لعرض بياناتها ومقارنتها بالمواد
+            المسجلة في قاعدة بيانات ProcureX.
         </p>
 
-    </div>
+    </section>
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+    <!-- MESSAGE -->
 
-    <div class="material-layout">
+    <div
+        id="material-message"
+        class="message"
+    ></div>
 
-        <!-- IMAGE -->
 
-        <div class="material-card">
+    <!-- =====================================================
+         SEARCH / MATERIAL DATA
+    ====================================================== -->
 
-            <div class="material-card-title">
+    <section class="material-card">
 
-                <div>
-                    <h3>📷 صورة المادة</h3>
-                    <span>Material Image</span>
+
+        <div class="card-title">
+
+            <div>
+
+                <h2>
+                    🔎 البحث عن مادة
+                </h2>
+
+                <span>
+                    Material Search
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="search-grid">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label>
+                    اسم المادة
+                </label>
+
+                <input
+                    id="material-name"
+                    type="text"
+                    placeholder="مثال: Hydraulic Hose"
+                >
+
+            </div>
+
+
+            <!-- PART NUMBER -->
+
+            <div class="form-group">
+
+                <label>
+                    رقم القطعة
+                </label>
+
+                <input
+                    id="part-number"
+                    type="text"
+                    placeholder="Part Number"
+                >
+
+            </div>
+
+
+            <!-- CITY -->
+
+            <div class="form-group">
+
+                <label>
+                    المدينة
+                </label>
+
+                <select id="material-city">
+
+                    <option value="">
+                        كل المدن
+                    </option>
+
+                    <option value="Riyadh">
+                        الرياض
+                    </option>
+
+                    <option value="Jeddah">
+                        جدة
+                    </option>
+
+                    <option value="Dammam">
+                        الدمام
+                    </option>
+
+                    <option value="Khobar">
+                        الخبر
+                    </option>
+
+                    <option value="Makkah">
+                        مكة
+                    </option>
+
+                    <option value="Madinah">
+                        المدينة المنورة
+                    </option>
+
+                    <option value="Abha">
+                        أبها
+                    </option>
+
+                    <option value="Tabuk">
+                        تبوك
+                    </option>
+
+                    <option value="Qassim">
+                        القصيم
+                    </option>
+
+                    <option value="Other">
+                        أخرى
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TYPE -->
+
+            <div class="form-group full">
+
+                <label>
+                    نوع المادة
+                </label>
+
+
+                <div
+                    class="material-types"
+                    id="material-types"
+                >
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Spare Parts"
+                    >
+                        قطع غيار
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Mechanical"
+                    >
+                        ميكانيكا
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Electrical"
+                    >
+                        كهرباء
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Hydraulic"
+                    >
+                        هيدروليك
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Filters"
+                    >
+                        فلاتر
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Hoses"
+                    >
+                        خراطيم
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Construction"
+                    >
+                        مواد إنشائية
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Raw Materials"
+                    >
+                        مواد خام
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Tools"
+                    >
+                        العدد والأدوات
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Safety"
+                    >
+                        سلامة
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Lubricants"
+                    >
+                        زيوت وشحوم
+                    </button>
+
+                    <button
+                        type="button"
+                        class="material-type"
+                        data-type="Other"
+                    >
+                        أخرى
+                    </button>
+
                 </div>
 
             </div>
 
 
+            <!-- MODEL -->
+
+            <div class="form-group">
+
+                <label>
+                    الموديل / الاستخدام
+                </label>
+
+                <input
+                    id="material-model"
+                    type="text"
+                    placeholder="Model / Application"
+                >
+
+            </div>
+
+
+            <!-- SPECIFICATIONS -->
+
+            <div class="form-group">
+
+                <label>
+                    المواصفات
+                </label>
+
+                <input
+                    id="material-specification"
+                    type="text"
+                    placeholder="المقاس، الضغط، الخامة..."
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <button
+                id="search-button"
+                class="btn btn-primary"
+            >
+                🔎 البحث عن المادة والموردين
+            </button>
+
+            <button
+                id="save-button"
+                class="btn btn-secondary"
+            >
+                ⭐ حفظ المادة
+            </button>
+
+            <button
+                id="clear-button"
+                class="btn btn-secondary"
+            >
+                مسح
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         IMAGE SEARCH
+    ====================================================== -->
+
+    <section class="material-card">
+
+
+        <div class="card-title">
+
+            <div>
+
+                <h2>
+                    📷 البحث بالصورة
+                </h2>
+
+                <span>
+                    Image Material Finder
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="image-area">
+
+
             <label
-                class="image-upload"
-                for="material-image-input"
-                id="image-upload-area"
+                class="upload-box"
+                for="material-image"
             >
 
                 <div
-                    class="image-upload-icon"
+                    class="upload-icon"
                     id="upload-icon"
                 >
                     📷
                 </div>
 
                 <strong id="upload-title">
-                    ارفع صورة المادة
+                    ارفع صورة قطعة الغيار
                 </strong>
 
-                <span id="upload-description">
-                    PNG / JPG / WEBP — يمكنك سحب الصورة هنا
+                <small id="upload-text">
+                    JPG / PNG / WEBP
+                </small>
+
+            </label>
+
+
+            <div class="image-preview">
+
+                <span
+                    id="image-placeholder"
+                    class="image-placeholder"
+                >
+                    ستظهر الصورة هنا
                 </span>
 
                 <img
@@ -671,888 +1364,409 @@
                     alt="Material Preview"
                 >
 
-            </label>
-
-
-            <input
-                type="file"
-                id="material-image-input"
-                accept="image/png,image/jpeg,image/webp"
-            >
+            </div>
 
         </div>
 
 
-        <!-- INFORMATION -->
+        <input
+            type="file"
+            id="material-image"
+            accept="image/png,image/jpeg,image/webp"
+        >
+
+
+        <div class="actions">
+
+            <button
+                id="image-search-button"
+                class="btn btn-primary"
+            >
+                🧠 تحليل الصورة والبحث
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULTS
+    ====================================================== -->
+
+    <section
+        id="results"
+        class="results"
+    >
+
+
+        <!-- IDENTIFICATION -->
 
         <div class="material-card">
 
-            <div class="material-card-title">
+
+            <div class="card-title">
 
                 <div>
-                    <h3>📋 بيانات المادة</h3>
-                    <span>Material Information</span>
+
+                    <h2>
+                        📋 نتيجة البحث
+                    </h2>
+
+                    <span>
+                        Material Identification
+                    </span>
+
                 </div>
 
             </div>
 
 
-            <div class="form-grid">
+            <div class="result-summary">
 
-                <!-- NAME -->
 
-                <div class="form-group">
+                <div class="result-box">
 
-                    <label>
+                    <span>
                         اسم المادة
-                        <span class="required">*</span>
-                    </label>
+                    </span>
 
-                    <input
-                        type="text"
-                        id="material-name"
-                        placeholder="مثال: Hydraulic Hose"
+                    <strong
+                        id="result-name"
                     >
+                        —
+                    </strong>
 
                 </div>
 
 
-                <!-- PART NUMBER -->
+                <div class="result-box">
 
-                <div class="form-group">
+                    <span>
+                        النوع
+                    </span>
 
-                    <label>
+                    <strong
+                        id="result-type"
+                    >
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <span>
                         Part Number
-                    </label>
+                    </span>
 
-                    <input
-                        type="text"
-                        id="part-number"
-                        placeholder="رقم القطعة"
+                    <strong
+                        id="result-part"
                     >
-
-                </div>
-
-
-                <!-- MATERIAL TYPE -->
-
-                <div class="form-group full">
-
-                    <label>
-                        نوع المادة
-                        <span class="required">*</span>
-                    </label>
-
-                    <div
-                        class="material-types"
-                        id="material-types"
-                    >
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Spare Parts"
-                        >
-                            قطع غيار
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Mechanical"
-                        >
-                            ميكانيكا
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Electrical"
-                        >
-                            كهرباء
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Hydraulic"
-                        >
-                            هيدروليك
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Filters"
-                        >
-                            فلاتر
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Hoses"
-                        >
-                            خراطيم
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Construction"
-                        >
-                            مواد إنشائية
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Raw Materials"
-                        >
-                            مواد خام
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Tools"
-                        >
-                            العدد والأدوات
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Safety"
-                        >
-                            سلامة
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Lubricants"
-                        >
-                            زيوت وشحوم
-                        </button>
-
-                        <button
-                            type="button"
-                            class="material-type"
-                            data-type="Other"
-                        >
-                            أخرى
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CITY -->
-
-                <div class="form-group">
-
-                    <label>
-                        المدينة
-                        <span class="required">*</span>
-                    </label>
-
-                    <select id="material-city">
-
-                        <option value="">
-                            اختر المدينة
-                        </option>
-
-                        <option value="Riyadh">
-                            الرياض
-                        </option>
-
-                        <option value="Jeddah">
-                            جدة
-                        </option>
-
-                        <option value="Dammam">
-                            الدمام
-                        </option>
-
-                        <option value="Khobar">
-                            الخبر
-                        </option>
-
-                        <option value="Makkah">
-                            مكة
-                        </option>
-
-                        <option value="Madinah">
-                            المدينة المنورة
-                        </option>
-
-                        <option value="Other">
-                            أخرى
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- MODEL -->
-
-                <div class="form-group">
-
-                    <label>
-                        الموديل / الاستخدام
-                    </label>
-
-                    <input
-                        type="text"
-                        id="material-model"
-                        placeholder="Model / Application"
-                    >
-
-                </div>
-
-
-                <!-- SPECIFICATION -->
-
-                <div class="form-group full">
-
-                    <label>
-                        المواصفات
-                    </label>
-
-                    <textarea
-                        id="material-specification"
-                        placeholder="اكتب المقاس، الضغط، الخامة، المواصفات الفنية أو أي معلومات مهمة..."
-                    ></textarea>
-
-                </div>
-
-            </div>
-
-
-            <!-- ACTIONS -->
-
-            <div class="material-actions">
-
-                <button
-                    type="button"
-                    class="action-button search-material"
-                    id="search-material-button"
-                >
-                    🔎 البحث عن الموردين
-                </button>
-
-                <button
-                    type="button"
-                    class="action-button secondary-button"
-                    id="save-material-button"
-                >
-                    ⭐ حفظ
-                </button>
-
-                <button
-                    type="button"
-                    class="action-button secondary-button"
-                    id="clear-material-button"
-                >
-                    مسح
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         RESULT
-    ========================== -->
-
-    <div
-        class="result-section"
-        id="material-result"
-    >
-
-        <div class="material-card">
-
-            <div class="result-header">
-
-                <div>
-
-                    <h3>
-                        🔍 نتيجة تحليل المادة
-                    </h3>
-
-                    <div class="result-subtitle">
-                        Material Identification Result
-                    </div>
-
-                </div>
-
-                <div class="confidence">
-                    Confidence 92%
-                </div>
-
-            </div>
-
-
-            <div class="result-grid">
-
-                <div class="result-item">
-
-                    <span>اسم المادة</span>
-
-                    <strong id="result-name">
                         —
                     </strong>
 
                 </div>
 
 
-                <div class="result-item">
+                <div class="result-box">
 
-                    <span>نوع المادة</span>
+                    <span>
+                        عدد النتائج
+                    </span>
 
-                    <strong id="result-type">
-                        —
+                    <strong
+                        id="result-count"
+                    >
+                        0
                     </strong>
 
-                </div>
-
-
-                <div class="result-item">
-
-                    <span>Part Number</span>
-
-                    <strong id="result-part">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="result-item">
-
-                    <span>المدينة</span>
-
-                    <strong id="result-city">
-                        —
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- EXPORT -->
-
-            <div class="export-bar">
-
-                <div class="export-title">
-                    📄 إجراءات المستند
-                </div>
-
-                <div class="export-buttons">
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="print-material"
-                    >
-                        🖨️ طباعة
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="export-pdf"
-                    >
-                        📄 PDF
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="export-excel"
-                    >
-                        📊 Excel
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="export-word"
-                    >
-                        📝 Word
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="download-material"
-                    >
-                        📥 تحميل
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         SUPPLIERS
-    ========================== -->
-
-    <div
-        class="result-section"
-        id="supplier-results"
-    >
-
-        <div class="material-card">
-
-            <div class="material-card-title">
-
-                <div>
-                    <h3>🏢 الموردون المقترحون</h3>
-                    <span>Suggested Suppliers</span>
                 </div>
 
             </div>
 
 
             <div
-                id="supplier-results-content"
-                class="supplier-empty"
+                id="material-information"
+                class="material-information"
             >
-
-                سيتم عرض الموردين بعد ربط قاعدة البيانات
-                ومحرك البحث.
-
-            </div>
-
-
-            <div
-                class="supplier-info"
-                id="supplier-placeholder-cards"
-                style="display:none;"
-            >
-
-                <div class="supplier-placeholder">
-                    <strong>🏢 المورد المناسب</strong>
-                    <span>سيظهر هنا بعد ربط قاعدة الموردين</span>
-                </div>
-
-                <div class="supplier-placeholder">
-                    <strong>📍 موقع المورد</strong>
-                    <span>سيظهر هنا حسب المدينة</span>
-                </div>
-
-                <div class="supplier-placeholder">
-                    <strong>📞 بيانات التواصل</strong>
-                    <span>سيتم عرض الهاتف والبريد لاحقاً</span>
-                </div>
-
-            </div>
-
-
-            <div class="export-bar">
-
-                <div class="export-title">
-                    📄 تصدير نتائج الموردين
-                </div>
-
-                <div class="export-buttons">
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        id="print-suppliers"
-                    >
-                        🖨️ طباعة
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        onclick="materialExport('pdf')"
-                    >
-                        📄 PDF
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        onclick="materialExport('excel')"
-                    >
-                        📊 Excel
-                    </button>
-
-                    <button
-                        type="button"
-                        class="export-button"
-                        onclick="materialExport('word')"
-                    >
-                        📝 Word
-                    </button>
-
-                </div>
 
             </div>
 
         </div>
 
-    </div>
+
+        <!-- SUPPLIERS -->
+
+        <div class="material-card">
+
+
+            <div class="card-title">
+
+                <div>
+
+                    <h2>
+                        🏢 الموردون المطابقون
+                    </h2>
+
+                    <span>
+                        Matching Suppliers
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="supplier-list"
+                class="supplier-list"
+            >
+
+            </div>
+
+        </div>
+
+
+    </section>
+
 
 </div>
 
 
-<!-- TOAST -->
-
-<div id="material-toast"></div>
-
-
 <script>
 
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let selectedMaterialType = "";
-let materialImageData = "";
-let toastTimer = null;
+"use strict";
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
+/* =========================================================
+   CHECK DATA STORE
+   ========================================================= */
 
-const imageInput =
-    document.getElementById("material-image-input");
+if (
+    !window.ProcureXStore
+) {
 
-const imagePreview =
-    document.getElementById("image-preview");
-
-const uploadArea =
-    document.getElementById("image-upload-area");
-
-const uploadIcon =
-    document.getElementById("upload-icon");
-
-const uploadTitle =
-    document.getElementById("upload-title");
-
-const uploadDescription =
-    document.getElementById("upload-description");
-
-const materialTypes =
-    document.querySelectorAll(".material-type");
-
-
-/* =====================================================
-   IMAGE UPLOAD
-===================================================== */
-
-imageInput.addEventListener("change", function(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    processImage(file);
-
-});
-
-
-function processImage(file) {
-
-    if (!file.type.startsWith("image/")) {
-
-        showMaterialMessage(
-            "من فضلك اختر صورة صحيحة.",
-            "warning"
-        );
-
-        return;
-    }
-
-
-    const maxSize = 10 * 1024 * 1024;
-
-    if (file.size > maxSize) {
-
-        showMaterialMessage(
-            "حجم الصورة يجب ألا يتجاوز 10 MB.",
-            "warning"
-        );
-
-        return;
-    }
-
-
-    const reader = new FileReader();
-
-
-    reader.onload = function(event) {
-
-        materialImageData =
-            event.target.result;
-
-        imagePreview.src =
-            materialImageData;
-
-        imagePreview.style.display =
-            "block";
-
-        uploadIcon.style.display =
-            "none";
-
-        uploadTitle.style.display =
-            "none";
-
-        uploadDescription.style.display =
-            "none";
-
-    };
-
-
-    reader.readAsDataURL(file);
+    console.error(
+        "ProcureXStore is not loaded."
+    );
 
 }
 
 
-/* =====================================================
-   DRAG & DROP
-===================================================== */
+/* =========================================================
+   VARIABLES
+   ========================================================= */
 
-["dragenter", "dragover"].forEach(eventName => {
+let selectedType = "";
 
-    uploadArea.addEventListener(
-        eventName,
-        function(event) {
+let imageData = "";
 
-            event.preventDefault();
 
-            event.stopPropagation();
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
-            uploadArea.classList.add("dragover");
+const nameInput =
+    document.getElementById(
+        "material-name"
+    );
+
+const partInput =
+    document.getElementById(
+        "part-number"
+    );
+
+const cityInput =
+    document.getElementById(
+        "material-city"
+    );
+
+const modelInput =
+    document.getElementById(
+        "material-model"
+    );
+
+const specificationInput =
+    document.getElementById(
+        "material-specification"
+    );
+
+const messageBox =
+    document.getElementById(
+        "material-message"
+    );
+
+const imageInput =
+    document.getElementById(
+        "material-image"
+    );
+
+const imagePreview =
+    document.getElementById(
+        "image-preview"
+    );
+
+const imagePlaceholder =
+    document.getElementById(
+        "image-placeholder"
+    );
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function showMessage(
+    text,
+    type = "info"
+) {
+
+    messageBox.textContent =
+        text;
+
+    messageBox.className =
+        "message show " +
+        type;
+
+
+    clearTimeout(
+        window.materialMessageTimer
+    );
+
+
+    window.materialMessageTimer =
+        setTimeout(
+            () => {
+
+                messageBox.classList.remove(
+                    "show"
+                );
+
+            },
+            4000
+        );
+
+}
+
+
+/* =========================================================
+   MATERIAL TYPE
+   ========================================================= */
+
+document
+    .querySelectorAll(
+        ".material-type"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".material-type"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "selected"
+                                )
+                        );
+
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+
+                    selectedType =
+                        button.dataset.type;
+
+                }
+            );
 
         }
     );
 
-});
+
+/* =========================================================
+   IMAGE UPLOAD
+   ========================================================= */
+
+imageInput.addEventListener(
+    "change",
+    function () {
+
+        const file =
+            this.files[0];
 
 
-["dragleave", "drop"].forEach(eventName => {
-
-    uploadArea.addEventListener(
-        eventName,
-        function(event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-            uploadArea.classList.remove("dragover");
-
-        }
-    );
-
-});
-
-
-uploadArea.addEventListener(
-    "drop",
-    function(event) {
-
-        const files =
-            event.dataTransfer.files;
-
-        if (!files.length) {
+        if (!file) {
             return;
         }
 
-        const file = files[0];
 
-        processImage(file);
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            showMessage(
+                "الملف المختار ليس صورة.",
+                "warning"
+            );
+
+            return;
+
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function (event) {
+
+                imageData =
+                    event.target.result;
+
+
+                imagePreview.src =
+                    imageData;
+
+
+                imagePreview.style.display =
+                    "block";
+
+
+                imagePlaceholder.style.display =
+                    "none";
+
+            };
+
+
+        reader.readAsDataURL(
+            file
+        );
 
     }
 );
 
 
-/* =====================================================
-   MATERIAL TYPE
-===================================================== */
-
-materialTypes.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        function() {
-
-            materialTypes.forEach(item => {
-
-                item.classList.remove(
-                    "selected"
-                );
-
-            });
-
-
-            button.classList.add(
-                "selected"
-            );
-
-
-            selectedMaterialType =
-                button.dataset.type;
-
-        }
-    );
-
-});
-
-
-/* =====================================================
-   CITY
-===================================================== */
-
-function getArabicCity(city) {
-
-    const cities = {
-
-        Riyadh: "الرياض",
-
-        Jeddah: "جدة",
-
-        Dammam: "الدمام",
-
-        Khobar: "الخبر",
-
-        Makkah: "مكة",
-
-        Madinah: "المدينة المنورة",
-
-        Other: "أخرى"
-
-    };
-
-
-    return cities[city] || city;
-
-}
-
-
-/* =====================================================
-   GET FORM DATA
-===================================================== */
-
-function getMaterialFormData() {
-
-    return {
-
-        name:
-            document
-                .getElementById("material-name")
-                .value
-                .trim(),
-
-        partNumber:
-            document
-                .getElementById("part-number")
-                .value
-                .trim(),
-
-        type:
-            selectedMaterialType,
-
-        city:
-            document
-                .getElementById("material-city")
-                .value,
-
-        model:
-            document
-                .getElementById("material-model")
-                .value
-                .trim(),
-
-        specification:
-            document
-                .getElementById("material-specification")
-                .value
-                .trim(),
-
-        image:
-            materialImageData
-
-    };
-
-}
-
-
-/* =====================================================
-   VALIDATION
-===================================================== */
-
-function validateMaterial(data) {
-
-    if (!data.name) {
-
-        showMaterialMessage(
-            "اكتب اسم المادة أولاً.",
-            "warning"
-        );
-
-        document
-            .getElementById("material-name")
-            .focus();
-
-        return false;
-    }
-
-
-    if (!data.type) {
-
-        showMaterialMessage(
-            "اختر نوع المادة أولاً.",
-            "warning"
-        );
-
-        return false;
-    }
-
-
-    if (!data.city) {
-
-        showMaterialMessage(
-            "اختر المدينة أولاً.",
-            "warning"
-        );
-
-        return false;
-    }
-
-
-    return true;
-
-}
-
-
-/* =====================================================
+/* =========================================================
    SEARCH
-===================================================== */
+   ========================================================= */
 
 document
-    .getElementById("search-material-button")
+    .getElementById(
+        "search-button"
+    )
     .addEventListener(
         "click",
         searchMaterial
@@ -1561,136 +1775,808 @@ document
 
 function searchMaterial() {
 
-    const data =
-        getMaterialFormData();
+    const name =
+        nameInput.value.trim();
 
 
-    if (!validateMaterial(data)) {
+    const partNumber =
+        partInput.value.trim();
+
+
+    const city =
+        cityInput.value;
+
+
+    const model =
+        modelInput.value.trim();
+
+
+    const specification =
+        specificationInput.value.trim();
+
+
+    if (
+        !name &&
+        !partNumber &&
+        !model &&
+        !specification
+    ) {
+
+        showMessage(
+            "اكتب اسم المادة أو رقم القطعة أو المواصفات أولاً.",
+            "warning"
+        );
+
         return;
+
     }
 
 
-    /* RESULT */
-
-    document
-        .getElementById("result-name")
-        .textContent =
-        data.name;
+    let materials =
+        window.ProcureXStore
+            ? window.ProcureXStore.getMaterials()
+            : [];
 
 
-    document
-        .getElementById("result-type")
-        .textContent =
-        getArabicMaterialType(
-            data.type
-        );
+    /*
+       لو مفيش مواد محفوظة،
+       نعرض البيانات التي كتبها المستخدم
+       كبحث، لكن لا نخترع موردين.
+    */
 
 
-    document
-        .getElementById("result-part")
-        .textContent =
-        data.partNumber ||
-        "غير محدد";
+    let matches = [];
 
 
-    document
-        .getElementById("result-city")
-        .textContent =
-        getArabicCity(
-            data.city
-        );
+    const searchText = [
+
+        name,
+        partNumber,
+        model,
+        specification
+
+    ]
+        .join(" ")
+        .trim()
+        .toLowerCase();
 
 
-    document
-        .getElementById("material-result")
-        .classList.add("show");
+    if (searchText) {
+
+        matches =
+            materials.filter(
+                material => {
+
+                    const searchable = [
+
+                        material.name,
+
+                        material.englishName,
+
+                        material.type,
+
+                        material.category,
+
+                        material.partNumber,
+
+                        material.brand,
+
+                        material.model,
+
+                        material.material,
+
+                        material.size,
+
+                        material.pressure,
+
+                        material.application,
+
+                        material.specifications,
+
+                        material.description,
+
+                        ...(material.aliases || [])
+
+                    ]
+                        .join(" ")
+                        .toLowerCase();
 
 
-    document
-        .getElementById("supplier-results")
-        .classList.add("show");
+                    const words =
+                        searchText
+                            .split(/\s+/)
+                            .filter(Boolean);
 
 
-    /* SAVE SEARCH */
+                    return words.every(
+                        word =>
+                            searchable.includes(
+                                word
+                            )
+                    );
 
-    const searchData = {
+                }
+            );
 
-        ...data,
-
-        date:
-            new Date().toISOString()
-
-    };
+    }
 
 
-    localStorage.setItem(
-        "procurex_material_search",
-        JSON.stringify(searchData)
+    /*
+       Filter by selected type
+    */
+
+    if (selectedType) {
+
+        matches =
+            matches.filter(
+                material => {
+
+                    return (
+                        material.type ===
+                            selectedType
+                        ||
+                        material.category ===
+                            selectedType
+                    );
+
+                }
+            );
+
+    }
+
+
+    showResults(
+        matches,
+        name,
+        partNumber
     );
 
 
-    showMaterialMessage(
-        "تم تحليل بيانات المادة وتجهيز البحث عن الموردين.",
-        "success"
+    /*
+       SAVE SEARCH
+    */
+
+    if (
+        window.ProcureXStore
+    ) {
+
+        window.ProcureXStore
+            .saveMaterialSearch({
+
+                query:
+                    searchText,
+
+                name,
+
+                type:
+                    selectedType,
+
+                partNumber,
+
+                city,
+
+                image:
+                    imageData,
+
+                resultCount:
+                    matches.length
+
+            });
+
+    }
+
+
+    showMessage(
+        matches.length
+            ? `تم العثور على ${matches.length} نتيجة محفوظة.`
+            : "لم يتم العثور على مادة مطابقة في قاعدة البيانات الحالية. أضف المادة أو المورد أولاً.",
+        matches.length
+            ? "success"
+            : "info"
     );
-
-
-    document
-        .getElementById("material-result")
-        .scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
 
 }
 
 
-/* =====================================================
-   MATERIAL TYPE ARABIC
-===================================================== */
+/* =========================================================
+   SHOW RESULTS
+   ========================================================= */
 
-function getArabicMaterialType(type) {
+function showResults(
+    matches,
+    searchedName,
+    searchedPart
+) {
 
-    const types = {
-
-        "Spare Parts": "قطع غيار",
-
-        "Mechanical": "ميكانيكا",
-
-        "Electrical": "كهرباء",
-
-        "Hydraulic": "هيدروليك",
-
-        "Filters": "فلاتر",
-
-        "Hoses": "خراطيم",
-
-        "Construction": "مواد إنشائية",
-
-        "Raw Materials": "مواد خام",
-
-        "Tools": "العدد والأدوات",
-
-        "Safety": "سلامة",
-
-        "Lubricants": "زيوت وشحوم",
-
-        "Other": "أخرى"
-
-    };
+    document
+        .getElementById(
+            "results"
+        )
+        .classList.add(
+            "show"
+        );
 
 
-    return types[type] || type;
+    const first =
+        matches[0] || null;
+
+
+    document
+        .getElementById(
+            "result-name"
+        )
+        .textContent =
+        first
+            ? (
+                first.name ||
+                first.englishName ||
+                "—"
+            )
+            : (
+                searchedName ||
+                "غير محدد"
+            );
+
+
+    document
+        .getElementById(
+            "result-type"
+        )
+        .textContent =
+        first
+            ? (
+                first.type ||
+                first.category ||
+                "غير محدد"
+            )
+            : (
+                selectedType ||
+                "غير محدد"
+            );
+
+
+    document
+        .getElementById(
+            "result-part"
+        )
+        .textContent =
+        first
+            ? (
+                first.partNumber ||
+                searchedPart ||
+                "غير محدد"
+            )
+            : (
+                searchedPart ||
+                "غير محدد"
+            );
+
+
+    document
+        .getElementById(
+            "result-count"
+        )
+        .textContent =
+        matches.length;
+
+
+    renderMaterialInformation(
+        first
+    );
+
+
+    renderSuppliers(
+        matches
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   MATERIAL INFORMATION
+   ========================================================= */
+
+function renderMaterialInformation(
+    material
+) {
+
+    const container =
+        document.getElementById(
+            "material-information"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (!material) {
+
+        container.innerHTML = `
+
+            <div class="info-item">
+
+                <span>
+                    الحالة
+                </span>
+
+                <strong>
+                    لا توجد مادة محفوظة مطابقة للبحث.
+                </strong>
+
+            </div>
+
+            <div class="info-item">
+
+                <span>
+                    ماذا تفعل؟
+                </span>
+
+                <strong>
+                    أضف بيانات المادة إلى قاعدة البيانات ثم أعد البحث.
+                </strong>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const fields = [
+
+        [
+            "الاسم الإنجليزي",
+            material.englishName
+        ],
+
+        [
+            "التصنيف",
+            material.category
+        ],
+
+        [
+            "البراند",
+            material.brand
+        ],
+
+        [
+            "الموديل",
+            material.model
+        ],
+
+        [
+            "الخامة",
+            material.material
+        ],
+
+        [
+            "المقاس",
+            material.size
+        ],
+
+        [
+            "الضغط",
+            material.pressure
+        ],
+
+        [
+            "الاستخدام",
+            material.application
+        ],
+
+        [
+            "المواصفات",
+            material.specifications
+        ]
+
+    ];
+
+
+    fields.forEach(
+        field => {
+
+            if (
+                field[1]
+            ) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "info-item";
+
+
+                item.innerHTML = `
+
+                    <span>
+                        ${escapeHtml(field[0])}
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(field[1])}
+                    </strong>
+
+                `;
+
+
+                container.appendChild(
+                    item
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SUPPLIERS
+   ========================================================= */
+
+function renderSuppliers(
+    materials
+) {
+
+    const container =
+        document.getElementById(
+            "supplier-list"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !window.ProcureXStore
+    ) {
+
+        container.innerHTML = `
+
+            <div class="no-suppliers">
+                قاعدة بيانات ProcureX غير محملة.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const suppliers =
+        window.ProcureXStore
+            .getSuppliers();
+
+
+    const contacts =
+        window.ProcureXStore
+            .getContacts();
+
+
+    const searchedCity =
+        cityInput.value;
+
+
+    const materialWords =
+        materials
+            .flatMap(
+                material => [
+
+                    material.name,
+
+                    material.englishName,
+
+                    material.partNumber,
+
+                    material.type,
+
+                    material.category,
+
+                    ...(material.aliases || [])
+
+                ]
+            )
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+    let matches =
+        suppliers.filter(
+            supplier => {
+
+                const supplierText = [
+
+                    supplier.companyName,
+
+                    supplier.supplierName,
+
+                    supplier.category,
+
+                    supplier.city,
+
+                    supplier.address,
+
+                    ...(supplier.materials || [])
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const cityMatch =
+                    !searchedCity ||
+                    supplier.city ===
+                        searchedCity;
+
+
+                const materialMatch =
+                    !materialWords ||
+                    supplierText
+                        .split(/\s+/)
+                        .some(
+                            word =>
+                                word &&
+                                materialWords.includes(
+                                    word
+                                )
+                        );
+
+
+                return (
+                    cityMatch &&
+                    materialMatch
+                );
+
+            }
+        );
+
+
+    /*
+       لو مفيش تطابق،
+       نجرب المدينة فقط.
+    */
+
+    if (
+        !matches.length &&
+        searchedCity
+    ) {
+
+        matches =
+            suppliers.filter(
+                supplier =>
+                    supplier.city ===
+                    searchedCity
+            );
+
+    }
+
+
+    if (
+        !matches.length
+    ) {
+
+        container.innerHTML = `
+
+            <div class="no-suppliers">
+
+                لا يوجد مورد مسجل ومطابق حالياً.
+
+                <br><br>
+
+                أضف المورد من صفحة
+                <strong>
+                    Supplier Finder
+                </strong>
+                وسيظهر هنا تلقائياً عند تطابق البيانات.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    matches.forEach(
+        supplier => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "supplier-card";
+
+
+            const supplierContacts =
+                contacts.filter(
+                    contact =>
+                        contact.supplierId ===
+                        supplier.id
+                );
+
+
+            let contactHtml =
+                "";
+
+
+            supplierContacts
+                .slice(0, 2)
+                .forEach(
+                    contact => {
+
+                        contactHtml += `
+
+                            <div class="supplier-line">
+
+                                👤
+
+                                <strong>
+                                    ${escapeHtml(
+                                        contact.name ||
+                                        "جهة اتصال"
+                                    )}
+                                </strong>
+
+                                ${
+                                    contact.mobile
+                                        ? " — " +
+                                          escapeHtml(
+                                              contact.mobile
+                                          )
+                                        : ""
+                                }
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+            card.innerHTML = `
+
+                <div class="supplier-name">
+
+                    ${escapeHtml(
+                        supplier.companyName ||
+                        supplier.supplierName ||
+                        "مورد"
+                    )}
+
+                </div>
+
+
+                ${
+                    supplier.city
+                        ? `
+                            <div class="supplier-line">
+
+                                📍
+
+                                ${escapeHtml(
+                                    window.ProcureXStore
+                                        .getArabicCity(
+                                            supplier.city
+                                        )
+                                )}
+
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    supplier.phone
+                        ? `
+                            <div class="supplier-line">
+
+                                ☎️
+
+                                <strong>
+                                    ${escapeHtml(
+                                        supplier.phone
+                                    )}
+                                </strong>
+
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    supplier.mobile
+                        ? `
+                            <div class="supplier-line">
+
+                                📱
+
+                                <strong>
+                                    ${escapeHtml(
+                                        supplier.mobile
+                                    )}
+                                </strong>
+
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    supplier.email
+                        ? `
+                            <div class="supplier-line">
+
+                                ✉️
+
+                                ${escapeHtml(
+                                    supplier.email
+                                )}
+
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    supplier.materials &&
+                    supplier.materials.length
+                        ? `
+                            <div class="supplier-line">
+
+                                🧱
+
+                                ${escapeHtml(
+                                    supplier.materials.join(
+                                        "، "
+                                    )
+                                )}
+
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${contactHtml}
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    SAVE MATERIAL
-===================================================== */
+   ========================================================= */
 
 document
-    .getElementById("save-material-button")
+    .getElementById(
+        "save-button"
+    )
     .addEventListener(
         "click",
         saveMaterial
@@ -1699,825 +2585,424 @@ document
 
 function saveMaterial() {
 
-    const data =
-        getMaterialFormData();
+    const name =
+        nameInput.value.trim();
 
 
-    if (!data.name) {
+    if (!name) {
 
-        showMaterialMessage(
-            "اكتب اسم المادة قبل الحفظ.",
+        showMessage(
+            "اكتب اسم المادة أولاً.",
             "warning"
         );
 
         return;
-    }
-
-
-    const material = {
-
-        id:
-            "MAT-" +
-            Date.now(),
-
-        name:
-            data.name,
-
-        type:
-            data.type,
-
-        partNumber:
-            data.partNumber,
-
-        city:
-            data.city,
-
-        model:
-            data.model,
-
-        specification:
-            data.specification,
-
-        image:
-            data.image,
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    let materials = [];
-
-
-    try {
-
-        materials =
-            JSON.parse(
-                localStorage.getItem(
-                    "procurex_materials"
-                )
-            ) || [];
-
-    } catch (error) {
-
-        materials = [];
 
     }
 
 
-    materials.push(material);
-
-
-    localStorage.setItem(
-        "procurex_materials",
-        JSON.stringify(materials)
-    );
-
-
-    showMaterialMessage(
-        "تم حفظ المادة بنجاح.",
-        "success"
-    );
-
-}
-
-
-/* =====================================================
-   CLEAR
-===================================================== */
-
-document
-    .getElementById("clear-material-button")
-    .addEventListener(
-        "click",
-        clearMaterial
-    );
-
-
-function clearMaterial() {
-
-    document
-        .getElementById("material-name")
-        .value = "";
-
-
-    document
-        .getElementById("part-number")
-        .value = "";
-
-
-    document
-        .getElementById("material-city")
-        .value = "";
-
-
-    document
-        .getElementById("material-model")
-        .value = "";
-
-
-    document
-        .getElementById("material-specification")
-        .value = "";
-
-
-    materialTypes.forEach(item => {
-
-        item.classList.remove(
-            "selected"
-        );
-
-    });
-
-
-    selectedMaterialType = "";
-
-    materialImageData = "";
-
-    imageInput.value = "";
-
-    imagePreview.src = "";
-
-    imagePreview.style.display =
-        "none";
-
-    uploadIcon.style.display =
-        "flex";
-
-    uploadTitle.style.display =
-        "block";
-
-    uploadDescription.style.display =
-        "block";
-
-
-    document
-        .getElementById("material-result")
-        .classList.remove("show");
-
-
-    document
-        .getElementById("supplier-results")
-        .classList.remove("show");
-
-
-    showMaterialMessage(
-        "تم مسح بيانات المادة.",
-        "success"
-    );
-
-}
-
-
-/* =====================================================
-   LOAD LAST SEARCH
-===================================================== */
-
-function loadLastSearch() {
-
-    const saved =
-        localStorage.getItem(
-            "procurex_material_search"
-        );
-
-
-    if (!saved) {
-        return;
-    }
-
-
-    try {
-
-        const data =
-            JSON.parse(saved);
-
-
-        if (data.name) {
-
-            document
-                .getElementById("material-name")
-                .value =
-                data.name;
-
-        }
-
-
-        if (data.partNumber) {
-
-            document
-                .getElementById("part-number")
-                .value =
-                data.partNumber;
-
-        }
-
-
-        if (data.city) {
-
-            document
-                .getElementById("material-city")
-                .value =
-                data.city;
-
-        }
-
-
-        if (data.model) {
-
-            document
-                .getElementById("material-model")
-                .value =
-                data.model;
-
-        }
-
-
-        if (data.specification) {
-
-            document
-                .getElementById("material-specification")
-                .value =
-                data.specification;
-
-        }
-
-
-        if (data.type) {
-
-            selectedMaterialType =
-                data.type;
-
-
-            materialTypes.forEach(button => {
-
-                if (
-                    button.dataset.type ===
-                    data.type
-                ) {
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-                }
-
-            });
-
-        }
-
-
-        if (data.image) {
-
-            materialImageData =
-                data.image;
-
-            imagePreview.src =
-                data.image;
-
-            imagePreview.style.display =
-                "block";
-
-            uploadIcon.style.display =
-                "none";
-
-            uploadTitle.style.display =
-                "none";
-
-            uploadDescription.style.display =
-                "none";
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Unable to load saved material.",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   DOWNLOAD JSON
-===================================================== */
-
-document
-    .getElementById("download-material")
-    .addEventListener(
-        "click",
-        downloadMaterial
-    );
-
-
-function downloadMaterial() {
-
-    const data =
-        localStorage.getItem(
-            "procurex_material_search"
-        );
-
-
-    if (!data) {
-
-        showMaterialMessage(
-            "قم بعمل بحث أولاً قبل التحميل.",
-            "warning"
+    if (
+        !window.ProcureXStore
+    ) {
+
+        showMessage(
+            "ملف data.store.js غير موجود أو لم يتم تحميله.",
+            "error"
         );
 
         return;
-    }
 
-
-    const blob =
-        new Blob(
-            [data],
-            {
-                type: "application/json"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.href = url;
-
-    link.download =
-        "procurex-material.json";
-
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-
-    showMaterialMessage(
-        "تم تحميل بيانات المادة.",
-        "success"
-    );
-
-}
-
-
-/* =====================================================
-   EXPORT
-===================================================== */
-
-function materialExport(type) {
-
-    const data =
-        localStorage.getItem(
-            "procurex_material_search"
-        );
-
-
-    if (!data) {
-
-        showMaterialMessage(
-            "قم بعمل بحث أولاً قبل التصدير.",
-            "warning"
-        );
-
-        return;
     }
 
 
     const material =
-        JSON.parse(data);
+        window.ProcureXStore
+            .saveMaterial({
 
+                name,
 
-    if (type === "pdf") {
+                englishName:
+                    name,
 
-        window.print();
-
-        return;
-    }
-
-
-    if (type === "excel") {
-
-        exportCSV(material);
-
-        return;
-    }
-
-
-    if (type === "word") {
-
-        exportWord(material);
-
-        return;
-    }
-
-}
-
-
-/* =====================================================
-   CSV / EXCEL EXPORT
-===================================================== */
-
-function exportCSV(data) {
-
-    const rows = [
-
-        [
-            "اسم المادة",
-            "نوع المادة",
-            "Part Number",
-            "المدينة",
-            "الموديل / الاستخدام",
-            "المواصفات"
-        ],
-
-        [
-            data.name || "",
-            getArabicMaterialType(
-                data.type || ""
-            ),
-            data.partNumber || "",
-            getArabicCity(
-                data.city || ""
-            ),
-            data.model || "",
-            data.specification || ""
-        ]
-
-    ];
-
-
-    const csv =
-        rows
-            .map(row =>
-                row
-                    .map(value =>
-                        '"' +
-                        String(value)
-                            .replace(/"/g, '""') +
-                        '"'
-                    )
-                    .join(",")
-            )
-            .join("\n");
-
-
-    const blob =
-        new Blob(
-            ["\ufeff" + csv],
-            {
                 type:
-                    "text/csv;charset=utf-8;"
-            }
-        );
+                    selectedType,
+
+                category:
+                    selectedType,
+
+                partNumber:
+                    partInput.value.trim(),
+
+                model:
+                    modelInput.value.trim(),
+
+                application:
+                    modelInput.value.trim(),
+
+                specifications:
+                    specificationInput.value.trim(),
+
+                image:
+                    imageData
+
+            });
 
 
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.href = url;
-
-    link.download =
-        "procurex-material.csv";
-
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-
-    showMaterialMessage(
-        "تم تصدير بيانات المادة إلى Excel/CSV.",
+    showMessage(
+        "تم حفظ المادة في قاعدة بيانات ProcureX.",
         "success"
     );
 
+
+    searchMaterial();
+
 }
 
 
-/* =====================================================
-   WORD EXPORT
-===================================================== */
+/* =========================================================
+   IMAGE SEARCH
+   ========================================================= */
 
-function exportWord(data) {
-
-    const html = `
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <title>ProcureX Material</title>
-        </head>
-        <body>
-
-            <h1>ProcureX - Material Finder</h1>
-
-            <table border="1"
-                   cellpadding="8"
-                   cellspacing="0"
-                   width="100%">
-
-                <tr>
-                    <th>اسم المادة</th>
-                    <td>${escapeHTML(data.name || "")}</td>
-                </tr>
-
-                <tr>
-                    <th>نوع المادة</th>
-                    <td>${escapeHTML(
-                        getArabicMaterialType(
-                            data.type || ""
-                        )
-                    )}</td>
-                </tr>
-
-                <tr>
-                    <th>Part Number</th>
-                    <td>${escapeHTML(
-                        data.partNumber || ""
-                    )}</td>
-                </tr>
-
-                <tr>
-                    <th>المدينة</th>
-                    <td>${escapeHTML(
-                        getArabicCity(
-                            data.city || ""
-                        )
-                    )}</td>
-                </tr>
-
-                <tr>
-                    <th>الموديل / الاستخدام</th>
-                    <td>${escapeHTML(
-                        data.model || ""
-                    )}</td>
-                </tr>
-
-                <tr>
-                    <th>المواصفات</th>
-                    <td>${escapeHTML(
-                        data.specification || ""
-                    )}</td>
-                </tr>
-
-            </table>
-
-        </body>
-        </html>
-    `;
+document
+    .getElementById(
+        "image-search-button"
+    )
+    .addEventListener(
+        "click",
+        imageSearch
+    );
 
 
-    const blob =
-        new Blob(
-            [html],
-            {
-                type:
-                    "application/msword"
-            }
+function imageSearch() {
+
+    if (!imageData) {
+
+        showMessage(
+            "ارفع صورة قطعة الغيار أولاً.",
+            "warning"
         );
 
+        return;
 
-    const url =
-        URL.createObjectURL(blob);
+    }
 
-
-    const link =
-        document.createElement("a");
-
-
-    link.href = url;
-
-    link.download =
-        "procurex-material.doc";
-
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-
-    showMaterialMessage(
-        "تم تصدير ملف Word.",
-        "success"
-    );
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* =====================================================
-   BUTTON EXPORT EVENTS
-===================================================== */
-
-document
-    .getElementById("export-pdf")
-    .addEventListener(
-        "click",
-        function() {
-
-            materialExport("pdf");
-
-        }
-    );
-
-
-document
-    .getElementById("export-excel")
-    .addEventListener(
-        "click",
-        function() {
-
-            materialExport("excel");
-
-        }
-    );
-
-
-document
-    .getElementById("export-word")
-    .addEventListener(
-        "click",
-        function() {
-
-            materialExport("word");
-
-        }
-    );
-
-
-/* =====================================================
-   PRINT
-===================================================== */
-
-document
-    .getElementById("print-material")
-    .addEventListener(
-        "click",
-        function() {
-
-            window.print();
-
-        }
-    );
-
-
-document
-    .getElementById("print-suppliers")
-    .addEventListener(
-        "click",
-        function() {
-
-            window.print();
-
-        }
-    );
-
-
-/* =====================================================
-   MESSAGE / TOAST
-===================================================== */
-
-function showMaterialMessage(
-    message,
-    type = "info"
-) {
 
     /*
-       إذا كان ProcureX موجوداً
-       نستخدم نظام التنبيهات الأساسي.
+       مهم:
+       المتصفح وحده لا يستطيع التعرف الحقيقي
+       على قطعة الغيار من الصورة بدون AI/API.
+       لذلك هنا نبحث أولاً في المواد التي
+       تحتوي على صورة محفوظة.
     */
+
+
+    const materials =
+        window.ProcureXStore
+            ? window.ProcureXStore.getMaterials()
+            : [];
+
+
+    const imageMatches =
+        materials.filter(
+            material =>
+                material.image &&
+                material.image.length > 20
+        );
+
 
     if (
-        window.ProcureX &&
-        typeof window.ProcureX.showToast ===
-        "function"
+        imageMatches.length
     ) {
 
-        try {
+        showResults(
+            imageMatches,
+            imageMatches[0].name,
+            imageMatches[0].partNumber
+        );
 
-            window.ProcureX.showToast(
-                message,
-                type
-            );
 
-            return;
+        showMessage(
+            `تم العثور على ${imageMatches.length} مادة محفوظة تحتوي على صور.`,
+            "success"
+        );
 
-        } catch (error) {
 
-            console.warn(
-                "ProcureX Toast Error:",
-                error
-            );
-
-        }
+        return;
 
     }
 
 
+    showMessage(
+        "الصورة تم تحميلها بنجاح، لكن لا توجد صور مواد محفوظة للمقارنة معها. التعرف الحقيقي بالصورة يحتاج محرك AI يتم ربطه لاحقاً.",
+        "info"
+    );
+
+
     /*
-       Fallback Toast
+       نظهر نتيجة البحث الحالية
+       بدون اختلاق اسم أو رقم قطعة.
     */
 
-    const toast =
-        document.getElementById(
-            "material-toast"
+
+    document
+        .getElementById(
+            "results"
+        )
+        .classList.add(
+            "show"
         );
 
 
-    toast.textContent =
-        message;
+    document
+        .getElementById(
+            "result-name"
+        )
+        .textContent =
+        "لم يتم التعرف بعد";
 
 
-    toast.className =
+    document
+        .getElementById(
+            "result-type"
+        )
+        .textContent =
+        "—";
+
+
+    document
+        .getElementById(
+            "result-part"
+        )
+        .textContent =
+        "—";
+
+
+    document
+        .getElementById(
+            "result-count"
+        )
+        .textContent =
+        "0";
+
+
+    document
+        .getElementById(
+            "material-information"
+        )
+        .innerHTML = `
+
+            <div class="info-item">
+
+                <span>
+                    حالة تحليل الصورة
+                </span>
+
+                <strong>
+                    الصورة جاهزة، لكن يلزم ربط محرك AI للتعرف الفعلي على القطعة.
+                </strong>
+
+            </div>
+
+        `;
+
+
+    document
+        .getElementById(
+            "supplier-list"
+        )
+        .innerHTML = `
+
+            <div class="no-suppliers">
+
+                لا يمكن تحديد الموردين من الصورة
+                قبل التعرف على المادة.
+
+            </div>
+
+        `;
+
+}
+
+
+/* =========================================================
+   CLEAR
+   ========================================================= */
+
+document
+    .getElementById(
+        "clear-button"
+    )
+    .addEventListener(
+        "click",
+        clearForm
+    );
+
+
+function clearForm() {
+
+    nameInput.value =
+        "";
+
+    partInput.value =
+        "";
+
+    cityInput.value =
+        "";
+
+    modelInput.value =
+        "";
+
+    specificationInput.value =
         "";
 
 
-    toast.id =
-        "material-toast";
+    selectedType =
+        "";
 
 
-    toast.classList.add(
-        type || "info"
+    document
+        .querySelectorAll(
+            ".material-type"
+        )
+        .forEach(
+            item =>
+                item.classList.remove(
+                    "selected"
+                )
+        );
+
+
+    imageData =
+        "";
+
+
+    imageInput.value =
+        "";
+
+
+    imagePreview.src =
+        "";
+
+
+    imagePreview.style.display =
+        "none";
+
+
+    imagePlaceholder.style.display =
+        "block";
+
+
+    document
+        .getElementById(
+            "results"
+        )
+        .classList.remove(
+            "show"
+        );
+
+
+    showMessage(
+        "تم مسح البيانات.",
+        "info"
     );
 
-
-    requestAnimationFrame(() => {
-
-        toast.classList.add("show");
-
-    });
+}
 
 
-    clearTimeout(toastTimer);
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
 
 
-    toastTimer =
-        setTimeout(
-            function() {
+    return String(value)
 
-                toast.classList.remove(
-                    "show"
-                );
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-            },
-            3000
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
         );
 
 }
 
 
-/* =====================================================
-   INIT
-===================================================== */
+/* =========================================================
+   ENTER SEARCH
+   ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+[
+    nameInput,
+    partInput,
+    modelInput,
+    specificationInput
 
-        loadLastSearch();
+].forEach(
+    input => {
+
+        input.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    event.preventDefault();
+
+                    searchMaterial();
+
+                }
+
+            }
+        );
 
     }
 );
 
+
+/* =========================================================
+   READY
+   ========================================================= */
+
+console.log(
+    "ProcureX Material Finder Loaded."
+);
+
 </script>
 
+
 </body>
+
 </html>
