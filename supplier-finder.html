@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Supplier Finder | ProcureX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .supplier-page {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .supplier-hero {
+            background: linear-gradient(135deg, #101827, #183b6d);
+            color: white;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 18px;
+        }
+
+        .supplier-hero h2 {
+            font-size: 24px;
+            margin-bottom: 7px;
+        }
+
+        .supplier-hero p {
+            color: #c4d0e2;
+            font-size: 11px;
+        }
+
+        .search-card {
+            background: #fff;
+            border: 1px solid #e5e9f0;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 18px rgba(16,24,40,.05);
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #344054;
+        }
+
+        .field input,
+        .field select {
+            height: 42px;
+            border: 1px solid #dce2ea;
+            border-radius: 9px;
+            background: #fbfcfe;
+            padding: 0 11px;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #1769e0;
+            box-shadow: 0 0 0 3px rgba(23,105,224,.08);
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .btn {
+            height: 40px;
+            padding: 0 17px;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg,#1769e0,#2d7be8);
+        }
+
+        .btn-secondary {
+            background: #f2f4f7;
+            color: #344054;
+        }
+
+        .results {
+            margin-top: 18px;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .results-header h3 {
+            font-size: 15px;
+        }
+
+        .results-count {
+            background: #eaf2ff;
+            color: #1769e0;
+            padding: 6px 10px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .supplier-list {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 12px;
+        }
+
+        .supplier-card {
+            background: white;
+            border: 1px solid #e5e9f0;
+            border-radius: 13px;
+            padding: 16px;
+            transition: .2s;
+        }
+
+        .supplier-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,24,40,.08);
+            border-color: #b9cdf0;
+        }
+
+        .supplier-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .supplier-name {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .supplier-logo {
+            width: 43px;
+            height: 43px;
+            border-radius: 10px;
+            background: #eef4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .supplier-name h4 {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .supplier-name span {
+            color: #98a2b3;
+            font-size: 8px;
+        }
+
+        .rating {
+            color: #b54708;
+            background: #fff7e6;
+            padding: 5px 7px;
+            border-radius: 6px;
+            font-size: 8px;
+            font-weight: 700;
+            height: fit-content;
+        }
+
+        .supplier-info {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 7px;
+            margin-top: 13px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .info-box span {
+            display: block;
+            color: #98a2b3;
+            font-size: 7px;
+            margin-bottom: 3px;
+        }
+
+        .info-box strong {
+            font-size: 9px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 11px;
+        }
+
+        .tag {
+            background: #f2f4f7;
+            color: #475467;
+            border-radius: 5px;
+            padding: 4px 7px;
+            font-size: 7px;
+        }
+
+        .supplier-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 11px;
+            border-top: 1px solid #eef1f5;
+        }
+
+        .small-btn {
+            flex: 1;
+            height: 33px;
+            border-radius: 7px;
+            border: 1px solid #dfe4ea;
+            background: white;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .small-btn.primary {
+            background: #1769e0;
+            color: white;
+            border-color: #1769e0;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 13px;
+            text-align: center;
+            padding: 40px 20px;
+            color: #98a2b3;
+            font-size: 10px;
+        }
+
+        .export-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding: 11px;
+            background: #f8fafc;
+            border: 1px solid #e6eaf0;
+            border-radius: 9px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .export-button {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid #dfe4ea;
+            border-radius: 7px;
+            background: white;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        @media(max-width:900px) {
+            .search-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .supplier-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-actions {
+                flex-direction: column;
+            }
+
+            .supplier-info {
+                grid-template-columns: 1fr;
+            }
+
+            .export-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="supplier-page">
+
+    <div class="supplier-hero">
+        <h2>🏢 البحث عن الموردين</h2>
+        <p>
+            ابحث عن المورد المناسب حسب نوع المادة والمدينة
+            والمادة المطلوبة، وقارن الموردين قبل اتخاذ قرار الشراء.
+        </p>
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-card">
+
+        <div class="search-grid">
+
+            <div class="field">
+                <label>المادة / قطعة الغيار</label>
+                <input
+                    id="supplier-material"
+                    type="text"
+                    placeholder="مثال: Hydraulic Hose"
+                >
+            </div>
+
+            <div class="field">
+                <label>نوع المادة</label>
+
+                <select id="supplier-type">
+                    <option value="">كل الأنواع</option>
+                    <option value="قطع غيار">قطع غيار</option>
+                    <option value="ميكانيكا">ميكانيكا</option>
+                    <option value="كهرباء">كهرباء</option>
+                    <option value="هيدروليك">هيدروليك</option>
+                    <option value="فلاتر">فلاتر</option>
+                    <option value="خراطيم">خراطيم</option>
+                    <option value="مواد إنشائية">مواد إنشائية</option>
+                    <option value="مواد خام">مواد خام</option>
+                    <option value="العدد والأدوات">العدد والأدوات</option>
+                    <option value="سلامة">سلامة</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>المدينة</label>
+
+                <select id="supplier-city">
+                    <option value="">كل المدن</option>
+                    <option value="الرياض">الرياض</option>
+                    <option value="جدة">جدة</option>
+                    <option value="الدمام">الدمام</option>
+                    <option value="الخبر">الخبر</option>
+                    <option value="مكة">مكة</option>
+                    <option value="المدينة المنورة">المدينة المنورة</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Part Number</label>
+                <input
+                    id="supplier-part"
+                    type="text"
+                    placeholder="رقم القطعة"
+                >
+            </div>
+
+        </div>
+
+        <div class="search-actions">
+
+            <button
+                class="btn btn-primary"
+                id="find-suppliers"
+            >
+                🔎 البحث عن الموردين
+            </button>
+
+            <button
+                class="btn btn-secondary"
+                id="clear-supplier-search"
+            >
+                مسح البحث
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="results">
+
+        <div class="results-header">
+
+            <h3>الموردون المطابقون</h3>
+
+            <div
+                class="results-count"
+                id="results-count"
+            >
+                0 مورد
+            </div>
+
+        </div>
+
+
+        <div
+            class="supplier-list"
+            id="supplier-list"
+        >
+
+            <div class="empty-state">
+
+                🔎
+
+                <br><br>
+
+                اكتب المادة وحدد المدينة لبدء البحث
+                عن الموردين.
+
+            </div>
+
+        </div>
+
+
+        <!-- EXPORT -->
+
+        <div class="export-bar">
+
+            <span style="
+                font-size:9px;
+                color:#667085;
+                font-weight:600;
+            ">
+                📄 تصدير نتائج البحث
+            </span>
+
+            <div class="export-buttons">
+
+                <button
+                    class="export-button"
+                    onclick="window.print()"
+                >
+                    🖨️ طباعة
+                </button>
+
+                <button
+                    class="export-button"
+                    onclick="supplierExport('pdf')"
+                >
+                    📄 PDF
+                </button>
+
+                <button
+                    class="export-button"
+                    onclick="supplierExport('excel')"
+                >
+                    📊 Excel
+                </button>
+
+                <button
+                    class="export-button"
+                    onclick="supplierExport('word')"
+                >
+                    📝 Word
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * قاعدة بيانات تجريبية مؤقتة.
+     *
+     * بعد الانتهاء من الواجهة سيتم استبدالها
+     * بقاعدة بيانات الموردين الحقيقية.
+     */
+
+    const suppliers = [
+
+        {
+            name: "شركة الخليج للأنظمة الهيدروليكية",
+            city: "الرياض",
+            type: "هيدروليك",
+            rating: "4.8",
+            phone: "0500000000",
+            location: "المدينة الصناعية الثانية",
+            tags: [
+                "خراطيم",
+                "Hydraulic",
+                "Fittings"
+            ]
+        },
+
+        {
+            name: "مؤسسة التوريد الصناعي",
+            city: "الرياض",
+            type: "قطع غيار",
+            rating: "4.6",
+            phone: "0511111111",
+            location: "المدينة الصناعية",
+            tags: [
+                "قطع غيار",
+                "معدات",
+                "صيانة"
+            ]
+        },
+
+        {
+            name: "شركة الدمام للمعدات الصناعية",
+            city: "الدمام",
+            type: "ميكانيكا",
+            rating: "4.7",
+            phone: "0522222222",
+            location: "المدينة الصناعية الثانية",
+            tags: [
+                "ميكانيكا",
+                "معدات",
+                "Spare Parts"
+            ]
+        },
+
+        {
+            name: "مؤسسة الشرق للكهرباء",
+            city: "الرياض",
+            type: "كهرباء",
+            rating: "4.5",
+            phone: "0533333333",
+            location: "الرياض",
+            tags: [
+                "كهرباء",
+                "لوحات",
+                "كابلات"
+            ]
+        },
+
+        {
+            name: "شركة المعدات المتقدمة",
+            city: "جدة",
+            type: "قطع غيار",
+            rating: "4.9",
+            phone: "0544444444",
+            location: "جدة الصناعية",
+            tags: [
+                "Spare Parts",
+                "معدات ثقيلة",
+                "صيانة"
+            ]
+        },
+
+        {
+            name: "مؤسسة الخليج للخراطيم",
+            city: "الخبر",
+            type: "خراطيم",
+            rating: "4.7",
+            phone: "0555555555",
+            location: "الخبر الصناعية",
+            tags: [
+                "Hydraulic Hose",
+                "Pneumatic",
+                "Fittings"
+            ]
+        }
+
+    ];
+
+
+    const findButton =
+        document.getElementById(
+            "find-suppliers"
+        );
+
+
+    const clearButton =
+        document.getElementById(
+            "clear-supplier-search"
+        );
+
+
+    findButton.addEventListener(
+        "click",
+        searchSuppliers
+    );
+
+
+    clearButton.addEventListener(
+        "click",
+        clearSearch
+    );
+
+
+    function searchSuppliers() {
+
+        const material =
+            document
+                .getElementById(
+                    "supplier-material"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const type =
+            document
+                .getElementById(
+                    "supplier-type"
+                )
+                .value;
+
+
+        const city =
+            document
+                .getElementById(
+                    "supplier-city"
+                )
+                .value;
+
+
+        const part =
+            document
+                .getElementById(
+                    "supplier-part"
+                )
+                .value
+                .trim();
+
+
+        /*
+         * الفلترة
+         */
+
+        let results =
+            suppliers.filter(
+                supplier => {
+
+                    const matchType =
+                        !type ||
+                        supplier.type === type;
+
+                    const matchCity =
+                        !city ||
+                        supplier.city === city;
+
+                    /*
+                     * حالياً البحث النصي
+                     * يعمل على اسم المورد
+                     * والـTags.
+                     */
+
+                    const searchable =
+                        (
+                            supplier.name +
+                            " " +
+                            supplier.tags.join(" ")
+                        ).toLowerCase();
+
+
+                    const matchMaterial =
+                        !material ||
+                        searchable.includes(material);
+
+
+                    return (
+                        matchType &&
+                        matchCity &&
+                        matchMaterial
+                    );
+
+                }
+            );
+
+
+        /*
+         * إذا لم يوجد بحث فعلي
+         * نعرض الموردين حسب المدينة والنوع.
+         */
+
+        renderSuppliers(results);
+
+
+        /*
+         * حفظ آخر عملية بحث
+         */
+
+        localStorage.setItem(
+            "procurex_supplier_search",
+            JSON.stringify({
+                material,
+                type,
+                city,
+                part,
+                date:
+                    new Date().toISOString()
+            })
+        );
+
+    }
+
+
+    function renderSuppliers(results) {
+
+        const list =
+            document.getElementById(
+                "supplier-list"
+            );
+
+
+        const count =
+            document.getElementById(
+                "results-count"
+            );
+
+
+        count.textContent =
+            `${results.length} مورد`;
+
+
+        if (!results.length) {
+
+            list.innerHTML = `
+
+                <div class="empty-state">
+
+                    ❌
+
+                    <br><br>
+
+                    لم نجد موردين مطابقين
+                    للبحث الحالي.
+
+                    <br>
+
+                    جرّب تغيير المدينة
+                    أو نوع المادة.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            results
+                .map(
+                    supplier =>
+                        createSupplierCard(
+                            supplier
+                        )
+                )
+                .join("");
+
+    }
+
+
+    function createSupplierCard(
+        supplier
+    ) {
+
+        return `
+
+            <div class="supplier-card">
+
+                <div class="supplier-top">
+
+                    <div class="supplier-name">
+
+                        <div class="supplier-logo">
+                            🏢
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                ${supplier.name}
+                            </h4>
+
+                            <span>
+                                ${supplier.city}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="rating">
+                        ⭐ ${supplier.rating}
+                    </div>
+
+                </div>
+
+
+                <div class="supplier-info">
+
+                    <div class="info-box">
+
+                        <span>
+                            نوع التوريد
+                        </span>
+
+                        <strong>
+                            ${supplier.type}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span>
+                            الموقع
+                        </span>
+
+                        <strong>
+                            ${supplier.location}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tags">
+
+                    ${
+                        supplier.tags
+                            .map(
+                                tag =>
+                                    `<span class="tag">${tag}</span>`
+                            )
+                            .join("")
+                    }
+
+                </div>
+
+
+                <div class="supplier-actions">
+
+                    <button
+                        class="small-btn primary"
+                        onclick="contactSupplier('${supplier.phone}')"
+                    >
+                        📞 التواصل
+                    </button>
+
+                    <button
+                        class="small-btn"
+                        onclick="saveSupplier('${supplier.name}')"
+                    >
+                        ⭐ حفظ
+                    </button>
+
+                    <button
+                        class="small-btn"
+                        onclick="supplierDetails('${supplier.name}')"
+                    >
+                        التفاصيل
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    function contactSupplier(phone) {
+
+        alert(
+            "رقم التواصل:\n" +
+            phone
+        );
+
+    }
+
+
+    function saveSupplier(name) {
+
+        let saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "procurex_saved_suppliers"
+                )
+            ) || [];
+
+
+        if (!saved.includes(name)) {
+
+            saved.push(name);
+
+            localStorage.setItem(
+                "procurex_saved_suppliers",
+                JSON.stringify(saved)
+            );
+
+            showMessage(
+                "تم حفظ المورد في قائمتك."
+            );
+
+        } else {
+
+            showMessage(
+                "المورد محفوظ بالفعل."
+            );
+
+        }
+
+    }
+
+
+    function supplierDetails(name) {
+
+        const supplier =
+            suppliers.find(
+                item =>
+                    item.name === name
+            );
+
+
+        if (!supplier) {
+            return;
+        }
+
+
+        alert(
+
+            "اسم المورد:\n" +
+            supplier.name +
+
+            "\n\nالمدينة:\n" +
+            supplier.city +
+
+            "\n\nنوع التوريد:\n" +
+            supplier.type +
+
+            "\n\nالتقييم:\n⭐ " +
+            supplier.rating +
+
+            "\n\nالموقع:\n" +
+            supplier.location
+
+        );
+
+    }
+
+
+    function clearSearch() {
+
+        document
+            .getElementById(
+                "supplier-material"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "supplier-type"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "supplier-city"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "supplier-part"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "results-count"
+            )
+            .textContent =
+            "0 مورد";
+
+
+        document
+            .getElementById(
+                "supplier-list"
+            )
+            .innerHTML = `
+
+                <div class="empty-state">
+
+                    🔎
+
+                    <br><br>
+
+                    اكتب المادة وحدد المدينة
+                    لبدء البحث عن الموردين.
+
+                </div>
+
+            `;
+
+    }
+
+
+    function supplierExport(type) {
+
+        const saved =
+            localStorage.getItem(
+                "procurex_supplier_search"
+            );
+
+
+        if (!saved) {
+
+            showMessage(
+                "اعمل بحث عن الموردين أولاً."
+            );
+
+            return;
+
+        }
+
+
+        if (type === "pdf") {
+
+            showMessage(
+                "تصدير PDF سيتم ربطه بمحرك المستندات."
+            );
+
+        }
+
+
+        if (type === "excel") {
+
+            showMessage(
+                "تصدير Excel سيتم ربطه بمحرك المستندات."
+            );
+
+        }
+
+
+        if (type === "word") {
+
+            showMessage(
+                "تصدير Word سيتم ربطه بمحرك المستندات."
+            );
+
+        }
+
+    }
+
+
+    function showMessage(message) {
+
+        if (
+            window.ProcureX &&
+            typeof window.ProcureX.showToast ===
+            "function"
+        ) {
+
+            window.ProcureX.showToast(
+                message,
+                "success"
+            );
+
+        } else {
+
+            alert(message);
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
