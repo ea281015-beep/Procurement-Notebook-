@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quotation Comparison | ProcureX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .comparison-page {
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg,#101827,#183b6d);
+            color: white;
+            border-radius: 18px;
+            padding: 27px;
+            margin-bottom: 16px;
+        }
+
+        .page-header h2 {
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #c4d0e2;
+            font-size: 10px;
+        }
+
+        .control-card {
+            background: white;
+            border: 1px solid #e5e9f0;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns:
+                1fr 1fr 1fr 1fr;
+            gap: 9px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field label {
+            font-size: 8px;
+            color: #475467;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field select {
+            height: 40px;
+            border: 1px solid #dce2ea;
+            border-radius: 8px;
+            padding: 0 10px;
+            font-size: 9px;
+            outline: none;
+            background: #fbfcfe;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #1769e0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 13px;
+        }
+
+        .btn {
+            height: 38px;
+            padding: 0 14px;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: #1769e0;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f2f4f7;
+            color: #344054;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4,1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e9f0;
+            border-radius: 12px;
+            padding: 13px;
+        }
+
+        .summary-card span {
+            display: block;
+            color: #98a2b3;
+            font-size: 8px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card strong {
+            font-size: 17px;
+        }
+
+        .summary-card small {
+            display: block;
+            color: #667085;
+            font-size: 7px;
+            margin-top: 4px;
+        }
+
+        .best {
+            background: #e9f8f1;
+            border-color: #b7e5d0;
+        }
+
+        .best strong {
+            color: #087443;
+        }
+
+        /* ================= COMPARISON ================= */
+
+        .table-card {
+            background: white;
+            border: 1px solid #e5e9f0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .table-title {
+            padding: 15px;
+            border-bottom: 1px solid #eef1f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title h3 {
+            font-size: 13px;
+        }
+
+        .table-title span {
+            color: #98a2b3;
+            font-size: 8px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #667085;
+            font-size: 8px;
+            padding: 11px 8px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        td {
+            border-top: 1px solid #eef1f5;
+            padding: 10px 8px;
+            font-size: 8px;
+            text-align: center;
+        }
+
+        td:first-child,
+        th:first-child {
+            text-align: right;
+        }
+
+        .supplier-head {
+            font-weight: 800;
+            font-size: 9px;
+        }
+
+        .price {
+            font-weight: 800;
+            font-size: 10px;
+        }
+
+        .best-price {
+            background: #e9f8f1;
+            color: #087443;
+            font-weight: 800;
+        }
+
+        .delivery {
+            color: #667085;
+        }
+
+        .rating {
+            color: #b54708;
+        }
+
+        .winner {
+            background: #eef4ff;
+            color: #1769e0;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 7px;
+            font-weight: 800;
+        }
+
+        /* ================= RECOMMENDATION ================= */
+
+        .recommendation {
+            margin-top: 15px;
+            background: linear-gradient(
+                135deg,
+                #eef4ff,
+                #f8fbff
+            );
+
+            border: 1px solid #cdddf8;
+
+            border-radius: 13px;
+
+            padding: 16px;
+        }
+
+        .recommendation h3 {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .recommendation p {
+            font-size: 9px;
+            color: #475467;
+            line-height: 1.8;
+        }
+
+        .recommendation strong {
+            color: #1769e0;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .export-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding: 11px;
+            background: #f8fafc;
+            border: 1px solid #e6eaf0;
+            border-radius: 9px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .export-button {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid #dfe4ea;
+            border-radius: 7px;
+            background: white;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        @media(max-width:900px) {
+
+            .control-grid {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .export-bar {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-button {
+                flex: 1;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="comparison-page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="page-header">
+
+        <h2>
+            ⚖️ مقارنة عروض الأسعار
+        </h2>
+
+        <p>
+            قارن عروض الموردين من حيث السعر،
+            مدة التوريد، التقييم، والشروط لاختيار
+            أفضل عرض للشراء.
+        </p>
+
+    </div>
+
+
+    <!-- ================= INPUT ================= -->
+
+    <div class="control-card">
+
+        <div class="control-grid">
+
+
+            <div class="field">
+
+                <label>
+                    المادة / الصنف
+                </label>
+
+                <input
+                    id="material"
+                    type="text"
+                    placeholder="اسم المادة"
+                    value="Hydraulic Hose"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    الكمية
+                </label>
+
+                <input
+                    id="quantity"
+                    type="number"
+                    value="100"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    الوحدة
+                </label>
+
+                <select id="unit">
+
+                    <option>
+                        قطعة
+                    </option>
+
+                    <option>
+                        متر
+                    </option>
+
+                    <option>
+                        كيلو
+                    </option>
+
+                    <option>
+                        طن
+                    </option>
+
+                    <option>
+                        كرتون
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    العملة
+                </label>
+
+                <select id="currency">
+
+                    <option>
+                        SAR
+                    </option>
+
+                    <option>
+                        USD
+                    </option>
+
+                    <option>
+                        EUR
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="btn btn-primary"
+                onclick="calculateComparison()"
+            >
+                ⚡ تحليل ومقارنة العروض
+            </button>
+
+
+            <button
+                class="btn btn-secondary"
+                onclick="resetComparison()"
+            >
+                مسح
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <div class="summary-grid">
+
+
+        <div class="summary-card best">
+
+            <span>
+                🏆 أفضل سعر
+            </span>
+
+            <strong id="best-price">
+                19.50 SAR
+            </strong>
+
+            <small id="best-price-supplier">
+                شركة الخليج
+            </small>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                💰 إجمالي التوفير
+            </span>
+
+            <strong id="saving">
+                1,250 SAR
+            </strong>
+
+            <small>
+                مقارنة بأعلى عرض
+            </small>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                🚚 أسرع توريد
+            </span>
+
+            <strong id="fastest">
+                2 يوم
+            </strong>
+
+            <small id="fastest-supplier">
+                مؤسسة التوريد
+            </small>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                ⭐ أفضل تقييم
+            </span>
+
+            <strong id="best-rating">
+                4.9
+            </strong>
+
+            <small id="rating-supplier">
+                شركة المعدات المتقدمة
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TABLE ================= -->
+
+    <div class="table-card">
+
+
+        <div class="table-title">
+
+            <h3>
+                📊 مقارنة الموردين
+            </h3>
+
+            <span>
+                Quotation Comparison
+            </span>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            المورد
+                        </th>
+
+                        <th>
+                            سعر الوحدة
+                        </th>
+
+                        <th>
+                            الكمية
+                        </th>
+
+                        <th>
+                            الإجمالي
+                        </th>
+
+                        <th>
+                            مدة التوريد
+                        </th>
+
+                        <th>
+                            الدفع
+                        </th>
+
+                        <th>
+                            التقييم
+                        </th>
+
+                        <th>
+                            التوصية
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="comparison-body">
+
+                    <tr>
+
+                        <td class="supplier-head">
+                            شركة الخليج للأنظمة الهيدروليكية
+                        </td>
+
+                        <td class="price best-price">
+                            19.50 SAR
+                        </td>
+
+                        <td>
+                            100
+                        </td>
+
+                        <td class="price">
+                            1,950 SAR
+                        </td>
+
+                        <td class="delivery">
+                            3 أيام
+                        </td>
+
+                        <td>
+                            30 يوم
+                        </td>
+
+                        <td class="rating">
+                            ⭐ 4.8
+                        </td>
+
+                        <td>
+                            <span class="winner">
+                                أفضل سعر
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="supplier-head">
+                            مؤسسة التوريد الصناعي
+                        </td>
+
+                        <td class="price">
+                            21.00 SAR
+                        </td>
+
+                        <td>
+                            100
+                        </td>
+
+                        <td class="price">
+                            2,100 SAR
+                        </td>
+
+                        <td class="delivery">
+                            2 أيام
+                        </td>
+
+                        <td>
+                            30 يوم
+                        </td>
+
+                        <td class="rating">
+                            ⭐ 4.6
+                        </td>
+
+                        <td>
+                            <span class="winner">
+                                أسرع توريد
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="supplier-head">
+                            شركة المعدات المتقدمة
+                        </td>
+
+                        <td class="price">
+                            22.50 SAR
+                        </td>
+
+                        <td>
+                            100
+                        </td>
+
+                        <td class="price">
+                            2,250 SAR
+                        </td>
+
+                        <td class="delivery">
+                            4 أيام
+                        </td>
+
+                        <td>
+                            45 يوم
+                        </td>
+
+                        <td class="rating">
+                            ⭐ 4.9
+                        </td>
+
+                        <td>
+                            <span class="winner">
+                                أفضل تقييم
+                            </span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECOMMENDATION ================= -->
+
+    <div class="recommendation">
+
+        <h3>
+            🤖 توصية النظام
+        </h3>
+
+        <p id="recommendation-text">
+
+            بناءً على مقارنة السعر ومدة التوريد
+            وتقييم المورد، فإن
+            <strong>
+                شركة الخليج للأنظمة الهيدروليكية
+            </strong>
+            هي الخيار الأفضل حالياً من ناحية
+            السعر الإجمالي، مع تقييم جيد ومدة توريد
+            مناسبة.
+
+        </p>
+
+    </div>
+
+
+    <!-- ================= EXPORT ================= -->
+
+    <div class="export-bar">
+
+        <span style="
+            font-size:9px;
+            color:#667085;
+            font-weight:600;
+        ">
+            📄 تقرير مقارنة عروض الأسعار
+        </span>
+
+
+        <div class="export-buttons">
+
+            <button
+                class="export-button"
+                onclick="window.print()"
+            >
+                🖨️ طباعة
+            </button>
+
+
+            <button
+                class="export-button"
+                onclick="exportComparison('pdf')"
+            >
+                📄 PDF
+            </button>
+
+
+            <button
+                class="export-button"
+                onclick="exportComparison('excel')"
+            >
+                📊 Excel
+            </button>
+
+
+            <button
+                class="export-button"
+                onclick="exportComparison('word')"
+            >
+                📝 Word
+            </button>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /*
+     * عروض الأسعار
+     *
+     * لاحقاً سيتم ربطها بقاعدة البيانات
+     * أو إدخالها مباشرة من عروض الموردين.
+     */
+
+    const quotations = [
+
+        {
+            supplier:
+                "شركة الخليج للأنظمة الهيدروليكية",
+
+            price:
+                19.50,
+
+            delivery:
+                3,
+
+            payment:
+                "30 يوم",
+
+            rating:
+                4.8
+
+        },
+
+
+        {
+            supplier:
+                "مؤسسة التوريد الصناعي",
+
+            price:
+                21.00,
+
+            delivery:
+                2,
+
+            payment:
+                "30 يوم",
+
+            rating:
+                4.6
+
+        },
+
+
+        {
+            supplier:
+                "شركة المعدات المتقدمة",
+
+            price:
+                22.50,
+
+            delivery:
+                4,
+
+            payment:
+                "45 يوم",
+
+            rating:
+                4.9
+
+        }
+
+    ];
+
+
+    /*
+     * تشغيل المقارنة
+     */
+
+    function calculateComparison() {
+
+
+        const quantity =
+            Number(
+                document
+                    .getElementById(
+                        "quantity"
+                    )
+                    .value
+            ) || 1;
+
+
+        const material =
+            document
+                .getElementById(
+                    "material"
+                )
+                .value;
+
+
+        /*
+         * أقل سعر
+         */
+
+        const lowest =
+            Math.min(
+                ...quotations.map(
+                    q => q.price
+                )
+            );
+
+
+        /*
+         * أعلى سعر
+         */
+
+        const highest =
+            Math.max(
+                ...quotations.map(
+                    q => q.price
+                )
+            );
+
+
+        /*
+         * أسرع توريد
+         */
+
+        const fastest =
+            Math.min(
+                ...quotations.map(
+                    q => q.delivery
+                )
+            );
+
+
+        /*
+         * أعلى تقييم
+         */
+
+        const bestRating =
+            Math.max(
+                ...quotations.map(
+                    q => q.rating
+                )
+            );
+
+
+        const lowestSupplier =
+            quotations.find(
+                q =>
+                    q.price === lowest
+            );
+
+
+        const fastestSupplier =
+            quotations.find(
+                q =>
+                    q.delivery === fastest
+            );
+
+
+        const ratingSupplier =
+            quotations.find(
+                q =>
+                    q.rating === bestRating
+            );
+
+
+        /*
+         * التوفير
+         */
+
+        const saving =
+            (
+                (highest - lowest) *
+                quantity
+            );
+
+
+        /*
+         * تحديث الملخص
+         */
+
+        document
+            .getElementById(
+                "best-price"
+            )
+            .textContent =
+            lowest.toFixed(2) +
+            " SAR";
+
+
+        document
+            .getElementById(
+                "best-price-supplier"
+            )
+            .textContent =
+            lowestSupplier.supplier;
+
+
+        document
+            .getElementById(
+                "saving"
+            )
+            .textContent =
+            saving.toLocaleString(
+                "en-US"
+            ) +
+            " SAR";
+
+
+        document
+            .getElementById(
+                "fastest"
+            )
+            .textContent =
+            fastest +
+            " يوم";
+
+
+        document
+            .getElementById(
+                "fastest-supplier"
+            )
+            .textContent =
+            fastestSupplier.supplier;
+
+
+        document
+            .getElementById(
+                "best-rating"
+            )
+            .textContent =
+            bestRating;
+
+
+        document
+            .getElementById(
+                "rating-supplier"
+            )
+            .textContent =
+            ratingSupplier.supplier;
+
+
+        /*
+         * تحديث التوصية
+         */
+
+        document
+            .getElementById(
+                "recommendation-text"
+            )
+            .innerHTML =
+
+            `
+                بعد تحليل عرض
+                <strong>
+                    ${material || "المادة"}
+                </strong>
+                من حيث السعر ومدة التوريد
+                وتقييم المورد، فإن
+                <strong>
+                    ${lowestSupplier.supplier}
+                </strong>
+                يقدم أقل سعر بإجمالي
+                <strong>
+                    ${(lowest * quantity).toLocaleString("en-US")} SAR
+                </strong>.
+            `;
+
+    }
+
+
+    /*
+     * إعادة التعيين
+     */
+
+    function resetComparison() {
+
+        document
+            .getElementById(
+                "material"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "quantity"
+            )
+            .value = 1;
+
+
+        document
+            .getElementById(
+                "best-price"
+            )
+            .textContent =
+            "-";
+
+
+        document
+            .getElementById(
+                "saving"
+            )
+            .textContent =
+            "-";
+
+
+        document
+            .getElementById(
+                "fastest"
+            )
+            .textContent =
+            "-";
+
+
+        document
+            .getElementById(
+                "best-rating"
+            )
+            .textContent =
+            "-";
+
+    }
+
+
+    /*
+     * التصدير
+     */
+
+    function exportComparison(
+        type
+    ) {
+
+        if (type === "pdf") {
+
+            alert(
+                "سيتم تجهيز تقرير PDF للمقارنة."
+            );
+
+        }
+
+
+        if (type === "excel") {
+
+            alert(
+                "سيتم تجهيز ملف Excel للمقارنة."
+            );
+
+        }
+
+
+        if (type === "word") {
+
+            alert(
+                "سيتم تجهيز ملف Word للمقارنة."
+            );
+
+        }
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
