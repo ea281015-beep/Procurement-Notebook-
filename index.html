@@ -5,14 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ProcureX | نظام المشتريات</title>
+    <title>ProcureX | الرئيسية</title>
 
-    <meta
-        name="description"
-        content="ProcureX - نظام إدارة المشتريات والموردين وعروض الأسعار"
-    >
-
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Style.css">
 </head>
 
 <body>
@@ -24,45 +19,18 @@
     <header class="topbar">
 
         <div class="brand">
-            <div class="brand-icon">
-                PX
-            </div>
+            <div class="brand-icon">P</div>
 
             <div>
-                <div class="brand-name">
-                    ProcureX
-                </div>
-
-                <div class="brand-subtitle">
-                    Procurement Management
-                </div>
+                <h1>ProcureX</h1>
+                <span>Procurement System</span>
             </div>
         </div>
 
-
-        <nav class="main-nav">
-
-            <a href="index.html" class="nav-link active">
-                الرئيسية
-            </a>
-
-            <a href="material-finder.html" class="nav-link">
-                البحث عن مادة
-            </a>
-
-            <a href="supplier-finder.html" class="nav-link">
-                البحث عن مورد
-            </a>
-
-            <a href="supplier-registration.html" class="nav-link">
-                تعريف المورد
-            </a>
-
-            <a href="quotation-comparison.html" class="nav-link">
-                مقارنة الأسعار
-            </a>
-
-        </nav>
+        <div class="topbar-user">
+            <span>مسؤول المشتريات</span>
+            <div class="user-avatar">م</div>
+        </div>
 
     </header>
 
@@ -71,282 +39,94 @@
          MAIN
     ========================== -->
 
-    <main>
+    <main class="dashboard">
 
         <!-- HERO -->
 
-        <section class="home-hero">
+        <section class="dashboard-hero">
 
-            <div class="home-hero-content">
+            <div>
 
-                <div class="home-hero-text">
+                <span class="hero-badge">
+                    PROCUREMENT PLATFORM
+                </span>
 
-                    <span class="eyebrow">
-                        PROCUREMENT PLATFORM
-                    </span>
+                <h2>
+                    مرحبًا بك في ProcureX
+                </h2>
 
-                    <h1>
-                        ProcureX
-                    </h1>
+                <p>
+                    نظام موحد لإدارة الموردين والبحث عن المواد
+                    وقطع الغيار والوصول إلى المورد المناسب بسرعة.
+                </p>
 
-                    <h2>
-                        نظام ذكي لإدارة المشتريات والموردين
-                    </h2>
+            </div>
 
-                    <p>
-                        منصة واحدة للبحث عن المواد وقطع الغيار،
-                        إدارة الموردين، مقارنة عروض الأسعار،
-                        وتنظيم عمليات الشراء بشكل احترافي.
-                    </p>
-
-
-                    <div class="hero-actions">
-
-                        <a
-                            href="material-finder.html"
-                            class="primary-btn"
-                        >
-                            🔎 البحث عن مادة
-                        </a>
-
-                        <a
-                            href="supplier-finder.html"
-                            class="secondary-btn"
-                        >
-                            🏢 البحث عن مورد
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <div class="home-hero-card">
-
-                    <div class="dashboard-title">
-                        لوحة المشتريات
-                    </div>
-
-                    <div class="dashboard-status">
-                        <span class="status-dot"></span>
-                        النظام يعمل
-                    </div>
-
-
-                    <div class="dashboard-grid">
-
-                        <div class="dashboard-item">
-
-                            <span>
-                                المواد
-                            </span>
-
-                            <strong id="home-material-count">
-                                0
-                            </strong>
-
-                        </div>
-
-
-                        <div class="dashboard-item">
-
-                            <span>
-                                الموردون
-                            </span>
-
-                            <strong id="home-supplier-count">
-                                0
-                            </strong>
-
-                        </div>
-
-
-                        <div class="dashboard-item">
-
-                            <span>
-                                عروض الأسعار
-                            </span>
-
-                            <strong id="home-quotation-count">
-                                0
-                            </strong>
-
-                        </div>
-
-
-                        <div class="dashboard-item">
-
-                            <span>
-                                عمليات البحث
-                            </span>
-
-                            <strong id="home-search-count">
-                                0
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+            <div class="hero-icon">
+                🏢
             </div>
 
         </section>
 
 
         <!-- =========================
-             MODULES
+             STATISTICS
         ========================== -->
 
-        <section class="home-section">
+        <section class="stats-grid">
 
-            <div class="section-heading">
+            <div class="stat-card">
 
-                <span>
-                    PROCUREX MODULES
-                </span>
+                <div class="stat-icon suppliers">
+                    🏢
+                </div>
 
-                <h2>
-                    أدوات المشتريات
-                </h2>
-
-                <p>
-                    اختر الأداة التي تريد استخدامها.
-                </p>
+                <div>
+                    <span>إجمالي الموردين</span>
+                    <strong id="dashboard-suppliers">0</strong>
+                </div>
 
             </div>
 
 
-            <div class="module-grid">
+            <div class="stat-card">
+
+                <div class="stat-icon materials">
+                    🧱
+                </div>
+
+                <div>
+                    <span>المواد المحفوظة</span>
+                    <strong id="dashboard-materials">0</strong>
+                </div>
+
+            </div>
 
 
-                <!-- MATERIAL FINDER -->
+            <div class="stat-card">
 
-                <a
-                    href="material-finder.html"
-                    class="module-card"
-                >
+                <div class="stat-icon searches">
+                    🔎
+                </div>
 
-                    <div class="module-icon blue">
-                        🔎
-                    </div>
+                <div>
+                    <span>عمليات البحث</span>
+                    <strong id="dashboard-searches">0</strong>
+                </div>
 
-                    <div class="module-content">
-
-                        <h3>
-                            Material Finder
-                        </h3>
-
-                        <p>
-                            البحث عن المواد وقطع الغيار
-                            باستخدام الاسم أو رقم القطعة
-                            أو المواصفات أو الصورة.
-                        </p>
-
-                        <span class="module-link">
-                            فتح الأداة ←
-                        </span>
-
-                    </div>
-
-                </a>
+            </div>
 
 
-                <!-- SUPPLIER FINDER -->
+            <div class="stat-card">
 
-                <a
-                    href="supplier-finder.html"
-                    class="module-card"
-                >
+                <div class="stat-icon cities">
+                    📍
+                </div>
 
-                    <div class="module-icon green">
-                        🏢
-                    </div>
-
-                    <div class="module-content">
-
-                        <h3>
-                            Supplier Finder
-                        </h3>
-
-                        <p>
-                            البحث في قاعدة الموردين
-                            حسب المدينة والتخصص ونوع
-                            المواد التي يوفرها المورد.
-                        </p>
-
-                        <span class="module-link">
-                            فتح الأداة ←
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-                <!-- SUPPLIER REGISTRATION -->
-
-                <a
-                    href="supplier-registration.html"
-                    class="module-card"
-                >
-
-                    <div class="module-icon orange">
-                        📝
-                    </div>
-
-                    <div class="module-content">
-
-                        <h3>
-                            تعريف المورد
-                        </h3>
-
-                        <p>
-                            إضافة مورد جديد وتسجيل بيانات
-                            الشركة ووسائل الاتصال والتخصصات
-                            والمدينة.
-                        </p>
-
-                        <span class="module-link">
-                            فتح الأداة ←
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-                <!-- QUOTATION COMPARISON -->
-
-                <a
-                    href="quotation-comparison.html"
-                    class="module-card"
-                >
-
-                    <div class="module-icon purple">
-                        📊
-                    </div>
-
-                    <div class="module-content">
-
-                        <h3>
-                            Quotation Comparison
-                        </h3>
-
-                        <p>
-                            إدخال عروض الموردين ومقارنة
-                            الأسعار والشروط واختيار أفضل
-                            عرض.
-                        </p>
-
-                        <span class="module-link">
-                            فتح الأداة ←
-                        </span>
-
-                    </div>
-
-                </a>
+                <div>
+                    <span>المدن</span>
+                    <strong id="dashboard-cities">0</strong>
+                </div>
 
             </div>
 
@@ -357,100 +137,142 @@
              QUICK ACTIONS
         ========================== -->
 
-        <section class="home-section">
+        <section class="section">
 
-            <div class="section-heading">
+            <div class="section-header">
 
-                <span>
-                    QUICK ACTIONS
-                </span>
-
-                <h2>
-                    إجراءات سريعة
-                </h2>
+                <div>
+                    <h3>الوصول السريع</h3>
+                    <span>Quick Actions</span>
+                </div>
 
             </div>
 
 
-            <div class="quick-grid">
+            <div class="actions-grid">
+
+
+                <!-- MATERIAL FINDER -->
 
                 <a
-                    href="material-finder.html"
-                    class="quick-card"
+                    href="Material.finder.html"
+                    class="action-card"
                 >
-                    <span class="quick-icon">
-                        🧱
-                    </span>
 
-                    <div>
-                        <strong>
-                            مادة جديدة
-                        </strong>
-
-                        <small>
-                            البحث عن مادة أو قطعة غيار
-                        </small>
+                    <div class="action-card-icon">
+                        🔎
                     </div>
+
+                    <div class="action-card-content">
+
+                        <h4>
+                            Material Finder
+                        </h4>
+
+                        <p>
+                            ابحث عن مادة أو قطعة غيار
+                            بالاسم أو الصورة أو رقم القطعة.
+                        </p>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        ←
+                    </div>
+
                 </a>
 
 
+                <!-- SUPPLIER FINDER -->
+
                 <a
-                    href="supplier-registration.html"
-                    class="quick-card"
+                    href="Supplier.finder.html"
+                    class="action-card"
                 >
-                    <span class="quick-icon">
-                        👤
-                    </span>
 
-                    <div>
-                        <strong>
-                            مورد جديد
-                        </strong>
-
-                        <small>
-                            إضافة مورد إلى قاعدة البيانات
-                        </small>
+                    <div class="action-card-icon">
+                        🏢
                     </div>
+
+                    <div class="action-card-content">
+
+                        <h4>
+                            Supplier Finder
+                        </h4>
+
+                        <p>
+                            ابحث عن الموردين حسب المادة
+                            أو النشاط أو المدينة.
+                        </p>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        ←
+                    </div>
+
                 </a>
 
 
+                <!-- SUPPLIERS -->
+
                 <a
-                    href="quotation-comparison.html"
-                    class="quick-card"
+                    href="الموردون.html"
+                    class="action-card"
                 >
-                    <span class="quick-icon">
-                        💰
-                    </span>
 
-                    <div>
-                        <strong>
-                            مقارنة عروض
-                        </strong>
-
-                        <small>
-                            مقارنة أسعار الموردين
-                        </small>
+                    <div class="action-card-icon">
+                        👥
                     </div>
+
+                    <div class="action-card-content">
+
+                        <h4>
+                            الموردون
+                        </h4>
+
+                        <p>
+                            عرض وإدارة جميع الموردين
+                            المحفوظين في النظام.
+                        </p>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        ←
+                    </div>
+
                 </a>
 
 
+                <!-- ADD SUPPLIER -->
+
                 <a
-                    href="supplier-finder.html"
-                    class="quick-card"
+                    href="تعريف_الموردين.html"
+                    class="action-card"
                 >
-                    <span class="quick-icon">
-                        📍
-                    </span>
 
-                    <div>
-                        <strong>
-                            مورد قريب
-                        </strong>
-
-                        <small>
-                            البحث حسب المدينة
-                        </small>
+                    <div class="action-card-icon">
+                        ➕
                     </div>
+
+                    <div class="action-card-content">
+
+                        <h4>
+                            تعريف مورد
+                        </h4>
+
+                        <p>
+                            إضافة مورد جديد وحفظ بياناته
+                            في قاعدة بيانات ProcureX.
+                        </p>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        ←
+                    </div>
+
                 </a>
 
             </div>
@@ -459,94 +281,147 @@
 
 
         <!-- =========================
-             SYSTEM PRINCIPLES
+             SYSTEM FEATURES
         ========================== -->
 
-        <section class="home-section">
+        <section class="section">
 
-            <div class="section-heading">
+            <div class="section-header">
 
-                <span>
-                    SYSTEM PRINCIPLES
-                </span>
-
-                <h2>
-                    ProcureX مبني على إيه؟
-                </h2>
+                <div>
+                    <h3>ماذا يوفر النظام؟</h3>
+                    <span>System Features</span>
+                </div>
 
             </div>
 
 
-            <div class="principles-grid">
+            <div class="features-grid">
 
-                <div class="principle-card">
+                <div class="feature-card">
 
-                    <div class="principle-number">
-                        01
+                    <div class="feature-icon">
+                        🗃️
                     </div>
 
-                    <h3>
-                        بيانات حقيقية
-                    </h3>
+                    <h4>
+                        قاعدة بيانات الموردين
+                    </h4>
 
                     <p>
-                        لا يتم إنشاء أرقام هواتف أو بيانات
-                        موردين من عند النظام.
+                        حفظ بيانات الموردين واستخدامها
+                        في جميع صفحات النظام.
                     </p>
 
                 </div>
 
 
-                <div class="principle-card">
+                <div class="feature-card">
 
-                    <div class="principle-number">
-                        02
+                    <div class="feature-icon">
+                        🧱
                     </div>
 
-                    <h3>
-                        قاعدة بيانات منظمة
-                    </h3>
+                    <h4>
+                        البحث عن المواد
+                    </h4>
 
                     <p>
-                        كل مورد وكل مادة يتم تخزينهم
-                        بطريقة منظمة وقابلة للبحث.
+                        البحث عن المواد وقطع الغيار
+                        باستخدام الاسم أو الصورة أو المواصفات.
                     </p>
 
                 </div>
 
 
-                <div class="principle-card">
+                <div class="feature-card">
 
-                    <div class="principle-number">
-                        03
+                    <div class="feature-icon">
+                        🌐
                     </div>
 
-                    <h3>
-                        بحث فعلي
-                    </h3>
+                    <h4>
+                        البحث الخارجي
+                    </h4>
 
                     <p>
-                        البحث يعتمد على البيانات الموجودة
-                        بالفعل وليس نتائج وهمية.
+                        سيتم ربط النظام لاحقًا بمحرك بحث
+                        لجلب موردين جدد ببيانات حقيقية.
                     </p>
 
                 </div>
 
 
-                <div class="principle-card">
+                <div class="feature-card">
 
-                    <div class="principle-number">
-                        04
+                    <div class="feature-icon">
+                        🔗
                     </div>
 
-                    <h3>
-                        قابل للتطوير
-                    </h3>
+                    <h4>
+                        نظام موحد
+                    </h4>
 
                     <p>
-                        النظام مصمم بحيث نقدر نضيف لاحقًا
-                        API وقاعدة بيانات حقيقية.
+                        جميع الصفحات تعتمد على نفس
+                        قاعدة البيانات المركزية.
                     </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECENT SUPPLIERS
+        ========================== -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+                    <h3>آخر الموردين</h3>
+                    <span>Recent Suppliers</span>
+                </div>
+
+                <a
+                    href="الموردون.html"
+                    class="section-link"
+                >
+                    عرض الكل
+                </a>
+
+            </div>
+
+
+            <div
+                id="recent-suppliers"
+                class="recent-list"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🏢
+                    </div>
+
+                    <strong>
+                        لا يوجد موردون حتى الآن
+                    </strong>
+
+                    <span>
+                        أضف أول مورد ليظهر هنا.
+                    </span>
+
+                    <a
+                        href="تعريف_الموردين.html"
+                        class="empty-button"
+                    >
+                        إضافة مورد
+                    </a>
 
                 </div>
 
@@ -561,33 +436,315 @@
          FOOTER
     ========================== -->
 
-    <footer class="site-footer">
+    <footer class="footer">
 
-        <div>
+        <span>
+            ProcureX
+        </span>
 
-            <strong>
-                ProcureX
-            </strong>
-
-            <span>
-                Procurement Management System
-            </span>
-
-        </div>
-
-        <div>
-            © 2026 ProcureX
-        </div>
+        <span>
+            Procurement Management System
+        </span>
 
     </footer>
 
 
     <!-- =========================
-         JAVASCRIPT
+         SCRIPTS
     ========================== -->
 
-    <script src="data-store.js"></script>
-    <script src="app.js"></script>
+    <script src="data.store.js"></script>
+    <script src="App.js"></script>
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /*
+                 * البيانات ستأتي من data.store.js
+                 * بعد أن ننتهي من بناء الملفات الأساسية.
+                 */
+
+                try {
+
+                    if (
+                        typeof ProcureXStore !== "undefined"
+                    ) {
+
+                        updateDashboard();
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "ProcureX Dashboard Error:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+        function updateDashboard() {
+
+            const suppliers =
+                getStoredSuppliers();
+
+            const materials =
+                getStoredMaterials();
+
+            const searches =
+                getStoredSearches();
+
+
+            const suppliersElement =
+                document.getElementById(
+                    "dashboard-suppliers"
+                );
+
+            const materialsElement =
+                document.getElementById(
+                    "dashboard-materials"
+                );
+
+            const searchesElement =
+                document.getElementById(
+                    "dashboard-searches"
+                );
+
+            const citiesElement =
+                document.getElementById(
+                    "dashboard-cities"
+                );
+
+
+            if (suppliersElement) {
+
+                suppliersElement.textContent =
+                    suppliers.length;
+
+            }
+
+
+            if (materialsElement) {
+
+                materialsElement.textContent =
+                    materials.length;
+
+            }
+
+
+            if (searchesElement) {
+
+                searchesElement.textContent =
+                    searches.length;
+
+            }
+
+
+            if (citiesElement) {
+
+                const cities =
+                    new Set(
+                        suppliers
+                            .map(
+                                supplier =>
+                                    supplier.city
+                            )
+                            .filter(Boolean)
+                    );
+
+                citiesElement.textContent =
+                    cities.size;
+
+            }
+
+
+            renderRecentSuppliers(
+                suppliers
+            );
+
+        }
+
+
+        function getStoredSuppliers() {
+
+            try {
+
+                const data =
+                    localStorage.getItem(
+                        "procurex_suppliers"
+                    );
+
+                return data
+                    ? JSON.parse(data)
+                    : [];
+
+            } catch (error) {
+
+                console.error(error);
+
+                return [];
+
+            }
+
+        }
+
+
+        function getStoredMaterials() {
+
+            try {
+
+                const data =
+                    localStorage.getItem(
+                        "procurex_materials"
+                    );
+
+                return data
+                    ? JSON.parse(data)
+                    : [];
+
+            } catch (error) {
+
+                console.error(error);
+
+                return [];
+
+            }
+
+        }
+
+
+        function getStoredSearches() {
+
+            try {
+
+                const data =
+                    localStorage.getItem(
+                        "procurex_search_history"
+                    );
+
+                return data
+                    ? JSON.parse(data)
+                    : [];
+
+            } catch (error) {
+
+                console.error(error);
+
+                return [];
+
+            }
+
+        }
+
+
+        function renderRecentSuppliers(
+            suppliers
+        ) {
+
+            const container =
+                document.getElementById(
+                    "recent-suppliers"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!suppliers.length) {
+
+                return;
+
+            }
+
+
+            const recent =
+                suppliers
+                    .slice(-5)
+                    .reverse();
+
+
+            container.innerHTML =
+                recent
+                    .map(
+                        supplier => {
+
+                            const name =
+                                supplier.name ||
+                                supplier.companyName ||
+                                "مورد بدون اسم";
+
+
+                            const city =
+                                supplier.city ||
+                                "غير محدد";
+
+
+                            const category =
+                                supplier.category ||
+                                supplier.activity ||
+                                "غير محدد";
+
+
+                            return `
+
+                                <div class="recent-supplier">
+
+                                    <div class="recent-avatar">
+                                        🏢
+                                    </div>
+
+                                    <div class="recent-info">
+
+                                        <strong>
+                                            ${escapeHTML(name)}
+                                        </strong>
+
+                                        <span>
+                                            ${escapeHTML(city)}
+                                            •
+                                            ${escapeHTML(category)}
+                                        </span>
+
+                                    </div>
+
+                                    <div class="recent-status">
+                                        محفوظ
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+        function escapeHTML(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                String(value ?? "");
+
+            return div.innerHTML;
+
+        }
+
+    </script>
 
 </body>
 
