@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Supplier Profile | ProcureX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .supplier-profile-page {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        /* ================= HEADER ================= */
+
+        .profile-header {
+            background: linear-gradient(135deg,#101827,#183b6d);
+            color: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .profile-identity {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .profile-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+
+            background: rgba(255,255,255,.12);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 32px;
+        }
+
+        .profile-identity h2 {
+            font-size: 21px;
+            margin-bottom: 5px;
+        }
+
+        .profile-identity p {
+            color: #c4d0e2;
+            font-size: 10px;
+        }
+
+        .profile-status {
+            background: #e9f8f1;
+            color: #087443;
+
+            padding: 7px 11px;
+
+            border-radius: 7px;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .profile-actions {
+            display: flex;
+            gap: 7px;
+            margin-bottom: 15px;
+        }
+
+        .profile-button {
+            height: 38px;
+            padding: 0 13px;
+
+            border-radius: 8px;
+
+            border: 1px solid #dfe4ea;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .profile-button.primary {
+            background: #1769e0;
+            color: white;
+            border-color: #1769e0;
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .profile-layout {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1.8fr;
+
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+
+            border: 1px solid #e5e9f0;
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(16,24,40,.04);
+        }
+
+        .card-title {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 14px;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid #eef1f5;
+        }
+
+        .card-title h3 {
+            font-size: 13px;
+        }
+
+        .card-title span {
+            font-size: 8px;
+            color: #98a2b3;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            background: #f8fafc;
+
+            padding: 9px;
+
+            border-radius: 7px;
+        }
+
+        .info-row span {
+            color: #98a2b3;
+            font-size: 8px;
+        }
+
+        .info-row strong {
+            font-size: 9px;
+            text-align: left;
+        }
+
+        /* ================= RATING ================= */
+
+        .rating-box {
+            text-align: center;
+
+            padding: 13px;
+
+            background: #fff8e7;
+
+            border-radius: 9px;
+
+            margin-bottom: 12px;
+        }
+
+        .rating-number {
+            font-size: 25px;
+            font-weight: 800;
+            color: #b54708;
+        }
+
+        .stars {
+            color: #f79009;
+            font-size: 15px;
+            margin: 4px 0;
+        }
+
+        .rating-box span {
+            color: #98a2b3;
+            font-size: 8px;
+        }
+
+        /* ================= TAGS ================= */
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: #eef4ff;
+            color: #1769e0;
+
+            padding: 6px 8px;
+
+            border-radius: 6px;
+
+            font-size: 8px;
+        }
+
+        /* ================= PRODUCTS ================= */
+
+        .materials-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 8px;
+        }
+
+        .material-item {
+            border: 1px solid #e5e9f0;
+
+            border-radius: 9px;
+
+            padding: 10px;
+
+            background: #fff;
+        }
+
+        .material-item strong {
+            display: block;
+
+            font-size: 9px;
+
+            margin-bottom: 4px;
+        }
+
+        .material-item span {
+            color: #98a2b3;
+
+            font-size: 7px;
+        }
+
+        /* ================= ORDERS ================= */
+
+        .orders-table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            background: #f8fafc;
+
+            color: #667085;
+
+            font-size: 8px;
+
+            padding: 9px;
+
+            text-align: right;
+        }
+
+        .orders-table td {
+            border-top:
+                1px solid #eef1f5;
+
+            padding: 9px;
+
+            font-size: 8px;
+        }
+
+        .order-status {
+            padding: 4px 7px;
+
+            border-radius: 5px;
+
+            font-size: 7px;
+
+            font-weight: 700;
+        }
+
+        .completed {
+            background: #e9f8f1;
+            color: #087443;
+        }
+
+        .pending {
+            background: #fff7e6;
+            color: #b54708;
+        }
+
+        /* ================= NOTES ================= */
+
+        .notes {
+            width: 100%;
+
+            min-height: 90px;
+
+            resize: vertical;
+
+            border:
+                1px solid #dce2ea;
+
+            border-radius: 8px;
+
+            padding: 10px;
+
+            font-size: 9px;
+
+            outline: none;
+        }
+
+        .save-note {
+            margin-top: 7px;
+
+            height: 35px;
+
+            padding: 0 13px;
+
+            background: #1769e0;
+
+            color: white;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+        /* ================= ATTACHMENTS ================= */
+
+        .attachments {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .attachment {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: #f8fafc;
+
+            padding: 9px;
+
+            border-radius: 7px;
+        }
+
+        .attachment span {
+            font-size: 8px;
+        }
+
+        .attachment button {
+            border: 0;
+
+            background: transparent;
+
+            color: #1769e0;
+
+            cursor: pointer;
+
+            font-size: 8px;
+        }
+
+        /* ================= EXPORT ================= */
+
+        .export-bar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-top: 15px;
+
+            background: #f8fafc;
+
+            border:
+                1px solid #e6eaf0;
+
+            border-radius: 9px;
+
+            padding: 11px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .export-button {
+            height: 32px;
+
+            padding: 0 10px;
+
+            border:
+                1px solid #dfe4ea;
+
+            border-radius: 7px;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:900px) {
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .materials-grid {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-actions {
+                flex-wrap: wrap;
+            }
+
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .export-bar {
+                flex-direction: column;
+                gap: 9px;
+                align-items: stretch;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-button {
+                flex: 1;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="supplier-profile-page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="profile-header">
+
+        <div class="profile-identity">
+
+            <div class="profile-logo">
+                🏢
+            </div>
+
+            <div>
+
+                <h2 id="supplier-name">
+                    شركة الخليج للأنظمة الهيدروليكية
+                </h2>
+
+                <p id="supplier-location">
+                    الرياض — المملكة العربية السعودية
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-status">
+            مورد نشط
+        </div>
+
+    </div>
+
+
+    <!-- ================= ACTIONS ================= -->
+
+    <div class="profile-actions">
+
+        <button
+            class="profile-button primary"
+            onclick="callSupplier()"
+        >
+            📞 اتصال
+        </button>
+
+        <button
+            class="profile-button"
+            onclick="emailSupplier()"
+        >
+            ✉️ إرسال إيميل
+        </button>
+
+        <button
+            class="profile-button"
+            onclick="window.print()"
+        >
+            🖨️ طباعة
+        </button>
+
+        <button
+            class="profile-button"
+            onclick="editSupplier()"
+        >
+            ✏️ تعديل
+        </button>
+
+        <button
+            class="profile-button"
+            onclick="goBack()"
+        >
+            ← رجوع
+        </button>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="profile-layout">
+
+
+        <!-- ================= LEFT ================= -->
+
+        <div>
+
+
+            <!-- CONTACT -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        📋 بيانات المورد
+                    </h3>
+
+                    <span>
+                        Supplier Information
+                    </span>
+
+                </div>
+
+
+                <div class="info-list">
+
+                    <div class="info-row">
+
+                        <span>
+                            اسم المورد
+                        </span>
+
+                        <strong id="info-name">
+                            شركة الخليج للأنظمة الهيدروليكية
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            التصنيف
+                        </span>
+
+                        <strong>
+                            هيدروليك
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            المدينة
+                        </span>
+
+                        <strong>
+                            الرياض
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            رقم الهاتف
+                        </span>
+
+                        <strong id="info-phone">
+                            0500000000
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            البريد الإلكتروني
+                        </span>
+
+                        <strong id="info-email">
+                            info@example.com
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span>
+                            حالة المورد
+                        </span>
+
+                        <strong>
+                            نشط
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <!-- RATING -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        ⭐ تقييم المورد
+                    </h3>
+
+                    <span>
+                        Supplier Rating
+                    </span>
+
+                </div>
+
+
+                <div class="rating-box">
+
+                    <div class="rating-number">
+                        4.8
+                    </div>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <span>
+                        بناءً على التعاملات السابقة
+                    </span>
+
+                </div>
+
+
+                <div class="tags">
+
+                    <span class="tag">
+                        جودة عالية
+                    </span>
+
+                    <span class="tag">
+                        سرعة استجابة
+                    </span>
+
+                    <span class="tag">
+                        أسعار جيدة
+                    </span>
+
+                    <span class="tag">
+                        التزام بالمواعيد
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <!-- NOTES -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        📝 ملاحظات المشتريات
+                    </h3>
+
+                    <span>
+                        Procurement Notes
+                    </span>
+
+                </div>
+
+
+                <textarea
+                    class="notes"
+                    id="supplier-notes"
+                    placeholder="اكتب ملاحظاتك عن المورد..."
+                ></textarea>
+
+
+                <button
+                    class="save-note"
+                    onclick="saveNote()"
+                >
+                    💾 حفظ الملاحظة
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT ================= -->
+
+        <div>
+
+
+            <!-- MATERIALS -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        🧱 المواد التي يوفرها
+                    </h3>
+
+                    <span>
+                        Supplied Materials
+                    </span>
+
+                </div>
+
+
+                <div class="materials-grid">
+
+                    <div class="material-item">
+
+                        <strong>
+                            Hydraulic Hoses
+                        </strong>
+
+                        <span>
+                            خراطيم هيدروليك
+                        </span>
+
+                    </div>
+
+
+                    <div class="material-item">
+
+                        <strong>
+                            Hydraulic Fittings
+                        </strong>
+
+                        <span>
+                            وصلات هيدروليك
+                        </span>
+
+                    </div>
+
+
+                    <div class="material-item">
+
+                        <strong>
+                            Hydraulic Pumps
+                        </strong>
+
+                        <span>
+                            طلمبات هيدروليك
+                        </span>
+
+                    </div>
+
+
+                    <div class="material-item">
+
+                        <strong>
+                            Hydraulic Valves
+                        </strong>
+
+                        <span>
+                            صمامات هيدروليك
+                        </span>
+
+                    </div>
+
+
+                    <div class="material-item">
+
+                        <strong>
+                            Adapters
+                        </strong>
+
+                        <span>
+                            محولات ووصلات
+                        </span>
+
+                    </div>
+
+
+                    <div class="material-item">
+
+                        <strong>
+                            Seals
+                        </strong>
+
+                        <span>
+                            جوانات وأختام
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <!-- PURCHASE HISTORY -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        🛒 سجل التعاملات
+                    </h3>
+
+                    <span>
+                        Purchase History
+                    </span>
+
+                </div>
+
+
+                <div style="overflow-x:auto;">
+
+                    <table class="orders-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    رقم الطلب
+                                </th>
+
+                                <th>
+                                    التاريخ
+                                </th>
+
+                                <th>
+                                    المادة
+                                </th>
+
+                                <th>
+                                    القيمة
+                                </th>
+
+                                <th>
+                                    الحالة
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    PO-1025
+                                </td>
+
+                                <td>
+                                    15/08/2026
+                                </td>
+
+                                <td>
+                                    Hydraulic Hose
+                                </td>
+
+                                <td>
+                                    2,450 SAR
+                                </td>
+
+                                <td>
+                                    <span class="order-status completed">
+                                        مكتمل
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    PO-0987
+                                </td>
+
+                                <td>
+                                    02/07/2026
+                                </td>
+
+                                <td>
+                                    Fittings
+                                </td>
+
+                                <td>
+                                    1,850 SAR
+                                </td>
+
+                                <td>
+                                    <span class="order-status completed">
+                                        مكتمل
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    PO-0941
+                                </td>
+
+                                <td>
+                                    18/06/2026
+                                </td>
+
+                                <td>
+                                    Hydraulic Pump
+                                </td>
+
+                                <td>
+                                    6,700 SAR
+                                </td>
+
+                                <td>
+                                    <span class="order-status pending">
+                                        قيد التنفيذ
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <!-- ATTACHMENTS -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        📎 مرفقات المورد
+                    </h3>
+
+                    <span>
+                        Supplier Documents
+                    </span>
+
+                </div>
+
+
+                <div class="attachments">
+
+                    <div class="attachment">
+
+                        <span>
+                            📄 السجل التجاري
+                        </span>
+
+                        <button>
+                            عرض
+                        </button>
+
+                    </div>
+
+
+                    <div class="attachment">
+
+                        <span>
+                            📄 شهادة ضريبة القيمة المضافة
+                        </span>
+
+                        <button>
+                            عرض
+                        </button>
+
+                    </div>
+
+
+                    <div class="attachment">
+
+                        <span>
+                            📄 شهادة الحساب البنكي
+                        </span>
+
+                        <button>
+                            عرض
+                        </button>
+
+                    </div>
+
+
+                    <div class="attachment">
+
+                        <span>
+                            📄 عرض أسعار سابق
+                        </span>
+
+                        <button>
+                            عرض
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EXPORT ================= -->
+
+    <div class="export-bar">
+
+        <span style="
+            font-size:9px;
+            color:#667085;
+            font-weight:600;
+        ">
+            📄 ملف المورد
+        </span>
+
+
+        <div class="export-buttons">
+
+            <button
+                class="export-button"
+                onclick="window.print()"
+            >
+                🖨️ طباعة
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSupplier('pdf')"
+            >
+                📄 PDF
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSupplier('excel')"
+            >
+                📊 Excel
+            </button>
+
+            <button
+                class="export-button"
+                onclick="exportSupplier('word')"
+            >
+                📝 Word
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * بيانات المورد الحالية
+     */
+
+    const supplier = {
+
+        name:
+            "شركة الخليج للأنظمة الهيدروليكية",
+
+        city:
+            "الرياض",
+
+        phone:
+            "0500000000",
+
+        email:
+            "info@example.com"
+
+    };
+
+
+    /*
+     * الاتصال بالمورد
+     */
+
+    function callSupplier() {
+
+        window.location.href =
+            "tel:" +
+            supplier.phone;
+
+    }
+
+
+    /*
+     * إرسال بريد
+     */
+
+    function emailSupplier() {
+
+        window.location.href =
+            "mailto:" +
+            supplier.email;
+
+    }
+
+
+    /*
+     * تعديل
+     */
+
+    function editSupplier() {
+
+        alert(
+            "سيتم فتح نموذج تعديل بيانات المورد."
+        );
+
+    }
+
+
+    /*
+     * رجوع
+     */
+
+    function goBack() {
+
+        window.history.back();
+
+    }
+
+
+    /*
+     * حفظ الملاحظة
+     */
+
+    function saveNote() {
+
+        const note =
+            document
+                .getElementById(
+                    "supplier-notes"
+                )
+                .value
+                .trim();
+
+
+        if (!note) {
+
+            alert(
+                "اكتب الملاحظة أولاً."
+            );
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+
+            "supplier_note_" +
+            supplier.name,
+
+            note
+
+        );
+
+
+        alert(
+            "تم حفظ الملاحظة بنجاح."
+        );
+
+    }
+
+
+    /*
+     * تحميل الملاحظة المحفوظة
+     */
+
+    const savedNote =
+        localStorage.getItem(
+            "supplier_note_" +
+            supplier.name
+        );
+
+
+    if (savedNote) {
+
+        document
+            .getElementById(
+                "supplier-notes"
+            )
+            .value =
+            savedNote;
+
+    }
+
+
+    /*
+     * التصدير
+     */
+
+    function exportSupplier(
+        type
+    ) {
+
+        if (type === "pdf") {
+
+            alert(
+                "سيتم تجهيز ملف PDF للمورد."
+            );
+
+        }
+
+
+        if (type === "excel") {
+
+            alert(
+                "سيتم تجهيز ملف Excel للمورد."
+            );
+
+        }
+
+
+        if (type === "word") {
+
+            alert(
+                "سيتم تجهيز ملف Word للمورد."
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
