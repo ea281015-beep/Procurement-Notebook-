@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Material Finder | ProcureX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =====================================================
+           MATERIAL FINDER
+        ====================================================== */
+
+        .material-page {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .material-hero {
+            background:
+                linear-gradient(135deg, #101827, #183b6d);
+
+            color: #fff;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            margin-bottom: 20px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .material-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            left: -100px;
+            bottom: -170px;
+
+            background:
+                rgba(255,255,255,.04);
+        }
+
+        .material-hero h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .material-hero p {
+            color: #b9c7dc;
+            font-size: 12px;
+            max-width: 650px;
+        }
+
+        .material-layout {
+            display: grid;
+
+            grid-template-columns:
+                0.9fr 1.1fr;
+
+            gap: 18px;
+        }
+
+        .material-card {
+            background: #fff;
+
+            border: 1px solid #e5e9f0;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(16,24,40,.05);
+
+            padding: 20px;
+        }
+
+        .material-card-title {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 16px;
+
+            padding-bottom: 12px;
+
+            border-bottom:
+                1px solid #eef1f5;
+        }
+
+        .material-card-title h3 {
+            font-size: 15px;
+        }
+
+        .material-card-title span {
+            color: #98a2b3;
+
+            font-size: 9px;
+        }
+
+        /* IMAGE UPLOAD */
+
+        .image-upload {
+            width: 100%;
+
+            min-height: 270px;
+
+            border:
+                2px dashed #cbd5e1;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            background: #fafcff;
+
+            transition: .25s ease;
+
+            overflow: hidden;
+
+            position: relative;
+        }
+
+        .image-upload:hover {
+            border-color: #1769e0;
+
+            background: #f5f9ff;
+        }
+
+        .image-upload-icon {
+            width: 65px;
+            height: 65px;
+
+            border-radius: 17px;
+
+            background: #eaf2ff;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 29px;
+
+            margin-bottom: 12px;
+        }
+
+        .image-upload strong {
+            font-size: 13px;
+        }
+
+        .image-upload span {
+            color: #98a2b3;
+
+            font-size: 9px;
+
+            margin-top: 5px;
+        }
+
+        #material-image-input {
+            display: none;
+        }
+
+        #image-preview {
+            display: none;
+
+            width: 100%;
+            height: 270px;
+
+            object-fit: contain;
+
+            background: #f8fafc;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #344054;
+        }
+
+        .required {
+            color: #f04438;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            border:
+                1px solid #dce2ea;
+
+            border-radius: 9px;
+
+            background: #fbfcfe;
+
+            padding:
+                11px 12px;
+
+            font-size: 11px;
+
+            color: #182230;
+
+            outline: none;
+
+            transition: .2s ease;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #1769e0;
+
+            background: #fff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(23,105,224,.08);
+        }
+
+        /* MATERIAL TYPE */
+
+        .material-types {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 7px;
+        }
+
+        .material-type {
+            border:
+                1px solid #e0e5ec;
+
+            background: #fff;
+
+            border-radius: 8px;
+
+            padding: 8px 5px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            font-size: 9px;
+
+            color: #667085;
+
+            transition: .2s ease;
+        }
+
+        .material-type:hover {
+            border-color: #1769e0;
+
+            color: #1769e0;
+        }
+
+        .material-type.selected {
+            background: #eaf2ff;
+
+            border-color: #1769e0;
+
+            color: #1769e0;
+
+            font-weight: 700;
+        }
+
+        /* ACTIONS */
+
+        .material-actions {
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+
+            padding-top: 16px;
+
+            border-top:
+                1px solid #eef1f5;
+        }
+
+        .action-button {
+            height: 42px;
+
+            border-radius: 9px;
+
+            padding:
+                0 16px;
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .search-material {
+            flex: 1;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1769e0,
+                    #2d7be8
+                );
+
+            box-shadow:
+                0 6px 15px
+                rgba(23,105,224,.18);
+        }
+
+        .search-material:hover {
+            transform: translateY(-1px);
+        }
+
+        .secondary-button {
+            background: #f2f4f7;
+
+            color: #344054;
+        }
+
+        .secondary-button:hover {
+            background: #e9edf2;
+        }
+
+        /* RESULT */
+
+        .result-section {
+            display: none;
+
+            margin-top: 20px;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 13px;
+        }
+
+        .result-header h3 {
+            font-size: 15px;
+        }
+
+        .confidence {
+            background: #e9f8f1;
+
+            color: #087443;
+
+            padding:
+                6px 10px;
+
+            border-radius: 7px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .result-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 9px;
+        }
+
+        .result-item {
+            background: #f8fafc;
+
+            border:
+                1px solid #edf0f4;
+
+            border-radius: 9px;
+
+            padding: 11px;
+        }
+
+        .result-item span {
+            display: block;
+
+            color: #98a2b3;
+
+            font-size: 8px;
+        }
+
+        .result-item strong {
+            display: block;
+
+            font-size: 10px;
+
+            margin-top: 3px;
+        }
+
+        /* EXPORT BAR */
+
+        .export-bar {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 16px;
+
+            padding:
+                11px 13px;
+
+            background: #f8fafc;
+
+            border:
+                1px solid #e6eaf0;
+
+            border-radius: 10px;
+        }
+
+        .export-title {
+            font-size: 9px;
+
+            color: #667085;
+
+            font-weight: 600;
+        }
+
+        .export-buttons {
+            display: flex;
+
+            gap: 6px;
+        }
+
+        .export-button {
+            height: 32px;
+
+            padding:
+                0 10px;
+
+            border:
+                1px solid #dfe4ea;
+
+            border-radius: 7px;
+
+            background: #fff;
+
+            color: #344054;
+
+            cursor: pointer;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+        .export-button:hover {
+            border-color: #1769e0;
+
+            color: #1769e0;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .material-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .material-hero {
+                padding: 21px;
+            }
+
+            .material-hero h2 {
+                font-size: 21px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .material-types {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .material-actions {
+                flex-direction: column;
+            }
+
+            .export-bar {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-button {
+                flex: 1;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="material-page">
+
+        <!-- HERO -->
+
+        <div class="material-hero">
+
+            <h2>
+                🧱 Material Finder
+            </h2>
+
+            <p>
+                ابحث عن المادة أو قطعة الغيار باستخدام
+                الصورة أو الاسم أو رقم القطعة، وحدد نوع
+                المادة والمدينة للوصول إلى الموردين المناسبين.
+            </p>
+
+        </div>
+
+
+        <!-- MAIN -->
+
+        <div class="material-layout">
+
+
+            <!-- IMAGE -->
+
+            <div class="material-card">
+
+                <div class="material-card-title">
+
+                    <div>
+                        <h3>
+                            📷 صورة المادة
+                        </h3>
+
+                        <span>
+                            Material Image
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <label
+                    class="image-upload"
+                    for="material-image-input"
+                    id="image-upload-area"
+                >
+
+                    <div
+                        class="image-upload-icon"
+                        id="upload-icon"
+                    >
+                        📷
+                    </div>
+
+                    <strong id="upload-title">
+                        ارفع صورة المادة
+                    </strong>
+
+                    <span id="upload-description">
+                        PNG / JPG / WEBP — يمكنك سحب الصورة هنا
+                    </span>
+
+                    <img
+                        id="image-preview"
+                        alt="Material Preview"
+                    >
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="material-image-input"
+                    accept="image/png,image/jpeg,image/webp"
+                >
+
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div class="material-card">
+
+                <div class="material-card-title">
+
+                    <div>
+                        <h3>
+                            📋 بيانات المادة
+                        </h3>
+
+                        <span>
+                            Material Information
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            اسم المادة
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="material-name"
+                            placeholder="مثال: Hydraulic Hose"
+                        >
+
+                    </div>
+
+
+                    <!-- PART NUMBER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Part Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="part-number"
+                            placeholder="رقم القطعة"
+                        >
+
+                    </div>
+
+
+                    <!-- MATERIAL TYPE -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            نوع المادة
+                            <span class="required">*</span>
+                        </label>
+
+
+                        <div
+                            class="material-types"
+                            id="material-types"
+                        >
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Spare Parts"
+                            >
+                                قطع غيار
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Mechanical"
+                            >
+                                ميكانيكا
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Electrical"
+                            >
+                                كهرباء
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Hydraulic"
+                            >
+                                هيدروليك
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Filters"
+                            >
+                                فلاتر
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Hoses"
+                            >
+                                خراطيم
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Construction"
+                            >
+                                مواد إنشائية
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Raw Materials"
+                            >
+                                مواد خام
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Tools"
+                            >
+                                العدد والأدوات
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Safety"
+                            >
+                                سلامة
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Lubricants"
+                            >
+                                زيوت وشحوم
+                            </button>
+
+                            <button
+                                type="button"
+                                class="material-type"
+                                data-type="Other"
+                            >
+                                أخرى
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            المدينة
+                            <span class="required">*</span>
+                        </label>
+
+                        <select id="material-city">
+
+                            <option value="">
+                                اختر المدينة
+                            </option>
+
+                            <option value="Riyadh">
+                                الرياض
+                            </option>
+
+                            <option value="Jeddah">
+                                جدة
+                            </option>
+
+                            <option value="Dammam">
+                                الدمام
+                            </option>
+
+                            <option value="Khobar">
+                                الخبر
+                            </option>
+
+                            <option value="Makkah">
+                                مكة
+                            </option>
+
+                            <option value="Madinah">
+                                المدينة المنورة
+                            </option>
+
+                            <option value="Other">
+                                أخرى
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MODEL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            الموديل / الاستخدام
+                        </label>
+
+                        <input
+                            type="text"
+                            id="material-model"
+                            placeholder="Model / Application"
+                        >
+
+                    </div>
+
+
+                    <!-- SPECIFICATION -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            المواصفات
+                        </label>
+
+                        <textarea
+                            id="material-specification"
+                            placeholder="اكتب المقاس، الضغط، الخامة، المواصفات الفنية أو أي معلومات مهمة..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="material-actions">
+
+                    <button
+                        class="action-button search-material"
+                        id="search-material-button"
+                    >
+                        🔎 البحث عن الموردين
+                    </button>
+
+                    <button
+                        class="action-button secondary-button"
+                        id="save-material-button"
+                    >
+                        ⭐ حفظ
+                    </button>
+
+                    <button
+                        class="action-button secondary-button"
+                        id="clear-material-button"
+                    >
+                        مسح
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div
+            class="result-section"
+            id="material-result"
+        >
+
+            <div class="material-card">
+
+                <div class="result-header">
+
+                    <div>
+
+                        <h3>
+                            🔍 نتيجة تحليل المادة
+                        </h3>
+
+                        <span
+                            style="
+                                color:#98a2b3;
+                                font-size:9px;
+                            "
+                        >
+                            Material Identification Result
+                        </span>
+
+                    </div>
+
+                    <div class="confidence">
+                        Confidence 92%
+                    </div>
+
+                </div>
+
+
+                <div class="result-grid">
+
+                    <div class="result-item">
+
+                        <span>
+                            اسم المادة
+                        </span>
+
+                        <strong id="result-name">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+                            نوع المادة
+                        </span>
+
+                        <strong id="result-type">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+                            Part Number
+                        </span>
+
+                        <strong id="result-part">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+                            المدينة
+                        </span>
+
+                        <strong id="result-city">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXPORT -->
+
+                <div class="export-bar">
+
+                    <div class="export-title">
+                        📄 إجراءات المستند
+                    </div>
+
+                    <div class="export-buttons">
+
+                        <button
+                            class="export-button"
+                            onclick="window.print()"
+                        >
+                            🖨️ طباعة
+                        </button>
+
+                        <button
+                            class="export-button"
+                            id="export-pdf"
+                        >
+                            📄 PDF
+                        </button>
+
+                        <button
+                            class="export-button"
+                            id="export-excel"
+                        >
+                            📊 Excel
+                        </button>
+
+                        <button
+                            class="export-button"
+                            id="export-word"
+                        >
+                            📝 Word
+                        </button>
+
+                        <button
+                            class="export-button"
+                            id="download-material"
+                        >
+                            📥 تحميل
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUPPLIERS -->
+
+        <div
+            class="result-section"
+            id="supplier-results"
+        >
+
+            <div class="material-card">
+
+                <div class="material-card-title">
+
+                    <div>
+
+                        <h3>
+                            🏢 الموردون المقترحون
+                        </h3>
+
+                        <span>
+                            Suggested Suppliers
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="supplier-results-content"
+                    style="
+                        color:#667085;
+                        font-size:11px;
+                        padding:20px 0;
+                        text-align:center;
+                    "
+                >
+
+                    سيتم عرض الموردين بعد ربط
+                    قاعدة البيانات ومحرك البحث.
+
+                </div>
+
+
+                <div class="export-bar">
+
+                    <div class="export-title">
+                        📄 تصدير نتائج الموردين
+                    </div>
+
+                    <div class="export-buttons">
+
+                        <button
+                            class="export-button"
+                            onclick="window.print()"
+                        >
+                            🖨️ طباعة
+                        </button>
+
+                        <button
+                            class="export-button"
+                            onclick="materialExport('pdf')"
+                        >
+                            📄 PDF
+                        </button>
+
+                        <button
+                            class="export-button"
+                            onclick="materialExport('excel')"
+                        >
+                            📊 Excel
+                        </button>
+
+                        <button
+                            class="export-button"
+                            onclick="materialExport('word')"
+                        >
+                            📝 Word
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        let selectedMaterialType = "";
+
+        let materialImageData = "";
+
+
+        /* =====================================================
+           IMAGE UPLOAD
+        ====================================================== */
+
+        const imageInput =
+            document.getElementById(
+                "material-image-input"
+            );
+
+        const imagePreview =
+            document.getElementById(
+                "image-preview"
+            );
+
+        const uploadIcon =
+            document.getElementById(
+                "upload-icon"
+            );
+
+        const uploadTitle =
+            document.getElementById(
+                "upload-title"
+            );
+
+        const uploadDescription =
+            document.getElementById(
+                "upload-description"
+            );
+
+
+        imageInput.addEventListener(
+            "change",
+            handleImage
+        );
+
+
+        function handleImage(event) {
+
+            const file =
+                event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                alert(
+                    "من فضلك اختر صورة صحيحة."
+                );
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = function(e) {
+
+                materialImageData =
+                    e.target.result;
+
+                imagePreview.src =
+                    materialImageData;
+
+                imagePreview.style.display =
+                    "block";
+
+                uploadIcon.style.display =
+                    "none";
+
+                uploadTitle.style.display =
+                    "none";
+
+                uploadDescription.style.display =
+                    "none";
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+        }
+
+
+        /* =====================================================
+           MATERIAL TYPE
+        ====================================================== */
+
+        const materialTypes =
+            document.querySelectorAll(
+                ".material-type"
+            );
+
+
+        materialTypes.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    materialTypes.forEach(
+                        item => {
+                            item.classList.remove(
+                                "selected"
+                            );
+                        }
+                    );
+
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+
+                    selectedMaterialType =
+                        button.dataset.type;
+
+                }
+            );
+
+        });
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        const searchButton =
+            document.getElementById(
+                "search-material-button"
+            );
+
+
+        searchButton.addEventListener(
+            "click",
+            searchMaterial
+        );
+
+
+        function searchMaterial() {
+
+            const name =
+                document
+                    .getElementById(
+                        "material-name"
+                    )
+                    .value
+                    .trim();
+
+
+            const partNumber =
+                document
+                    .getElementById(
+                        "part-number"
+                    )
+                    .value
+                    .trim();
+
+
+            const city =
+                document
+                    .getElementById(
+                        "material-city"
+                    )
+                    .value;
+
+
+            const model =
+                document
+                    .getElementById(
+                        "material-model"
+                    )
+                    .value
+                    .trim();
+
+
+            const specification =
+                document
+                    .getElementById(
+                        "material-specification"
+                    )
+                    .value
+                    .trim();
+
+
+            /* REQUIRED */
+
+            if (!name) {
+
+                showMaterialMessage(
+                    "اكتب اسم المادة أولاً.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            if (!selectedMaterialType) {
+
+                showMaterialMessage(
+                    "اختر نوع المادة أولاً.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            if (!city) {
+
+                showMaterialMessage(
+                    "اختر المدينة أولاً.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            /* RESULT */
+
+            document
+                .getElementById(
+                    "result-name"
+                )
+                .textContent =
+                name;
+
+
+            document
+                .getElementById(
+                    "result-type"
+                )
+                .textContent =
+                selectedMaterialType;
+
+
+            document
+                .getElementById(
+                    "result-part"
+                )
+                .textContent =
+                partNumber || "غير محدد";
+
+
+            document
+                .getElementById(
+                    "result-city"
+                )
+                .textContent =
+                getArabicCity(city);
+
+
+            document
+                .getElementById(
+                    "material-result"
+                )
+                .classList.add("show");
+
+
+            document
+                .getElementById(
+                    "supplier-results"
+                )
+                .classList.add("show");
+
+
+            /* SAVE SEARCH */
+
+            const searchData = {
+
+                name,
+
+                type:
+                    selectedMaterialType,
+
+                partNumber,
+
+                city,
+
+                model,
+
+                specification,
+
+                image:
+                    materialImageData,
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "procurex_material_search",
+                JSON.stringify(searchData)
+            );
+
+
+            showMaterialMessage(
+                "تم تحليل بيانات المادة وتجهيز البحث عن الموردين.",
+                "success"
+            );
+
+        }
+
+
+        /* =====================================================
+           CITY
+        ====================================================== */
+
+        function getArabicCity(city) {
+
+            const cities = {
+
+                Riyadh: "الرياض",
+
+                Jeddah: "جدة",
+
+                Dammam: "الدمام",
+
+                Khobar: "الخبر",
+
+                Makkah: "مكة",
+
+                Madinah:
+                    "المدينة المنورة",
+
+                Other: "أخرى"
+
+            };
+
+            return cities[city] || city;
+
+        }
+
+
+        /* =====================================================
+           SAVE MATERIAL
+        ====================================================== */
+
+        const saveButton =
+            document.getElementById(
+                "save-material-button"
+            );
+
+
+        saveButton.addEventListener(
+            "click",
+            saveMaterial
+        );
+
+
+        function saveMaterial() {
+
+            const name =
+                document
+                    .getElementById(
+                        "material-name"
+                    )
+                    .value
+                    .trim();
+
+
+            if (!name) {
+
+                showMaterialMessage(
+                    "اكتب اسم المادة قبل الحفظ.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            const material = {
+
+                id:
+                    "MAT-" +
+                    Date.now(),
+
+                name,
+
+                type:
+                    selectedMaterialType,
+
+                partNumber:
+                    document
+                        .getElementById(
+                            "part-number"
+                        )
+                        .value
+                        .trim(),
+
+                city:
+                    document
+                        .getElementById(
+                            "material-city"
+                        )
+                        .value,
+
+                model:
+                    document
+                        .getElementById(
+                            "material-model"
+                        )
+                        .value
+                        .trim(),
+
+                specification:
+                    document
+                        .getElementById(
+                            "material-specification"
+                        )
+                        .value
+                        .trim(),
+
+                image:
+                    materialImageData,
+
+                createdAt:
+                    new Date().toISOString()
+
+            };
+
+
+            let materials =
+                JSON.parse(
+                    localStorage.getItem(
+                        "procurex_materials"
+                    )
+                ) || [];
+
+
+            materials.push(material);
+
+
+            localStorage.setItem(
+                "procurex_materials",
+                JSON.stringify(materials)
+            );
+
+
+            showMaterialMessage(
+                "تم حفظ المادة بنجاح.",
+                "success"
+            );
+
+        }
+
+
+        /* =====================================================
+           CLEAR
+        ====================================================== */
+
+        document
+            .getElementById(
+                "clear-material-button"
+            )
+            .addEventListener(
+                "click",
+                clearMaterial
+            );
+
+
+        function clearMaterial() {
+
+            document
+                .getElementById(
+                    "material-name"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "part-number"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "material-city"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "material-model"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "material-specification"
+                )
+                .value = "";
+
+
+            materialTypes.forEach(
+                item => {
+                    item.classList.remove(
+                        "selected"
+                    );
+                }
+            );
+
+
+            selectedMaterialType = "";
+
+
+            materialImageData = "";
+
+
+            imageInput.value = "";
+
+
+            imagePreview.src = "";
+
+            imagePreview.style.display =
+                "none";
+
+
+            uploadIcon.style.display =
+                "flex";
+
+            uploadTitle.style.display =
+                "block";
+
+            uploadDescription.style.display =
+                "block";
+
+
+            document
+                .getElementById(
+                    "material-result"
+                )
+                .classList.remove(
+                    "show"
+                );
+
+
+            document
+                .getElementById(
+                    "supplier-results"
+                )
+                .classList.remove(
+                    "show"
+                );
+
+        }
+
+
+        /* =====================================================
+           EXPORT
+        ====================================================== */
+
+        function materialExport(type) {
+
+            const data =
+                localStorage.getItem(
+                    "procurex_material_search"
+                );
+
+
+            if (!data) {
+
+                showMaterialMessage(
+                    "قم بعمل بحث أولاً قبل التصدير.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            if (type === "pdf") {
+
+                showMaterialMessage(
+                    "تصدير PDF سيتم ربطه بمحرك المستندات.",
+                    "info"
+                );
+
+                return;
+            }
+
+
+            if (type === "excel") {
+
+                showMaterialMessage(
+                    "تصدير Excel سيتم ربطه بمحرك المستندات.",
+                    "info"
+                );
+
+                return;
+            }
+
+
+            if (type === "word") {
+
+                showMaterialMessage(
+                    "تصدير Word سيتم ربطه بمحرك المستندات.",
+                    "info"
+                );
+
+                return;
+            }
+
+        }
+
+
+        /* =====================================================
+           DOWNLOAD JSON
+        ====================================================== */
+
+        document
+            .getElementById(
+                "download-material"
+            )
+            .addEventListener(
+                "click",
+                downloadMaterial
+            );
+
+
+        function downloadMaterial() {
+
+            const data =
+                localStorage.getItem(
+                    "procurex_material_search"
+                );
+
+
+            if (!data) {
+
+                showMaterialMessage(
+                    "قم بعمل بحث أولاً.",
+                    "warning"
+                );
+
+                return;
+            }
+
+
+            const blob =
+                new Blob(
+                    [data],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href = url;
+
+            link.download =
+                "procurex-material.json";
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            link.remove();
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ====================================================== */
+
+        function showMaterialMessage(
+            message,
+            type
+        ) {
+
+            if (
+                window.ProcureX &&
+                typeof window.ProcureX.showToast ===
+                    "function"
+            ) {
+
+                window.ProcureX.showToast(
+                    message,
+                   
