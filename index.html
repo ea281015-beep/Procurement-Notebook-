@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProcureX | Procurement Intelligence</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         APP
+    ========================== -->
+    <div class="app">
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-logo">PX</div>
+
+                <div>
+                    <h2>ProcureX</h2>
+                    <span>Procurement Intelligence</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+
+                <span class="sidebar-title">
+                    WORKSPACE
+                </span>
+
+                <button class="nav-item active" data-page="dashboard">
+                    <span>🏠</span>
+                    <span>
+                        لوحة التحكم
+                        <small>Dashboard</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="supplier-finder">
+                    <span>🔎</span>
+                    <span>
+                        البحث عن الموردين
+                        <small>Supplier Finder</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="material-finder">
+                    <span>🧱</span>
+                    <span>
+                        البحث عن المواد
+                        <small>Material Finder</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="suppliers">
+                    <span>🏢</span>
+                    <span>
+                        مورديّ
+                        <small>My Suppliers</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="prices">
+                    <span>💰</span>
+                    <span>
+                        ذكاء الأسعار
+                        <small>Price Intelligence</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="negotiation">
+                    <span>🤝</span>
+                    <span>
+                        مساعد التفاوض
+                        <small>Negotiation Assistant</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="rfq">
+                    <span>📧</span>
+                    <span>
+                        طلب عرض سعر
+                        <small>RFQ Generator</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="orders">
+                    <span>🛒</span>
+                    <span>
+                        أوامر الشراء
+                        <small>Purchase Orders</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="risk">
+                    <span>⚠️</span>
+                    <span>
+                        مخاطر المشتريات
+                        <small>Risk Radar</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="alternatives">
+                    <span>🔄</span>
+                    <span>
+                        الموردون البدلاء
+                        <small>Alternative Suppliers</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="memory">
+                    <span>🧠</span>
+                    <span>
+                        ذاكرة المشتريات
+                        <small>Procurement Memory</small>
+                    </span>
+                </button>
+
+                <span class="sidebar-title">
+                    ANALYTICS
+                </span>
+
+                <button class="nav-item" data-page="analytics">
+                    <span>📊</span>
+                    <span>
+                        التحليلات
+                        <small>Analytics</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="copilot">
+                    <span>🤖</span>
+                    <span>
+                        مساعد المشتريات
+                        <small>Procurement Copilot</small>
+                    </span>
+                </button>
+
+                <span class="sidebar-title">
+                    SYSTEM
+                </span>
+
+                <button class="nav-item" data-page="documents">
+                    <span>📄</span>
+                    <span>
+                        المستندات
+                        <small>Documents</small>
+                    </span>
+                </button>
+
+                <button class="nav-item" data-page="settings">
+                    <span>⚙️</span>
+                    <span>
+                        الإعدادات
+                        <small>Settings</small>
+                    </span>
+                </button>
+
+            </div>
+
+            <!-- USER -->
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    ع
+                </div>
+
+                <div class="user-info">
+                    <strong>عبدالله الشحات</strong>
+                    <span>Procurement Officer</span>
+                </div>
+
+                <button class="user-menu">
+                    ⋮
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div class="mobile-menu">
+                    ☰
+                </div>
+
+                <div class="page-heading">
+
+                    <h1 id="page-title">
+                        لوحة التحكم
+                    </h1>
+
+                    <p id="page-description">
+                        مركز المشتريات الذكي الخاص بك
+                    </p>
+
+                </div>
+
+                <div class="topbar-actions">
+
+                    <button class="icon-button">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <button
+                        class="language-button"
+                        id="language-toggle"
+                    >
+                        العربية
+                        <span>⌄</span>
+                    </button>
+
+                    <div class="top-user">
+
+                        <div class="top-avatar">
+                            ع
+                        </div>
+
+                        <div>
+                            <strong>عبدالله</strong>
+                            <span>Procurement</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =========================
+                 PAGE CONTAINER
+            ========================== -->
+            <div class="page-container">
+
+
+                <!-- =====================================
+                     DASHBOARD
+                ====================================== -->
+                <section
+                    class="page active"
+                    id="dashboard"
+                >
+
+                    <!-- Welcome -->
+                    <div class="welcome-card">
+
+                        <div>
+
+                            <span class="welcome-label">
+                                Procurement Intelligence
+                            </span>
+
+                            <h2>
+                                صباح الخير، عبدالله 👋
+                            </h2>
+
+                            <p>
+                                كل أدوات المشتريات المهمة في مكان واحد،
+                                بجانب الـERP وليس بدلًا منه.
+                            </p>
+
+                        </div>
+
+                        <div class="welcome-icon">
+                            📦
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATISTICS -->
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon blue">
+                                🏢
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    الموردون
+                                </span>
+
+                                <strong>
+                                    128
+                                </strong>
+
+                                <small class="positive">
+                                    ↑ 18% هذا الشهر
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon green">
+                                💰
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    إجمالي الوفر
+                                </span>
+
+                                <strong>
+                                    24,850
+                                    <small>SAR</small>
+                                </strong>
+
+                                <small class="positive">
+                                    ↑ 12.4%
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon orange">
+                                📧
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    عروض الأسعار
+                                </span>
+
+                                <strong>
+                                    37
+                                </strong>
+
+                                <small>
+                                    هذا الشهر
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon red">
+                                ⚠️
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    التنبيهات
+                                </span>
+
+                                <strong>
+                                    5
+                                </strong>
+
+                                <small class="negative">
+                                    تحتاج مراجعة
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- QUICK SEARCH -->
+                    <div class="quick-search-card">
+
+                        <div class="section-heading">
+
+                            <div>
+
+                                <h2>
+                                    🔎 بحث سريع
+                                </h2>
+
+                                <p>
+                                    ابحث عن مادة أو مورد أو رقم قطعة
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="quick-search">
+
+                            <input
+                                type="text"
+                                placeholder="مثال: Hydraulic Hose أو Bearing أو Part Number"
+                                id="global-search"
+                            >
+
+                            <select id="global-city">
+
+                                <option>
+                                    كل المدن
+                                </option>
+
+                                <option>
+                                    الرياض
+                                </option>
+
+                                <option>
+                                    جدة
+                                </option>
+
+                                <option>
+                                    الدمام
+                                </option>
+
+                                <option>
+                                    الخبر
+                                </option>
+
+                                <option>
+                                    مكة
+                                </option>
+
+                            </select>
+
+                            <button
+                                class="primary-button"
+                                id="global-search-button"
+                            >
+                                🔎 بحث
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DASHBOARD GRID -->
+                    <div class="dashboard-grid">
+
+
+                        <!-- Recent Suppliers -->
+                        <div class="content-card">
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <h3>
+                                        أحدث الموردين
+                                    </h3>
+
+                                    <span>
+                                        Recently Added Suppliers
+                                    </span>
+
+                                </div>
+
+                                <button
+                                    class="text-button"
+                                    data-go="suppliers"
+                                >
+                                    عرض الكل →
+                                </button>
+
+                            </div>
+
+
+                            <div class="supplier-list">
+
+                                <div class="supplier-row">
+
+                                    <div class="supplier-logo">
+                                        GI
+                                    </div>
+
+                                    <div class="supplier-info">
+
+                                        <strong>
+                                            Gulf Industrial Supply
+                                        </strong>
+
+                                        <span>
+                                            Hydraulic • Riyadh
+                                        </span>
+
+                                    </div>
+
+                                    <div class="rating">
+                                        ⭐ 4.8
+                                    </div>
+
+                                </div>
+
+
+                                <div class="supplier-row">
+
+                                    <div class="supplier-logo">
+                                        AN
+                                    </div>
+
+                                    <div class="supplier-info">
+
+                                        <strong>
+                                            Al Noor Trading
+                                        </strong>
+
+                                        <span>
+                                            Electrical • Riyadh
+                                        </span>
+
+                                    </div>
+
+                                    <div class="rating">
+                                        ⭐ 4.5
+                                    </div>
+
+                                </div>
+
+
+                                <div class="supplier-row">
+
+                                    <div class="supplier-logo">
+                                        AP
+                                    </div>
+
+                                    <div class="supplier-info">
+
+                                        <strong>
+                                            Advanced Parts Co.
+                                        </strong>
+
+                                        <span>
+                                            Spare Parts • Dammam
+                                        </span>
+
+                                    </div>
+
+                                    <div class="rating">
+                                        ⭐ 4.7
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Procurement Alerts -->
+                        <div class="content-card">
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <h3>
+                                        تنبيهات المشتريات
+                                    </h3>
+
+                                    <span>
+                                        Procurement Alerts
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="alert-list">
+
+                                <div class="alert-item warning">
+
+                                    <div>
+                                        ⚠️
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            3 RFQs بدون رد
+                                        </strong>
+
+                                        <span>
+                                            تحتاج إلى متابعة الموردين
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="alert-item danger">
+
+                                    <div>
+                                        💰
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            ارتفاع في سعر مادة
+                                        </strong>
+
+                                        <span>
+                                            السعر أعلى من المتوسط بـ 11.8%
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="alert-item info">
+
+                                    <div>
+                                        🔎
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            2 أصناف بمورد واحد
+                                        </strong>
+
+                                        <span>
+                                            يُفضل البحث عن مورد بديل
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVITY -->
+                    <div class="content-card activity-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    نشاط المشتريات
+                                </h3>
+
+                                <span>
+                                    Procurement Activity
+                                </span>
+
+                            </div>
+
+                            <select class="small-select">
+
+                                <option>
+                                    آخر 30 يوم
+                                </option>
+
+                                <option>
+                                    آخر 7 أيام
+                                </option>
+
+                                <option>
+                                    هذا العام
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="fake-chart">
+
+                            <div class="chart-line">
+                                <span style="height:35%"></span>
+                                <span style="height:48%"></span>
+                                <span style="height:42%"></span>
+                                <span style="height:60%"></span>
+                                <span style="height:54%"></span>
+                                <span style="height:72%"></span>
+                                <span style="height:65%"></span>
+                                <span style="height:84%"></span>
+                                <span style="height:76%"></span>
+                                <span style="height:92%"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- =====================================
+                     OTHER PAGES PLACEHOLDERS
+                ====================================== -->
+
+                <section
+                    class="page"
+                    id="supplier-finder"
+                >
+                    <div class="page-placeholder">
+                        <div>🔎</div>
+                        <h2>
+                            Supplier Finder
+                        </h2>
+                        <p>
+                            البحث الذكي عن الموردين حسب المادة والمدينة
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="material-finder"
+                >
+                    <div class="page-placeholder">
+                        <div>🧱</div>
+                        <h2>
+                            Material Finder
+                        </h2>
+                        <p>
+                            البحث عن المواد وقطع الغيار بالصورة أو الاسم
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="suppliers"
+                >
+                    <div class="page-placeholder">
+                        <div>🏢</div>
+                        <h2>
+                            My Suppliers
+                        </h2>
+                        <p>
+                            قاعدة بيانات الموردين الخاصة بك
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="prices"
+                >
+                    <div class="page-placeholder">
+                        <div>💰</div>
+                        <h2>
+                            Price Intelligence
+                        </h2>
+                        <p>
+                            تحليل ومقارنة أسعار الشراء
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="negotiation"
+                >
+                    <div class="page-placeholder">
+                        <div>🤝</div>
+                        <h2>
+                            Negotiation Assistant
+                        </h2>
+                        <p>
+                            مساعد التفاوض وتحليل السعر المستهدف
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="rfq"
+                >
+                    <div class="page-placeholder">
+                        <div>📧</div>
+                        <h2>
+                            RFQ Generator
+                        </h2>
+                        <p>
+                            إنشاء طلبات عروض الأسعار
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="orders"
+                >
+                    <div class="page-placeholder">
+                        <div>🛒</div>
+                        <h2>
+                            Purchase Orders
+                        </h2>
+                        <p>
+                            إنشاء وتحويل وطباعة أوامر الشراء
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="risk"
+                >
+                    <div class="page-placeholder">
+                        <div>⚠️</div>
+                        <h2>
+                            Risk Radar
+                        </h2>
+                        <p>
+                            مراقبة مخاطر الموردين والمشتريات
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="alternatives"
+                >
+                    <div class="page-placeholder">
+                        <div>🔄</div>
+                        <h2>
+                            Alternative Suppliers
+                        </h2>
+                        <p>
+                            البحث عن الموردين البدلاء
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="memory"
+                >
+                    <div class="page-placeholder">
+                        <div>🧠</div>
+                        <h2>
+                            Procurement Memory
+                        </h2>
+                        <p>
+                            ذاكرة وخبرة المشتريات
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="analytics"
+                >
+                    <div class="page-placeholder">
+                        <div>📊</div>
+                        <h2>
+                            Analytics
+                        </h2>
+                        <p>
+                            تحليلات أداء المشتريات والتوفير
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="copilot"
+                >
+                    <div class="page-placeholder">
+                        <div>🤖</div>
+                        <h2>
+                            Procurement Copilot
+                        </h2>
+                        <p>
+                            مساعد المشتريات الذكي
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="documents"
+                >
+                    <div class="page-placeholder">
+                        <div>📄</div>
+                        <h2>
+                            Documents
+                        </h2>
+                        <p>
+                            طباعة وتحميل PDF وExcel وWord
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    class="page"
+                    id="settings"
+                >
+                    <div class="page-placeholder">
+                        <div>⚙️</div>
+                        <h2>
+                            Settings
+                        </h2>
+                        <p>
+                            إعدادات النظام والحساب واللغة
+                        </p>
+                    </div>
+                </section>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>
