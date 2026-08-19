@@ -2,1387 +2,590 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Material Finder | مساعد عبدالله الشحات للمشتريات</title>
 
-    <title>Material Finder | ProcureX</title>
-
-    <!-- IMPORTANT:
-         data.store.js must be loaded BEFORE this page script -->
-    <script src="data.store.js"></script>
+    <link rel="stylesheet" href="style.css">
 
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-
-            background: #f5f7fa;
-
-            color: #182230;
-        }
-
-
         .material-page {
-
-            width: min(
-                1250px,
-                calc(100% - 30px)
-            );
-
-            margin: 25px auto 50px;
-
+            max-width: 1250px;
+            margin: auto;
         }
-
-
-        /* =====================================================
-           HERO
-        ===================================================== */
 
         .material-hero {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #101827,
-                    #183b6d
-                );
-
-            color: white;
-
-            border-radius: 18px;
-
+            background: linear-gradient(135deg, #101827, #183b6d);
+            color: #fff;
+            border-radius: 20px;
             padding: 30px;
-
             margin-bottom: 20px;
-
             position: relative;
-
             overflow: hidden;
-
-            box-shadow:
-                0 10px 30px
-                rgba(16,24,40,.12);
-
         }
-
-
-        .material-hero::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 300px;
-            height: 300px;
-
-            border-radius: 50%;
-
-            left: -120px;
-            bottom: -190px;
-
-            background:
-                rgba(255,255,255,.05);
-
-        }
-
 
         .material-hero h1 {
-
-            position: relative;
-
-            z-index: 2;
-
             margin: 0 0 8px;
-
-            font-size: 25px;
-
+            font-size: 27px;
         }
-
 
         .material-hero p {
-
-            position: relative;
-
-            z-index: 2;
-
             margin: 0;
-
-            color: #c4d0e2;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-
-            max-width: 760px;
-
+            color: #c8d4e7;
+            font-size: 13px;
+            line-height: 1.9;
         }
 
+        .material-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 18px;
+        }
 
-        /* =====================================================
-           CARDS
-        ===================================================== */
-
-        .material-card {
-
-            background: white;
-
-            border:
-                1px solid #e5e9f0;
-
-            border-radius: 15px;
-
+        .card {
+            background: #fff;
+            border: 1px solid #e5e9f0;
+            border-radius: 16px;
             padding: 20px;
-
-            box-shadow:
-                0 5px 18px
-                rgba(16,24,40,.05);
-
-            margin-bottom: 20px;
-
+            box-shadow: 0 5px 20px rgba(16, 24, 40, .05);
         }
-
 
         .card-title {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 15px;
-
-            border-bottom:
-                1px solid #eef1f5;
-
-            padding-bottom: 13px;
-
-            margin-bottom: 17px;
-
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf0f4;
         }
-
 
         .card-title h2 {
-
             margin: 0;
-
             font-size: 16px;
-
+            color: #182230;
         }
-
 
         .card-title span {
-
+            display: block;
+            margin-top: 4px;
             color: #98a2b3;
-
-            font-size: 9px;
-
-        }
-
-
-        /* =====================================================
-           SEARCH AREA
-        ===================================================== */
-
-        .search-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr 1fr;
-
-            gap: 12px;
-
-        }
-
-
-        .form-group {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 6px;
-
-        }
-
-
-        .form-group.full {
-
-            grid-column:
-                1 / -1;
-
-        }
-
-
-        .form-group label {
-
             font-size: 10px;
-
-            font-weight: 700;
-
-            color: #344054;
-
         }
-
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-
-            width: 100%;
-
-            border:
-                1px solid #dce2ea;
-
-            border-radius: 9px;
-
-            background: #fbfcfe;
-
-            padding: 11px 12px;
-
-            font-size: 11px;
-
-            color: #182230;
-
-            outline: none;
-
-            transition: .2s;
-
-        }
-
-
-        .form-group textarea {
-
-            min-height: 90px;
-
-            resize: vertical;
-
-        }
-
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-
-            border-color: #1769e0;
-
-            background: white;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(23,105,224,.08);
-
-        }
-
-
-        /* =====================================================
-           MATERIAL TYPES
-        ===================================================== */
-
-        .material-types {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 7px;
-
-        }
-
-
-        .material-type {
-
-            border:
-                1px solid #e0e5ec;
-
-            background: white;
-
-            color: #667085;
-
-            border-radius: 8px;
-
-            padding: 10px 6px;
-
-            cursor: pointer;
-
-            font-size: 9px;
-
-            transition: .2s;
-
-        }
-
-
-        .material-type:hover {
-
-            border-color: #1769e0;
-
-            color: #1769e0;
-
-        }
-
-
-        .material-type.selected {
-
-            background: #eaf2ff;
-
-            border-color: #1769e0;
-
-            color: #1769e0;
-
-            font-weight: 700;
-
-        }
-
-
-        /* =====================================================
-           IMAGE
-        ===================================================== */
-
-        .image-area {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 15px;
-
-        }
-
 
         .upload-box {
-
-            min-height: 230px;
-
-            border:
-                2px dashed #cbd5e1;
-
+            min-height: 260px;
+            border: 2px dashed #cbd5e1;
             border-radius: 14px;
-
             background: #fafcff;
-
             display: flex;
-
-            flex-direction: column;
-
             align-items: center;
-
             justify-content: center;
-
+            flex-direction: column;
             text-align: center;
-
             cursor: pointer;
-
-            transition: .2s;
-
             overflow: hidden;
-
+            transition: .2s;
         }
-
 
         .upload-box:hover {
-
             border-color: #1769e0;
-
             background: #f5f9ff;
-
         }
-
 
         .upload-icon {
-
-            width: 62px;
-            height: 62px;
-
-            border-radius: 16px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            background: #eaf2ff;
-
-            font-size: 28px;
-
+            font-size: 42px;
             margin-bottom: 12px;
-
         }
-
 
         .upload-box strong {
-
-            font-size: 13px;
-
+            font-size: 14px;
         }
-
 
         .upload-box small {
-
-            margin-top: 7px;
-
+            margin-top: 6px;
             color: #98a2b3;
-
-            font-size: 9px;
-
+            font-size: 10px;
         }
-
 
         #material-image {
-
             display: none;
-
         }
 
-
-        .image-preview {
-
-            min-height: 230px;
-
-            border:
-                1px solid #e5e9f0;
-
-            border-radius: 14px;
-
-            background: #f8fafc;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            overflow: hidden;
-
-        }
-
-
-        .image-preview img {
-
+        #preview {
+            display: none;
             width: 100%;
-
-            height: 230px;
-
+            height: 260px;
             object-fit: contain;
-
-            display: none;
-
         }
 
-
-        .image-placeholder {
-
-            color: #98a2b3;
-
-            font-size: 10px;
-
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
         }
 
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-        /* =====================================================
-           BUTTONS
-        ===================================================== */
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #344054;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #dce2ea;
+            border-radius: 9px;
+            background: #fbfcfe;
+            padding: 11px;
+            font-size: 11px;
+            outline: none;
+        }
+
+        .field textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: #1769e0;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(23, 105, 224, .08);
+        }
+
+        .types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+        }
+
+        .type-btn {
+            border: 1px solid #e0e5ec;
+            background: #fff;
+            border-radius: 8px;
+            padding: 9px 5px;
+            cursor: pointer;
+            font-size: 9px;
+            color: #667085;
+        }
+
+        .type-btn:hover,
+        .type-btn.active {
+            border-color: #1769e0;
+            background: #eaf2ff;
+            color: #1769e0;
+            font-weight: 700;
+        }
 
         .actions {
-
             display: flex;
-
             gap: 8px;
-
             margin-top: 18px;
-
             padding-top: 16px;
-
-            border-top:
-                1px solid #eef1f5;
-
+            border-top: 1px solid #edf0f4;
         }
-
-
-        button {
-
-            font-family: inherit;
-
-        }
-
 
         .btn {
-
-            height: 42px;
-
-            padding: 0 18px;
-
             border: 0;
-
             border-radius: 9px;
-
+            height: 42px;
+            padding: 0 16px;
             cursor: pointer;
-
             font-size: 10px;
-
             font-weight: 700;
-
-            transition: .2s;
-
         }
-
 
         .btn-primary {
-
             flex: 1;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #1769e0,
-                    #2d7be8
-                );
-
-            box-shadow:
-                0 6px 15px
-                rgba(23,105,224,.18);
-
+            color: #fff;
+            background: linear-gradient(135deg, #1769e0, #2d7be8);
         }
-
-
-        .btn-primary:hover {
-
-            transform:
-                translateY(-1px);
-
-        }
-
 
         .btn-secondary {
-
             background: #f2f4f7;
-
             color: #344054;
-
         }
 
-
-        .btn-secondary:hover {
-
-            background: #e7ebf0;
-
+        .search-engines {
+            margin-top: 20px;
         }
 
-
-        /* =====================================================
-           RESULTS
-        ===================================================== */
-
-        .results {
-
-            display: none;
-
-        }
-
-
-        .results.show {
-
-            display: block;
-
-        }
-
-
-        .result-summary {
-
+        .engine-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 10px;
-
+            grid-template-columns: repeat(4, 1fr);
+            gap: 9px;
         }
 
+        .engine {
+            border: 1px solid #e2e7ee;
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #344054;
+        }
+
+        .engine:hover {
+            border-color: #1769e0;
+            color: #1769e0;
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .result.show {
+            display: block;
+        }
 
         .result-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 9px;
+        }
 
+        .result-item {
             background: #f8fafc;
-
-            border:
-                1px solid #edf0f4;
-
-            border-radius: 10px;
-
-            padding: 13px;
-
-        }
-
-
-        .result-box span {
-
-            display: block;
-
-            color: #98a2b3;
-
-            font-size: 8px;
-
-            margin-bottom: 5px;
-
-        }
-
-
-        .result-box strong {
-
-            display: block;
-
-            font-size: 11px;
-
-        }
-
-
-        /* =====================================================
-           MATERIAL INFORMATION
-        ===================================================== */
-
-        .material-information {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-top: 15px;
-
-        }
-
-
-        .info-item {
-
-            border:
-                1px solid #edf0f4;
-
-            background: white;
-
+            border: 1px solid #edf0f4;
             border-radius: 9px;
-
             padding: 12px;
-
         }
 
-
-        .info-item span {
-
+        .result-item span {
             display: block;
-
             color: #98a2b3;
-
             font-size: 8px;
-
-            margin-bottom: 5px;
-
         }
 
-
-        .info-item strong {
-
-            font-size: 10px;
-
-            line-height: 1.6;
-
-        }
-
-
-        /* =====================================================
-           SUPPLIERS
-        ===================================================== */
-
-        .supplier-list {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-
-        }
-
-
-        .supplier-card {
-
-            border:
-                1px solid #e5e9f0;
-
-            border-radius: 11px;
-
-            padding: 14px;
-
-            background: white;
-
-        }
-
-
-        .supplier-name {
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            margin-bottom: 7px;
-
-        }
-
-
-        .supplier-line {
-
-            display: flex;
-
-            gap: 7px;
-
-            margin-top: 5px;
-
-            color: #667085;
-
-            font-size: 9px;
-
-        }
-
-
-        .supplier-line strong {
-
-            color: #344054;
-
-        }
-
-
-        .no-suppliers {
-
-            padding: 25px;
-
-            text-align: center;
-
-            border:
-                1px dashed #d5dbe4;
-
-            border-radius: 10px;
-
-            color: #98a2b3;
-
-            font-size: 10px;
-
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ===================================================== */
-
-        .message {
-
-            display: none;
-
-            margin-bottom: 15px;
-
-            padding: 12px 14px;
-
-            border-radius: 9px;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-        }
-
-
-        .message.show {
-
+        .result-item strong {
             display: block;
-
+            margin-top: 4px;
+            font-size: 10px;
+            color: #182230;
         }
 
-
-        .message.success {
-
-            background: #e9f8f1;
-
-            color: #087443;
-
+        .saved-list {
+            margin-top: 20px;
         }
 
-
-        .message.warning {
-
-            background: #fff5e6;
-
-            color: #a15c00;
-
+        .saved-item {
+            border: 1px solid #e6eaf0;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
+        .saved-item strong {
+            font-size: 11px;
+        }
 
-        .message.error {
+        .saved-item small {
+            display: block;
+            color: #98a2b3;
+            margin-top: 4px;
+            font-size: 9px;
+        }
 
-            background: #fff0ef;
-
+        .saved-item button {
+            border: 0;
+            background: #fee4e2;
             color: #b42318;
-
+            border-radius: 7px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-size: 9px;
         }
-
-
-        .message.info {
-
-            background: #eaf2ff;
-
-            color: #175cd3;
-
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
 
         @media (max-width: 900px) {
-
-            .search-grid {
-
-                grid-template-columns:
-                    1fr 1fr;
-
+            .material-grid {
+                grid-template-columns: 1fr;
             }
 
-            .image-area {
-
-                grid-template-columns:
-                    1fr;
-
+            .result-box {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .result-summary {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
+            .engine-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-
-            .material-information {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-            }
-
-            .supplier-list {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
         }
 
-
         @media (max-width: 600px) {
-
-            .material-page {
-
-                width:
-                    calc(100% - 20px);
-
-                margin-top: 10px;
-
+            .form-grid {
+                grid-template-columns: 1fr;
             }
 
-            .material-hero {
-
-                padding: 22px;
-
+            .field.full {
+                grid-column: auto;
             }
 
-            .material-hero h1 {
-
-                font-size: 21px;
-
+            .types {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .search-grid {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-            .material-types {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-            }
-
-            .result-summary {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-            .material-information {
-
-                grid-template-columns:
-                    1fr;
-
+            .result-box {
+                grid-template-columns: 1fr;
             }
 
             .actions {
-
                 flex-direction: column;
-
             }
-
-            .btn {
-
-                width: 100%;
-
-            }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <div class="material-page">
 
-
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
-
     <section class="material-hero">
-
-        <h1>
-            🧱 Material Finder
-        </h1>
-
+        <h1>🧱 Material Finder</h1>
         <p>
-            ابحث عن المادة أو قطعة الغيار بالاسم،
-            رقم القطعة أو المواصفات. يمكنك أيضاً رفع
-            صورة للقطعة لعرض بياناتها ومقارنتها بالمواد
-            المسجلة في قاعدة بيانات ProcureX.
+            ابحث عن أي مادة تحتاجها في المشتريات، سواء قطعة غيار،
+            مواد طرق، أسفلت، خرسانة، حديد، خراطيم، كهرباء أو أي مادة أخرى.
+            يمكنك البحث بالاسم أو رقم القطعة أو المواصفات، وحفظ المادة للرجوع إليها لاحقاً.
         </p>
-
     </section>
 
+    <div class="material-grid">
 
-    <!-- MESSAGE -->
+        <!-- IMAGE -->
 
-    <div
-        id="material-message"
-        class="message"
-    ></div>
+        <section class="card">
 
-
-    <!-- =====================================================
-         SEARCH / MATERIAL DATA
-    ====================================================== -->
-
-    <section class="material-card">
-
-
-        <div class="card-title">
-
-            <div>
-
-                <h2>
-                    🔎 البحث عن مادة
-                </h2>
-
-                <span>
-                    Material Search
-                </span>
-
+            <div class="card-title">
+                <h2>📷 البحث بالصورة</h2>
+                <span>Material Image Search</span>
             </div>
 
-        </div>
+            <label class="upload-box" for="material-image">
 
-
-        <div class="search-grid">
-
-
-            <!-- NAME -->
-
-            <div class="form-group">
-
-                <label>
-                    اسم المادة
-                </label>
-
-                <input
-                    id="material-name"
-                    type="text"
-                    placeholder="مثال: Hydraulic Hose"
-                >
-
-            </div>
-
-
-            <!-- PART NUMBER -->
-
-            <div class="form-group">
-
-                <label>
-                    رقم القطعة
-                </label>
-
-                <input
-                    id="part-number"
-                    type="text"
-                    placeholder="Part Number"
-                >
-
-            </div>
-
-
-            <!-- CITY -->
-
-            <div class="form-group">
-
-                <label>
-                    المدينة
-                </label>
-
-                <select id="material-city">
-
-                    <option value="">
-                        كل المدن
-                    </option>
-
-                    <option value="Riyadh">
-                        الرياض
-                    </option>
-
-                    <option value="Jeddah">
-                        جدة
-                    </option>
-
-                    <option value="Dammam">
-                        الدمام
-                    </option>
-
-                    <option value="Khobar">
-                        الخبر
-                    </option>
-
-                    <option value="Makkah">
-                        مكة
-                    </option>
-
-                    <option value="Madinah">
-                        المدينة المنورة
-                    </option>
-
-                    <option value="Abha">
-                        أبها
-                    </option>
-
-                    <option value="Tabuk">
-                        تبوك
-                    </option>
-
-                    <option value="Qassim">
-                        القصيم
-                    </option>
-
-                    <option value="Other">
-                        أخرى
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TYPE -->
-
-            <div class="form-group full">
-
-                <label>
-                    نوع المادة
-                </label>
-
-
-                <div
-                    class="material-types"
-                    id="material-types"
-                >
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Spare Parts"
-                    >
-                        قطع غيار
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Mechanical"
-                    >
-                        ميكانيكا
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Electrical"
-                    >
-                        كهرباء
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Hydraulic"
-                    >
-                        هيدروليك
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Filters"
-                    >
-                        فلاتر
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Hoses"
-                    >
-                        خراطيم
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Construction"
-                    >
-                        مواد إنشائية
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Raw Materials"
-                    >
-                        مواد خام
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Tools"
-                    >
-                        العدد والأدوات
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Safety"
-                    >
-                        سلامة
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Lubricants"
-                    >
-                        زيوت وشحوم
-                    </button>
-
-                    <button
-                        type="button"
-                        class="material-type"
-                        data-type="Other"
-                    >
-                        أخرى
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- MODEL -->
-
-            <div class="form-group">
-
-                <label>
-                    الموديل / الاستخدام
-                </label>
-
-                <input
-                    id="material-model"
-                    type="text"
-                    placeholder="Model / Application"
-                >
-
-            </div>
-
-
-            <!-- SPECIFICATIONS -->
-
-            <div class="form-group">
-
-                <label>
-                    المواصفات
-                </label>
-
-                <input
-                    id="material-specification"
-                    type="text"
-                    placeholder="المقاس، الضغط، الخامة..."
-                >
-
-            </div>
-
-        </div>
-
-
-        <!-- ACTIONS -->
-
-        <div class="actions">
-
-            <button
-                id="search-button"
-                class="btn btn-primary"
-            >
-                🔎 البحث عن المادة والموردين
-            </button>
-
-            <button
-                id="save-button"
-                class="btn btn-secondary"
-            >
-                ⭐ حفظ المادة
-            </button>
-
-            <button
-                id="clear-button"
-                class="btn btn-secondary"
-            >
-                مسح
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         IMAGE SEARCH
-    ====================================================== -->
-
-    <section class="material-card">
-
-
-        <div class="card-title">
-
-            <div>
-
-                <h2>
-                    📷 البحث بالصورة
-                </h2>
-
-                <span>
-                    Image Material Finder
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="image-area">
-
-
-            <label
-                class="upload-box"
-                for="material-image"
-            >
-
-                <div
-                    class="upload-icon"
-                    id="upload-icon"
-                >
+                <div class="upload-icon" id="upload-icon">
                     📷
                 </div>
 
                 <strong id="upload-title">
-                    ارفع صورة قطعة الغيار
+                    ارفع صورة المادة
                 </strong>
 
                 <small id="upload-text">
                     JPG / PNG / WEBP
                 </small>
 
+                <img id="preview" alt="Material Preview">
+
             </label>
 
+            <input
+                id="material-image"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+            >
 
-            <div class="image-preview">
+            <div style="margin-top:15px;color:#667085;font-size:10px;line-height:1.8;">
+                الصورة يتم استخدامها كمرجع أثناء البحث الخارجي.
+                للحصول على نتيجة دقيقة اكتب اسم المادة أو المواصفات أيضاً.
+            </div>
 
-                <span
-                    id="image-placeholder"
-                    class="image-placeholder"
-                >
-                    ستظهر الصورة هنا
-                </span>
+        </section>
 
-                <img
-                    id="image-preview"
-                    alt="Material Preview"
-                >
+
+        <!-- INFORMATION -->
+
+        <section class="card">
+
+            <div class="card-title">
+                <h2>🔎 بيانات البحث</h2>
+                <span>Material Search Information</span>
+            </div>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>اسم المادة *</label>
+                    <input
+                        id="material-name"
+                        type="text"
+                        placeholder="مثال: Hydraulic Hose"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>رقم القطعة / Part Number</label>
+                    <input
+                        id="part-number"
+                        type="text"
+                        placeholder="مثال: 1SN-10"
+                    >
+                </div>
+
+                <div class="field full">
+                    <label>نوع المادة *</label>
+
+                    <div class="types">
+
+                        <button class="type-btn" data-type="قطع غيار">
+                            قطع غيار
+                        </button>
+
+                        <button class="type-btn" data-type="مواد طرق">
+                            مواد طرق
+                        </button>
+
+                        <button class="type-btn" data-type="مواد إنشائية">
+                            مواد إنشائية
+                        </button>
+
+                        <button class="type-btn" data-type="ميكانيكا">
+                            ميكانيكا
+                        </button>
+
+                        <button class="type-btn" data-type="كهرباء">
+                            كهرباء
+                        </button>
+
+                        <button class="type-btn" data-type="هيدروليك">
+                            هيدروليك
+                        </button>
+
+                        <button class="type-btn" data-type="خراطيم">
+                            خراطيم
+                        </button>
+
+                        <button class="type-btn" data-type="حديد ومعادن">
+                            حديد ومعادن
+                        </button>
+
+                        <button class="type-btn" data-type="خرسانة">
+                            خرسانة
+                        </button>
+
+                        <button class="type-btn" data-type="أسفلت">
+                            أسفلت
+                        </button>
+
+                        <button class="type-btn" data-type="فلاتر">
+                            فلاتر
+                        </button>
+
+                        <button class="type-btn" data-type="أخرى">
+                            أخرى
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>المدينة</label>
+
+                    <select id="city">
+                        <option value="">كل المدن</option>
+                        <option value="الرياض">الرياض</option>
+                        <option value="جدة">جدة</option>
+                        <option value="الدمام">الدمام</option>
+                        <option value="الخبر">الخبر</option>
+                        <option value="الجبيل">الجبيل</option>
+                        <option value="مكة">مكة</option>
+                        <option value="المدينة المنورة">المدينة المنورة</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>الموديل / الاستخدام</label>
+
+                    <input
+                        id="model"
+                        type="text"
+                        placeholder="Model / Application"
+                    >
+                </div>
+
+                <div class="field full">
+                    <label>المواصفات</label>
+
+                    <textarea
+                        id="specification"
+                        placeholder="اكتب المقاس، الطول، الضغط، الخامة، السماكة، المواصفات الفنية أو أي معلومة مهمة..."
+                    ></textarea>
+                </div>
 
             </div>
 
+            <div class="actions">
+
+                <button
+                    class="btn btn-primary"
+                    id="search-btn"
+                >
+                    🔎 بحث خارجي عن المادة
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    id="save-btn"
+                >
+                    ⭐ حفظ المادة
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    id="clear-btn"
+                >
+                    مسح
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- SEARCH ENGINES -->
+
+    <section class="card search-engines">
+
+        <div class="card-title">
+            <h2>🌐 محركات البحث</h2>
+            <span>External Search</span>
         </div>
 
+        <div class="engine-grid">
 
-        <input
-            type="file"
-            id="material-image"
-            accept="image/png,image/jpeg,image/webp"
-        >
+            <button class="engine" data-engine="google">
+                🔎 Google
+            </button>
 
+            <button class="engine" data-engine="maps">
+                📍 Google Maps
+            </button>
 
-        <div class="actions">
+            <button class="engine" data-engine="bing">
+                🔍 Bing
+            </button>
 
-            <button
-                id="image-search-button"
-                class="btn btn-primary"
-            >
-                🧠 تحليل الصورة والبحث
+            <button class="engine" data-engine="supplier">
+                🏢 بحث موردين
             </button>
 
         </div>
@@ -1390,1619 +593,465 @@
     </section>
 
 
-    <!-- =====================================================
-         RESULTS
-    ====================================================== -->
+    <!-- RESULT -->
 
-    <section
-        id="results"
-        class="results"
-    >
+    <section class="card result" id="result">
 
+        <div class="card-title">
+            <h2>📋 بيانات المادة الحالية</h2>
+            <span>Material Record</span>
+        </div>
 
-        <!-- IDENTIFICATION -->
+        <div class="result-box">
 
-        <div class="material-card">
-
-
-            <div class="card-title">
-
-                <div>
-
-                    <h2>
-                        📋 نتيجة البحث
-                    </h2>
-
-                    <span>
-                        Material Identification
-                    </span>
-
-                </div>
-
+            <div class="result-item">
+                <span>اسم المادة</span>
+                <strong id="result-name">—</strong>
             </div>
 
-
-            <div class="result-summary">
-
-
-                <div class="result-box">
-
-                    <span>
-                        اسم المادة
-                    </span>
-
-                    <strong
-                        id="result-name"
-                    >
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="result-box">
-
-                    <span>
-                        النوع
-                    </span>
-
-                    <strong
-                        id="result-type"
-                    >
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="result-box">
-
-                    <span>
-                        Part Number
-                    </span>
-
-                    <strong
-                        id="result-part"
-                    >
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="result-box">
-
-                    <span>
-                        عدد النتائج
-                    </span>
-
-                    <strong
-                        id="result-count"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
+            <div class="result-item">
+                <span>النوع</span>
+                <strong id="result-type">—</strong>
             </div>
 
+            <div class="result-item">
+                <span>Part Number</span>
+                <strong id="result-part">—</strong>
+            </div>
 
-            <div
-                id="material-information"
-                class="material-information"
-            >
-
+            <div class="result-item">
+                <span>المدينة</span>
+                <strong id="result-city">—</strong>
             </div>
 
         </div>
-
-
-        <!-- SUPPLIERS -->
-
-        <div class="material-card">
-
-
-            <div class="card-title">
-
-                <div>
-
-                    <h2>
-                        🏢 الموردون المطابقون
-                    </h2>
-
-                    <span>
-                        Matching Suppliers
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="supplier-list"
-                class="supplier-list"
-            >
-
-            </div>
-
-        </div>
-
 
     </section>
 
+
+    <!-- SAVED MATERIALS -->
+
+    <section class="card saved-list">
+
+        <div class="card-title">
+            <h2>⭐ المواد المحفوظة</h2>
+            <span>Saved Materials</span>
+        </div>
+
+        <div id="saved-materials">
+            لا توجد مواد محفوظة حتى الآن.
+        </div>
+
+    </section>
 
 </div>
 
 
 <script>
 
-"use strict";
+    let selectedType = "";
+    let imageData = "";
 
 
-/* =========================================================
-   CHECK DATA STORE
-   ========================================================= */
-
-if (
-    !window.ProcureXStore
-) {
-
-    console.error(
-        "ProcureXStore is not loaded."
-    );
-
-}
+    const $ = id => document.getElementById(id);
 
 
-/* =========================================================
-   VARIABLES
-   ========================================================= */
+    /* IMAGE */
 
-let selectedType = "";
+    $("material-image").addEventListener("change", function () {
 
-let imageData = "";
+        const file = this.files[0];
 
+        if (!file) return;
 
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
+        if (!file.type.startsWith("image/")) {
+            alert("الملف المختار ليس صورة صحيحة.");
+            return;
+        }
 
-const nameInput =
-    document.getElementById(
-        "material-name"
-    );
+        const reader = new FileReader();
 
-const partInput =
-    document.getElementById(
-        "part-number"
-    );
+        reader.onload = function (event) {
 
-const cityInput =
-    document.getElementById(
-        "material-city"
-    );
+            imageData = event.target.result;
 
-const modelInput =
-    document.getElementById(
-        "material-model"
-    );
+            $("preview").src = imageData;
+            $("preview").style.display = "block";
 
-const specificationInput =
-    document.getElementById(
-        "material-specification"
-    );
+            $("upload-icon").style.display = "none";
+            $("upload-title").style.display = "none";
+            $("upload-text").style.display = "none";
 
-const messageBox =
-    document.getElementById(
-        "material-message"
-    );
+        };
 
-const imageInput =
-    document.getElementById(
-        "material-image"
-    );
+        reader.readAsDataURL(file);
 
-const imagePreview =
-    document.getElementById(
-        "image-preview"
-    );
-
-const imagePlaceholder =
-    document.getElementById(
-        "image-placeholder"
-    );
+    });
 
 
-/* =========================================================
-   MESSAGE
-   ========================================================= */
+    /* MATERIAL TYPES */
 
-function showMessage(
-    text,
-    type = "info"
-) {
+    document.querySelectorAll(".type-btn").forEach(button => {
 
-    messageBox.textContent =
-        text;
+        button.addEventListener("click", function () {
 
-    messageBox.className =
-        "message show " +
-        type;
+            document
+                .querySelectorAll(".type-btn")
+                .forEach(btn => btn.classList.remove("active"));
 
+            this.classList.add("active");
 
-    clearTimeout(
-        window.materialMessageTimer
-    );
+            selectedType = this.dataset.type;
+
+        });
+
+    });
 
 
-    window.materialMessageTimer =
-        setTimeout(
-            () => {
+    /* BUILD SEARCH QUERY */
 
-                messageBox.classList.remove(
-                    "show"
+    function buildSearchQuery() {
+
+        const name = $("material-name").value.trim();
+        const part = $("part-number").value.trim();
+        const city = $("city").value;
+        const model = $("model").value.trim();
+        const specification = $("specification").value.trim();
+
+        let parts = [];
+
+        if (name) parts.push(name);
+        if (part) parts.push(part);
+        if (selectedType) parts.push(selectedType);
+        if (model) parts.push(model);
+        if (specification) parts.push(specification);
+
+        parts.push("Saudi Arabia");
+
+        if (city) {
+            parts.push(city);
+        }
+
+        return parts.join(" ");
+
+    }
+
+
+    /* EXTERNAL SEARCH */
+
+    function externalSearch(engine) {
+
+        const name = $("material-name").value.trim();
+
+        if (!name) {
+            alert("اكتب اسم المادة أولاً.");
+            $("material-name").focus();
+            return;
+        }
+
+        const query = encodeURIComponent(buildSearchQuery());
+
+        let url = "";
+
+        if (engine === "google") {
+
+            url =
+                "https://www.google.com/search?q=" +
+                query;
+
+        }
+
+        else if (engine === "maps") {
+
+            url =
+                "https://www.google.com/maps/search/" +
+                query;
+
+        }
+
+        else if (engine === "bing") {
+
+            url =
+                "https://www.bing.com/search?q=" +
+                query;
+
+        }
+
+        else if (engine === "supplier") {
+
+            url =
+                "https://www.google.com/search?q=" +
+                encodeURIComponent(
+                    buildSearchQuery() +
+                    " supplier شركة مورد"
                 );
 
-            },
-            4000
+        }
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
         );
 
-}
+    }
 
 
-/* =========================================================
-   MATERIAL TYPE
-   ========================================================= */
+    document.querySelectorAll(".engine").forEach(button => {
 
-document
-    .querySelectorAll(
-        ".material-type"
-    )
-    .forEach(
-        button => {
+        button.addEventListener("click", function () {
 
-            button.addEventListener(
-                "click",
-                () => {
+            externalSearch(this.dataset.engine);
 
-                    document
-                        .querySelectorAll(
-                            ".material-type"
-                        )
-                        .forEach(
-                            item =>
-                                item.classList.remove(
-                                    "selected"
-                                )
-                        );
+        });
+
+    });
 
 
-                    button.classList.add(
-                        "selected"
-                    );
+    /* MAIN SEARCH */
 
+    $("search-btn").addEventListener("click", function () {
 
-                    selectedType =
-                        button.dataset.type;
+        const name = $("material-name").value.trim();
 
-                }
-            );
-
+        if (!name) {
+            alert("اكتب اسم المادة أولاً.");
+            return;
         }
-    );
+
+        if (!selectedType) {
+            alert("اختر نوع المادة أولاً.");
+            return;
+        }
+
+        $("result-name").textContent = name;
+        $("result-type").textContent = selectedType;
+        $("result-part").textContent =
+            $("part-number").value.trim() || "غير محدد";
+        $("result-city").textContent =
+            $("city").value || "كل المدن";
+
+        $("result").classList.add("show");
+
+        externalSearch("supplier");
+
+    });
 
 
-/* =========================================================
-   IMAGE UPLOAD
-   ========================================================= */
+    /* SAVE */
 
-imageInput.addEventListener(
-    "change",
-    function () {
+    $("save-btn").addEventListener("click", function () {
 
-        const file =
-            this.files[0];
+        const name = $("material-name").value.trim();
+
+        if (!name) {
+            alert("اكتب اسم المادة قبل الحفظ.");
+            return;
+        }
+
+        const material = {
+
+            id: "MAT-" + Date.now(),
+
+            name: name,
+
+            type: selectedType,
+
+            partNumber:
+                $("part-number").value.trim(),
+
+            city:
+                $("city").value,
+
+            model:
+                $("model").value.trim(),
+
+            specification:
+                $("specification").value.trim(),
+
+            image:
+                imageData,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
 
 
-        if (!file) {
+        let materials =
+            JSON.parse(
+                localStorage.getItem("procurex_materials")
+            ) || [];
+
+
+        materials.push(material);
+
+
+        localStorage.setItem(
+            "procurex_materials",
+            JSON.stringify(materials)
+        );
+
+
+        loadSavedMaterials();
+
+        alert("تم حفظ المادة بنجاح ⭐");
+
+    });
+
+
+    /* LOAD SAVED */
+
+    function loadSavedMaterials() {
+
+        const container = $("saved-materials");
+
+        let materials =
+            JSON.parse(
+                localStorage.getItem("procurex_materials")
+            ) || [];
+
+
+        if (!materials.length) {
+
+            container.textContent =
+                "لا توجد مواد محفوظة حتى الآن.";
+
             return;
         }
 
 
-        if (
-            !file.type.startsWith(
-                "image/"
-            )
-        ) {
+        container.innerHTML = "";
 
-            showMessage(
-                "الملف المختار ليس صورة.",
-                "warning"
-            );
 
-            return;
-
-        }
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function (event) {
-
-                imageData =
-                    event.target.result;
-
-
-                imagePreview.src =
-                    imageData;
-
-
-                imagePreview.style.display =
-                    "block";
-
-
-                imagePlaceholder.style.display =
-                    "none";
-
-            };
-
-
-        reader.readAsDataURL(
-            file
-        );
-
-    }
-);
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-document
-    .getElementById(
-        "search-button"
-    )
-    .addEventListener(
-        "click",
-        searchMaterial
-    );
-
-
-function searchMaterial() {
-
-    const name =
-        nameInput.value.trim();
-
-
-    const partNumber =
-        partInput.value.trim();
-
-
-    const city =
-        cityInput.value;
-
-
-    const model =
-        modelInput.value.trim();
-
-
-    const specification =
-        specificationInput.value.trim();
-
-
-    if (
-        !name &&
-        !partNumber &&
-        !model &&
-        !specification
-    ) {
-
-        showMessage(
-            "اكتب اسم المادة أو رقم القطعة أو المواصفات أولاً.",
-            "warning"
-        );
-
-        return;
-
-    }
-
-
-    let materials =
-        window.ProcureXStore
-            ? window.ProcureXStore.getMaterials()
-            : [];
-
-
-    /*
-       لو مفيش مواد محفوظة،
-       نعرض البيانات التي كتبها المستخدم
-       كبحث، لكن لا نخترع موردين.
-    */
-
-
-    let matches = [];
-
-
-    const searchText = [
-
-        name,
-        partNumber,
-        model,
-        specification
-
-    ]
-        .join(" ")
-        .trim()
-        .toLowerCase();
-
-
-    if (searchText) {
-
-        matches =
-            materials.filter(
-                material => {
-
-                    const searchable = [
-
-                        material.name,
-
-                        material.englishName,
-
-                        material.type,
-
-                        material.category,
-
-                        material.partNumber,
-
-                        material.brand,
-
-                        material.model,
-
-                        material.material,
-
-                        material.size,
-
-                        material.pressure,
-
-                        material.application,
-
-                        material.specifications,
-
-                        material.description,
-
-                        ...(material.aliases || [])
-
-                    ]
-                        .join(" ")
-                        .toLowerCase();
-
-
-                    const words =
-                        searchText
-                            .split(/\s+/)
-                            .filter(Boolean);
-
-
-                    return words.every(
-                        word =>
-                            searchable.includes(
-                                word
-                            )
-                    );
-
-                }
-            );
-
-    }
-
-
-    /*
-       Filter by selected type
-    */
-
-    if (selectedType) {
-
-        matches =
-            matches.filter(
-                material => {
-
-                    return (
-                        material.type ===
-                            selectedType
-                        ||
-                        material.category ===
-                            selectedType
-                    );
-
-                }
-            );
-
-    }
-
-
-    showResults(
-        matches,
-        name,
-        partNumber
-    );
-
-
-    /*
-       SAVE SEARCH
-    */
-
-    if (
-        window.ProcureXStore
-    ) {
-
-        window.ProcureXStore
-            .saveMaterialSearch({
-
-                query:
-                    searchText,
-
-                name,
-
-                type:
-                    selectedType,
-
-                partNumber,
-
-                city,
-
-                image:
-                    imageData,
-
-                resultCount:
-                    matches.length
-
-            });
-
-    }
-
-
-    showMessage(
-        matches.length
-            ? `تم العثور على ${matches.length} نتيجة محفوظة.`
-            : "لم يتم العثور على مادة مطابقة في قاعدة البيانات الحالية. أضف المادة أو المورد أولاً.",
-        matches.length
-            ? "success"
-            : "info"
-    );
-
-}
-
-
-/* =========================================================
-   SHOW RESULTS
-   ========================================================= */
-
-function showResults(
-    matches,
-    searchedName,
-    searchedPart
-) {
-
-    document
-        .getElementById(
-            "results"
-        )
-        .classList.add(
-            "show"
-        );
-
-
-    const first =
-        matches[0] || null;
-
-
-    document
-        .getElementById(
-            "result-name"
-        )
-        .textContent =
-        first
-            ? (
-                first.name ||
-                first.englishName ||
-                "—"
-            )
-            : (
-                searchedName ||
-                "غير محدد"
-            );
-
-
-    document
-        .getElementById(
-            "result-type"
-        )
-        .textContent =
-        first
-            ? (
-                first.type ||
-                first.category ||
-                "غير محدد"
-            )
-            : (
-                selectedType ||
-                "غير محدد"
-            );
-
-
-    document
-        .getElementById(
-            "result-part"
-        )
-        .textContent =
-        first
-            ? (
-                first.partNumber ||
-                searchedPart ||
-                "غير محدد"
-            )
-            : (
-                searchedPart ||
-                "غير محدد"
-            );
-
-
-    document
-        .getElementById(
-            "result-count"
-        )
-        .textContent =
-        matches.length;
-
-
-    renderMaterialInformation(
-        first
-    );
-
-
-    renderSuppliers(
-        matches
-    );
-
-}
-
-
-/* =========================================================
-   MATERIAL INFORMATION
-   ========================================================= */
-
-function renderMaterialInformation(
-    material
-) {
-
-    const container =
-        document.getElementById(
-            "material-information"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (!material) {
-
-        container.innerHTML = `
-
-            <div class="info-item">
-
-                <span>
-                    الحالة
-                </span>
-
-                <strong>
-                    لا توجد مادة محفوظة مطابقة للبحث.
-                </strong>
-
-            </div>
-
-            <div class="info-item">
-
-                <span>
-                    ماذا تفعل؟
-                </span>
-
-                <strong>
-                    أضف بيانات المادة إلى قاعدة البيانات ثم أعد البحث.
-                </strong>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const fields = [
-
-        [
-            "الاسم الإنجليزي",
-            material.englishName
-        ],
-
-        [
-            "التصنيف",
-            material.category
-        ],
-
-        [
-            "البراند",
-            material.brand
-        ],
-
-        [
-            "الموديل",
-            material.model
-        ],
-
-        [
-            "الخامة",
-            material.material
-        ],
-
-        [
-            "المقاس",
-            material.size
-        ],
-
-        [
-            "الضغط",
-            material.pressure
-        ],
-
-        [
-            "الاستخدام",
-            material.application
-        ],
-
-        [
-            "المواصفات",
-            material.specifications
-        ]
-
-    ];
-
-
-    fields.forEach(
-        field => {
-
-            if (
-                field[1]
-            ) {
+        materials
+            .slice()
+            .reverse()
+            .forEach(material => {
 
                 const item =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
+
+                item.className = "saved-item";
 
 
-                item.className =
-                    "info-item";
+                const info =
+                    document.createElement("div");
 
-
-                item.innerHTML = `
-
-                    <span>
-                        ${escapeHtml(field[0])}
-                    </span>
-
-                    <strong>
-                        ${escapeHtml(field[1])}
-                    </strong>
-
+                info.innerHTML = `
+                    <strong>${escapeHtml(material.name)}</strong>
+                    <small>
+                        ${escapeHtml(material.type || "غير محدد")}
+                        ${material.city ? " — " + escapeHtml(material.city) : ""}
+                        ${material.partNumber ? " — " + escapeHtml(material.partNumber) : ""}
+                    </small>
                 `;
 
 
-                container.appendChild(
-                    item
-                );
+                const deleteButton =
+                    document.createElement("button");
 
-            }
+                deleteButton.textContent =
+                    "حذف";
 
-        }
-    );
 
-}
+                deleteButton.addEventListener(
+                    "click",
+                    function () {
 
-
-/* =========================================================
-   SUPPLIERS
-   ========================================================= */
-
-function renderSuppliers(
-    materials
-) {
-
-    const container =
-        document.getElementById(
-            "supplier-list"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (
-        !window.ProcureXStore
-    ) {
-
-        container.innerHTML = `
-
-            <div class="no-suppliers">
-                قاعدة بيانات ProcureX غير محملة.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const suppliers =
-        window.ProcureXStore
-            .getSuppliers();
-
-
-    const contacts =
-        window.ProcureXStore
-            .getContacts();
-
-
-    const searchedCity =
-        cityInput.value;
-
-
-    const materialWords =
-        materials
-            .flatMap(
-                material => [
-
-                    material.name,
-
-                    material.englishName,
-
-                    material.partNumber,
-
-                    material.type,
-
-                    material.category,
-
-                    ...(material.aliases || [])
-
-                ]
-            )
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
-
-
-    let matches =
-        suppliers.filter(
-            supplier => {
-
-                const supplierText = [
-
-                    supplier.companyName,
-
-                    supplier.supplierName,
-
-                    supplier.category,
-
-                    supplier.city,
-
-                    supplier.address,
-
-                    ...(supplier.materials || [])
-
-                ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                const cityMatch =
-                    !searchedCity ||
-                    supplier.city ===
-                        searchedCity;
-
-
-                const materialMatch =
-                    !materialWords ||
-                    supplierText
-                        .split(/\s+/)
-                        .some(
-                            word =>
-                                word &&
-                                materialWords.includes(
-                                    word
-                                )
-                        );
-
-
-                return (
-                    cityMatch &&
-                    materialMatch
-                );
-
-            }
-        );
-
-
-    /*
-       لو مفيش تطابق،
-       نجرب المدينة فقط.
-    */
-
-    if (
-        !matches.length &&
-        searchedCity
-    ) {
-
-        matches =
-            suppliers.filter(
-                supplier =>
-                    supplier.city ===
-                    searchedCity
-            );
-
-    }
-
-
-    if (
-        !matches.length
-    ) {
-
-        container.innerHTML = `
-
-            <div class="no-suppliers">
-
-                لا يوجد مورد مسجل ومطابق حالياً.
-
-                <br><br>
-
-                أضف المورد من صفحة
-                <strong>
-                    Supplier Finder
-                </strong>
-                وسيظهر هنا تلقائياً عند تطابق البيانات.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    matches.forEach(
-        supplier => {
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "supplier-card";
-
-
-            const supplierContacts =
-                contacts.filter(
-                    contact =>
-                        contact.supplierId ===
-                        supplier.id
-                );
-
-
-            let contactHtml =
-                "";
-
-
-            supplierContacts
-                .slice(0, 2)
-                .forEach(
-                    contact => {
-
-                        contactHtml += `
-
-                            <div class="supplier-line">
-
-                                👤
-
-                                <strong>
-                                    ${escapeHtml(
-                                        contact.name ||
-                                        "جهة اتصال"
-                                    )}
-                                </strong>
-
-                                ${
-                                    contact.mobile
-                                        ? " — " +
-                                          escapeHtml(
-                                              contact.mobile
-                                          )
-                                        : ""
-                                }
-
-                            </div>
-
-                        `;
+                        deleteMaterial(material.id);
 
                     }
                 );
 
 
-            card.innerHTML = `
+                item.appendChild(info);
+                item.appendChild(deleteButton);
 
-                <div class="supplier-name">
-
-                    ${escapeHtml(
-                        supplier.companyName ||
-                        supplier.supplierName ||
-                        "مورد"
-                    )}
-
-                </div>
-
-
-                ${
-                    supplier.city
-                        ? `
-                            <div class="supplier-line">
-
-                                📍
-
-                                ${escapeHtml(
-                                    window.ProcureXStore
-                                        .getArabicCity(
-                                            supplier.city
-                                        )
-                                )}
-
-                            </div>
-                        `
-                        : ""
-                }
-
-
-                ${
-                    supplier.phone
-                        ? `
-                            <div class="supplier-line">
-
-                                ☎️
-
-                                <strong>
-                                    ${escapeHtml(
-                                        supplier.phone
-                                    )}
-                                </strong>
-
-                            </div>
-                        `
-                        : ""
-                }
-
-
-                ${
-                    supplier.mobile
-                        ? `
-                            <div class="supplier-line">
-
-                                📱
-
-                                <strong>
-                                    ${escapeHtml(
-                                        supplier.mobile
-                                    )}
-                                </strong>
-
-                            </div>
-                        `
-                        : ""
-                }
-
-
-                ${
-                    supplier.email
-                        ? `
-                            <div class="supplier-line">
-
-                                ✉️
-
-                                ${escapeHtml(
-                                    supplier.email
-                                )}
-
-                            </div>
-                        `
-                        : ""
-                }
-
-
-                ${
-                    supplier.materials &&
-                    supplier.materials.length
-                        ? `
-                            <div class="supplier-line">
-
-                                🧱
-
-                                ${escapeHtml(
-                                    supplier.materials.join(
-                                        "، "
-                                    )
-                                )}
-
-                            </div>
-                        `
-                        : ""
-                }
-
-
-                ${contactHtml}
-
-            `;
-
-
-            container.appendChild(
-                card
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SAVE MATERIAL
-   ========================================================= */
-
-document
-    .getElementById(
-        "save-button"
-    )
-    .addEventListener(
-        "click",
-        saveMaterial
-    );
-
-
-function saveMaterial() {
-
-    const name =
-        nameInput.value.trim();
-
-
-    if (!name) {
-
-        showMessage(
-            "اكتب اسم المادة أولاً.",
-            "warning"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        !window.ProcureXStore
-    ) {
-
-        showMessage(
-            "ملف data.store.js غير موجود أو لم يتم تحميله.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const material =
-        window.ProcureXStore
-            .saveMaterial({
-
-                name,
-
-                englishName:
-                    name,
-
-                type:
-                    selectedType,
-
-                category:
-                    selectedType,
-
-                partNumber:
-                    partInput.value.trim(),
-
-                model:
-                    modelInput.value.trim(),
-
-                application:
-                    modelInput.value.trim(),
-
-                specifications:
-                    specificationInput.value.trim(),
-
-                image:
-                    imageData
+                container.appendChild(item);
 
             });
 
-
-    showMessage(
-        "تم حفظ المادة في قاعدة بيانات ProcureX.",
-        "success"
-    );
+    }
 
 
-    searchMaterial();
+    /* DELETE */
 
-}
+    function deleteMaterial(id) {
 
-
-/* =========================================================
-   IMAGE SEARCH
-   ========================================================= */
-
-document
-    .getElementById(
-        "image-search-button"
-    )
-    .addEventListener(
-        "click",
-        imageSearch
-    );
+        let materials =
+            JSON.parse(
+                localStorage.getItem("procurex_materials")
+            ) || [];
 
 
-function imageSearch() {
+        materials =
+            materials.filter(
+                material => material.id !== id
+            );
 
-    if (!imageData) {
 
-        showMessage(
-            "ارفع صورة قطعة الغيار أولاً.",
-            "warning"
+        localStorage.setItem(
+            "procurex_materials",
+            JSON.stringify(materials)
         );
 
-        return;
+
+        loadSavedMaterials();
 
     }
 
 
-    /*
-       مهم:
-       المتصفح وحده لا يستطيع التعرف الحقيقي
-       على قطعة الغيار من الصورة بدون AI/API.
-       لذلك هنا نبحث أولاً في المواد التي
-       تحتوي على صورة محفوظة.
-    */
+    /* CLEAR */
+
+    $("clear-btn").addEventListener("click", function () {
+
+        $("material-name").value = "";
+        $("part-number").value = "";
+        $("city").value = "";
+        $("model").value = "";
+        $("specification").value = "";
+
+        selectedType = "";
+        imageData = "";
+
+        document
+            .querySelectorAll(".type-btn")
+            .forEach(btn => btn.classList.remove("active"));
+
+        $("material-image").value = "";
+
+        $("preview").src = "";
+        $("preview").style.display = "none";
+
+        $("upload-icon").style.display = "block";
+        $("upload-title").style.display = "block";
+        $("upload-text").style.display = "block";
+
+        $("result").classList.remove("show");
+
+    });
 
 
-    const materials =
-        window.ProcureXStore
-            ? window.ProcureXStore.getMaterials()
-            : [];
+    /* HTML SAFETY */
 
+    function escapeHtml(value) {
 
-    const imageMatches =
-        materials.filter(
-            material =>
-                material.image &&
-                material.image.length > 20
-        );
-
-
-    if (
-        imageMatches.length
-    ) {
-
-        showResults(
-            imageMatches,
-            imageMatches[0].name,
-            imageMatches[0].partNumber
-        );
-
-
-        showMessage(
-            `تم العثور على ${imageMatches.length} مادة محفوظة تحتوي على صور.`,
-            "success"
-        );
-
-
-        return;
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
     }
 
 
-    showMessage(
-        "الصورة تم تحميلها بنجاح، لكن لا توجد صور مواد محفوظة للمقارنة معها. التعرف الحقيقي بالصورة يحتاج محرك AI يتم ربطه لاحقاً.",
-        "info"
-    );
+    /* START */
 
-
-    /*
-       نظهر نتيجة البحث الحالية
-       بدون اختلاق اسم أو رقم قطعة.
-    */
-
-
-    document
-        .getElementById(
-            "results"
-        )
-        .classList.add(
-            "show"
-        );
-
-
-    document
-        .getElementById(
-            "result-name"
-        )
-        .textContent =
-        "لم يتم التعرف بعد";
-
-
-    document
-        .getElementById(
-            "result-type"
-        )
-        .textContent =
-        "—";
-
-
-    document
-        .getElementById(
-            "result-part"
-        )
-        .textContent =
-        "—";
-
-
-    document
-        .getElementById(
-            "result-count"
-        )
-        .textContent =
-        "0";
-
-
-    document
-        .getElementById(
-            "material-information"
-        )
-        .innerHTML = `
-
-            <div class="info-item">
-
-                <span>
-                    حالة تحليل الصورة
-                </span>
-
-                <strong>
-                    الصورة جاهزة، لكن يلزم ربط محرك AI للتعرف الفعلي على القطعة.
-                </strong>
-
-            </div>
-
-        `;
-
-
-    document
-        .getElementById(
-            "supplier-list"
-        )
-        .innerHTML = `
-
-            <div class="no-suppliers">
-
-                لا يمكن تحديد الموردين من الصورة
-                قبل التعرف على المادة.
-
-            </div>
-
-        `;
-
-}
-
-
-/* =========================================================
-   CLEAR
-   ========================================================= */
-
-document
-    .getElementById(
-        "clear-button"
-    )
-    .addEventListener(
-        "click",
-        clearForm
-    );
-
-
-function clearForm() {
-
-    nameInput.value =
-        "";
-
-    partInput.value =
-        "";
-
-    cityInput.value =
-        "";
-
-    modelInput.value =
-        "";
-
-    specificationInput.value =
-        "";
-
-
-    selectedType =
-        "";
-
-
-    document
-        .querySelectorAll(
-            ".material-type"
-        )
-        .forEach(
-            item =>
-                item.classList.remove(
-                    "selected"
-                )
-        );
-
-
-    imageData =
-        "";
-
-
-    imageInput.value =
-        "";
-
-
-    imagePreview.src =
-        "";
-
-
-    imagePreview.style.display =
-        "none";
-
-
-    imagePlaceholder.style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "results"
-        )
-        .classList.remove(
-            "show"
-        );
-
-
-    showMessage(
-        "تم مسح البيانات.",
-        "info"
-    );
-
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
-
-function escapeHtml(
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =========================================================
-   ENTER SEARCH
-   ========================================================= */
-
-[
-    nameInput,
-    partInput,
-    modelInput,
-    specificationInput
-
-].forEach(
-    input => {
-
-        input.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key ===
-                    "Enter"
-                ) {
-
-                    event.preventDefault();
-
-                    searchMaterial();
-
-                }
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   READY
-   ========================================================= */
-
-console.log(
-    "ProcureX Material Finder Loaded."
-);
+    loadSavedMaterials();
 
 </script>
 
-
 </body>
-
 </html>
