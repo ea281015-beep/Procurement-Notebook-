@@ -1,1088 +1,573 @@
+
 /* =========================================================
-   ProcureX - DATA STORE
-   الملف المسؤول عن حفظ وإدارة:
-   الموردين - جهات الاتصال - المواد - عمليات البحث
+   ABDULLAH PROCUREMENT ASSISTANT
+   Data.Store.js
+   Local data storage layer
    ========================================================= */
 
 (function () {
-
     "use strict";
 
     const STORAGE_KEYS = {
-        suppliers: "procurex_suppliers",
-        contacts: "procurex_contacts",
-        materials: "procurex_materials",
-        searches: "procurex_material_searches"
+        materials: "abdullah_procurement_materials",
+        suppliers: "abdullah_procurement_suppliers",
+        reminders: "abdullah_procurement_reminders",
+        searches: "abdullah_procurement_searches",
+        settings: "abdullah_procurement_settings"
     };
-
 
     /* =====================================================
        BASIC STORAGE
     ===================================================== */
 
-    function getData(key) {
-
+    function read(key, fallback = []) {
         try {
+            const value = localStorage.getItem(key);
 
-            const data = localStorage.getItem(key);
-
-            if (!data) {
-                return [];
+            if (!value) {
+                return fallback;
             }
 
-            const parsed = JSON.parse(data);
-
-            return Array.isArray(parsed) ? parsed : [];
-
+            return JSON.parse(value);
         } catch (error) {
-
-            console.error(
-                "ProcureX Storage Error:",
-                error
-            );
-
-            return [];
-
+            console.error("Data.Store read error:", error);
+            return fallback;
         }
     }
 
-
-    function setData(key, data) {
-
+    function write(key, value) {
         try {
-
-            localStorage.setItem(
-                key,
-                JSON.stringify(data)
-            );
-
+            localStorage.setItem(key, JSON.stringify(value));
             return true;
-
         } catch (error) {
-
-            console.error(
-                "ProcureX Save Error:",
-                error
-            );
-
+            console.error("Data.Store write error:", error);
             return false;
-
         }
-
     }
 
-
-    /* =====================================================
-       ID GENERATOR
-    ===================================================== */
-
-    function generateId(prefix) {
-
+    function generateId(prefix = "ID") {
         return (
             prefix +
             "-" +
-            Date.now() +
+            Date.now().toString(36) +
             "-" +
-            Math.random()
-                .toString(36)
-                .substring(2, 8)
-                .toUpperCase()
-        );
-
+            Math.random().toString(36).substring(2, 8)
+        ).toUpperCase();
     }
 
-
-    /* =====================================================
-       SUPPLIERS
-    ===================================================== */
-
-    function getSuppliers() {
-
-        return getData(
-            STORAGE_KEYS.suppliers
-        );
-
+    function now() {
+        return new Date().toISOString();
     }
-
-
-    function getSupplier(id) {
-
-        const suppliers =
-            getSuppliers();
-
-        return suppliers.find(
-            supplier =>
-                supplier.id === id
-        ) || null;
-
-    }
-
-
-    function saveSupplier(supplier) {
-
-        if (!supplier) {
-            return null;
-        }
-
-        const suppliers =
-            getSuppliers();
-
-
-        const now =
-            new Date().toISOString();
-
-
-        const newSupplier = {
-
-            id:
-                supplier.id ||
-                generateId("SUP"),
-
-            companyName:
-                supplier.companyName ||
-                "",
-
-            supplierName:
-                supplier.supplierName ||
-                "",
-
-            category:
-                supplier.category ||
-                "",
-
-            city:
-                supplier.city ||
-                "",
-
-            address:
-                supplier.address ||
-                "",
-
-            phone:
-                supplier.phone ||
-                "",
-
-            mobile:
-                supplier.mobile ||
-                "",
-
-            email:
-                supplier.email ||
-                "",
-
-            website:
-                supplier.website ||
-                "",
-
-            taxNumber:
-                supplier.taxNumber ||
-                "",
-
-            commercialRegister:
-                supplier.commercialRegister ||
-                "",
-
-            materials:
-                Array.isArray(
-                    supplier.materials
-                )
-                    ? supplier.materials
-                    : [],
-
-            notes:
-                supplier.notes ||
-                "",
-
-            createdAt:
-                supplier.createdAt ||
-                now,
-
-            updatedAt:
-                now
-
-        };
-
-
-        const existingIndex =
-            suppliers.findIndex(
-                item =>
-                    item.id ===
-                    newSupplier.id
-            );
-
-
-        if (existingIndex >= 0) {
-
-            suppliers[
-                existingIndex
-            ] = newSupplier;
-
-        } else {
-
-            suppliers.push(
-                newSupplier
-            );
-
-        }
-
-
-        setData(
-            STORAGE_KEYS.suppliers,
-            suppliers
-        );
-
-
-        return newSupplier;
-
-    }
-
-
-    function deleteSupplier(id) {
-
-        const suppliers =
-            getSuppliers();
-
-
-        const filtered =
-            suppliers.filter(
-                supplier =>
-                    supplier.id !== id
-            );
-
-
-        setData(
-            STORAGE_KEYS.suppliers,
-            filtered
-        );
-
-
-        return true;
-
-    }
-
-
-    function searchSuppliers(query) {
-
-        const suppliers =
-            getSuppliers();
-
-
-        if (!query) {
-            return suppliers;
-        }
-
-
-        const text =
-            String(query)
-                .trim()
-                .toLowerCase();
-
-
-        return suppliers.filter(
-            supplier => {
-
-                const searchable = [
-
-                    supplier.companyName,
-
-                    supplier.supplierName,
-
-                    supplier.category,
-
-                    supplier.city,
-
-                    supplier.address,
-
-                    supplier.phone,
-
-                    supplier.mobile,
-
-                    supplier.email,
-
-                    supplier.website,
-
-                    supplier.taxNumber,
-
-                    supplier.commercialRegister,
-
-                    ...(supplier.materials || [])
-
-                ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                return searchable.includes(
-                    text
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       CONTACTS / PEOPLE
-    ===================================================== */
-
-    function getContacts() {
-
-        return getData(
-            STORAGE_KEYS.contacts
-        );
-
-    }
-
-
-    function getContact(id) {
-
-        const contacts =
-            getContacts();
-
-
-        return contacts.find(
-            contact =>
-                contact.id === id
-        ) || null;
-
-    }
-
-
-    function saveContact(contact) {
-
-        if (!contact) {
-            return null;
-        }
-
-
-        const contacts =
-            getContacts();
-
-
-        const now =
-            new Date().toISOString();
-
-
-        const newContact = {
-
-            id:
-                contact.id ||
-                generateId("CON"),
-
-            supplierId:
-                contact.supplierId ||
-                "",
-
-            companyName:
-                contact.companyName ||
-                "",
-
-            name:
-                contact.name ||
-                "",
-
-            jobTitle:
-                contact.jobTitle ||
-                "",
-
-            department:
-                contact.department ||
-                "",
-
-            phone:
-                contact.phone ||
-                "",
-
-            mobile:
-                contact.mobile ||
-                "",
-
-            whatsapp:
-                contact.whatsapp ||
-                "",
-
-            email:
-                contact.email ||
-                "",
-
-            notes:
-                contact.notes ||
-                "",
-
-            createdAt:
-                contact.createdAt ||
-                now,
-
-            updatedAt:
-                now
-
-        };
-
-
-        const existingIndex =
-            contacts.findIndex(
-                item =>
-                    item.id ===
-                    newContact.id
-            );
-
-
-        if (existingIndex >= 0) {
-
-            contacts[
-                existingIndex
-            ] = newContact;
-
-        } else {
-
-            contacts.push(
-                newContact
-            );
-
-        }
-
-
-        setData(
-            STORAGE_KEYS.contacts,
-            contacts
-        );
-
-
-        return newContact;
-
-    }
-
-
-    function deleteContact(id) {
-
-        const contacts =
-            getContacts();
-
-
-        const filtered =
-            contacts.filter(
-                contact =>
-                    contact.id !== id
-            );
-
-
-        setData(
-            STORAGE_KEYS.contacts,
-            filtered
-        );
-
-
-        return true;
-
-    }
-
-
-    function getSupplierContacts(
-        supplierId
-    ) {
-
-        return getContacts().filter(
-            contact =>
-                contact.supplierId ===
-                supplierId
-        );
-
-    }
-
 
     /* =====================================================
        MATERIALS
-    ===================================================== */
+       أي مادة: طرق، إنشاءات، كهرباء، ميكانيكا،
+       هيدروليك، خامات، قطع غيار... إلخ
+       ===================================================== */
 
     function getMaterials() {
-
-        return getData(
-            STORAGE_KEYS.materials
-        );
-
+        return read(STORAGE_KEYS.materials, []);
     }
-
 
     function getMaterial(id) {
-
-        const materials =
-            getMaterials();
-
-
-        return materials.find(
-            material =>
-                material.id === id
-        ) || null;
-
+        return getMaterials().find(item => item.id === id) || null;
     }
 
-
     function saveMaterial(material) {
+        const materials = getMaterials();
 
-        if (!material) {
+        const newMaterial = {
+            id: material.id || generateId("MAT"),
+            name: material.name || "",
+            category: material.category || "",
+            type: material.type || "",
+            partNumber: material.partNumber || "",
+            brand: material.brand || "",
+            model: material.model || "",
+            specification: material.specification || "",
+            unit: material.unit || "",
+            application: material.application || "",
+            city: material.city || "",
+            image: material.image || "",
+            notes: material.notes || "",
+            source: material.source || "manual",
+            createdAt: material.createdAt || now(),
+            updatedAt: now()
+        };
+
+        const existingIndex = materials.findIndex(
+            item => item.id === newMaterial.id
+        );
+
+        if (existingIndex >= 0) {
+            materials[existingIndex] = newMaterial;
+        } else {
+            materials.unshift(newMaterial);
+        }
+
+        write(STORAGE_KEYS.materials, materials);
+
+        return newMaterial;
+    }
+
+    function updateMaterial(id, changes) {
+        const materials = getMaterials();
+
+        const index = materials.findIndex(item => item.id === id);
+
+        if (index === -1) {
             return null;
         }
 
-
-        const materials =
-            getMaterials();
-
-
-        const now =
-            new Date().toISOString();
-
-
-        const newMaterial = {
-
-            id:
-                material.id ||
-                generateId("MAT"),
-
-            name:
-                material.name ||
-                "",
-
-            englishName:
-                material.englishName ||
-                "",
-
-            type:
-                material.type ||
-                "",
-
-            category:
-                material.category ||
-                "",
-
-            partNumber:
-                material.partNumber ||
-                "",
-
-            brand:
-                material.brand ||
-                "",
-
-            model:
-                material.model ||
-                "",
-
-            material:
-                material.material ||
-                "",
-
-            size:
-                material.size ||
-                "",
-
-            pressure:
-                material.pressure ||
-                "",
-
-            application:
-                material.application ||
-                "",
-
-            specifications:
-                material.specifications ||
-                "",
-
-            description:
-                material.description ||
-                "",
-
-            image:
-                material.image ||
-                "",
-
-            aliases:
-                Array.isArray(
-                    material.aliases
-                )
-                    ? material.aliases
-                    : [],
-
-            createdAt:
-                material.createdAt ||
-                now,
-
-            updatedAt:
-                now
-
+        materials[index] = {
+            ...materials[index],
+            ...changes,
+            id,
+            updatedAt: now()
         };
 
+        write(STORAGE_KEYS.materials, materials);
 
-        const existingIndex =
-            materials.findIndex(
-                item =>
-                    item.id ===
-                    newMaterial.id
-            );
-
-
-        if (existingIndex >= 0) {
-
-            materials[
-                existingIndex
-            ] = newMaterial;
-
-        } else {
-
-            materials.push(
-                newMaterial
-            );
-
-        }
-
-
-        setData(
-            STORAGE_KEYS.materials,
-            materials
-        );
-
-
-        return newMaterial;
-
+        return materials[index];
     }
-
 
     function deleteMaterial(id) {
+        const materials = getMaterials();
 
-        const materials =
-            getMaterials();
+        const filtered = materials.filter(item => item.id !== id);
 
+        write(STORAGE_KEYS.materials, filtered);
 
-        const filtered =
-            materials.filter(
-                material =>
-                    material.id !== id
-            );
-
-
-        setData(
-            STORAGE_KEYS.materials,
-            filtered
-        );
-
-
-        return true;
-
+        return filtered.length !== materials.length;
     }
 
-
-    /* =====================================================
-       MATERIAL SEARCH
-    ===================================================== */
-
     function searchMaterials(query) {
+        const materials = getMaterials();
 
-        const materials =
-            getMaterials();
+        const text = String(query || "")
+            .trim()
+            .toLowerCase();
 
-
-        if (!query) {
+        if (!text) {
             return materials;
         }
 
-
-        const text =
-            String(query)
-                .trim()
+        return materials.filter(material => {
+            const searchable = [
+                material.name,
+                material.category,
+                material.type,
+                material.partNumber,
+                material.brand,
+                material.model,
+                material.specification,
+                material.unit,
+                material.application,
+                material.city,
+                material.notes
+            ]
+                .join(" ")
                 .toLowerCase();
 
-
-        return materials.filter(
-            material => {
-
-                const searchable = [
-
-                    material.name,
-
-                    material.englishName,
-
-                    material.type,
-
-                    material.category,
-
-                    material.partNumber,
-
-                    material.brand,
-
-                    material.model,
-
-                    material.material,
-
-                    material.size,
-
-                    material.pressure,
-
-                    material.application,
-
-                    material.specifications,
-
-                    material.description,
-
-                    ...(material.aliases || [])
-
-                ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                return searchable.includes(
-                    text
-                );
-
-            }
-        );
-
+            return searchable.includes(text);
+        });
     }
 
-
     /* =====================================================
-       MATERIAL SEARCH HISTORY
-    ===================================================== */
+       SUPPLIERS
+       ===================================================== */
 
-    function saveMaterialSearch(
-        search
-    ) {
+    function getSuppliers() {
+        return read(STORAGE_KEYS.suppliers, []);
+    }
 
-        if (!search) {
+    function getSupplier(id) {
+        return getSuppliers().find(item => item.id === id) || null;
+    }
+
+    function saveSupplier(supplier) {
+        const suppliers = getSuppliers();
+
+        const newSupplier = {
+            id: supplier.id || generateId("SUP"),
+            name: supplier.name || "",
+            companyName: supplier.companyName || supplier.name || "",
+            category: supplier.category || "",
+            materials: Array.isArray(supplier.materials)
+                ? supplier.materials
+                : [],
+            city: supplier.city || "",
+            district: supplier.district || "",
+            address: supplier.address || "",
+            phone: supplier.phone || "",
+            mobile: supplier.mobile || "",
+            email: supplier.email || "",
+            website: supplier.website || "",
+            googleMaps: supplier.googleMaps || "",
+            contactPerson: supplier.contactPerson || "",
+            rating: supplier.rating || "",
+            verified: Boolean(supplier.verified),
+            source: supplier.source || "manual",
+            notes: supplier.notes || "",
+            createdAt: supplier.createdAt || now(),
+            updatedAt: now()
+        };
+
+        const existingIndex = suppliers.findIndex(
+            item => item.id === newSupplier.id
+        );
+
+        if (existingIndex >= 0) {
+            suppliers[existingIndex] = newSupplier;
+        } else {
+            suppliers.unshift(newSupplier);
+        }
+
+        write(STORAGE_KEYS.suppliers, suppliers);
+
+        return newSupplier;
+    }
+
+    function updateSupplier(id, changes) {
+        const suppliers = getSuppliers();
+
+        const index = suppliers.findIndex(item => item.id === id);
+
+        if (index === -1) {
             return null;
         }
 
+        suppliers[index] = {
+            ...suppliers[index],
+            ...changes,
+            id,
+            updatedAt: now()
+        };
 
-        const searches =
-            getData(
-                STORAGE_KEYS.searches
-            );
+        write(STORAGE_KEYS.suppliers, suppliers);
 
+        return suppliers[index];
+    }
+
+    function deleteSupplier(id) {
+        const suppliers = getSuppliers();
+
+        const filtered = suppliers.filter(item => item.id !== id);
+
+        write(STORAGE_KEYS.suppliers, filtered);
+
+        return filtered.length !== suppliers.length;
+    }
+
+    function searchSuppliers(query, city = "") {
+        const suppliers = getSuppliers();
+
+        const text = String(query || "")
+            .trim()
+            .toLowerCase();
+
+        const selectedCity = String(city || "")
+            .trim()
+            .toLowerCase();
+
+        return suppliers.filter(supplier => {
+            const searchable = [
+                supplier.name,
+                supplier.companyName,
+                supplier.category,
+                ...(supplier.materials || []),
+                supplier.city,
+                supplier.district,
+                supplier.address,
+                supplier.contactPerson,
+                supplier.notes
+            ]
+                .join(" ")
+                .toLowerCase();
+
+            const matchesText =
+                !text || searchable.includes(text);
+
+            const matchesCity =
+                !selectedCity ||
+                String(supplier.city || "")
+                    .toLowerCase()
+                    .includes(selectedCity);
+
+            return matchesText && matchesCity;
+        });
+    }
+
+    /* =====================================================
+       SEARCH HISTORY
+       ===================================================== */
+
+    function getSearches() {
+        return read(STORAGE_KEYS.searches, []);
+    }
+
+    function saveSearch(search) {
+        const searches = getSearches();
 
         const item = {
-
-            id:
-                generateId("SEARCH"),
-
-            query:
-                search.query ||
-                "",
-
-            name:
-                search.name ||
-                "",
-
-            type:
-                search.type ||
-                "",
-
-            partNumber:
-                search.partNumber ||
-                "",
-
-            city:
-                search.city ||
-                "",
-
-            image:
-                search.image ||
-                "",
-
-            resultCount:
-                Number(
-                    search.resultCount || 0
-                ),
-
-            createdAt:
-                new Date().toISOString()
-
+            id: generateId("SEARCH"),
+            query: search.query || "",
+            type: search.type || "general",
+            city: search.city || "",
+            resultsCount: Number(search.resultsCount || 0),
+            source: search.source || "external",
+            createdAt: now()
         };
 
+        searches.unshift(item);
 
-        searches.unshift(
-            item
-        );
+        /*
+         * نحتفظ بآخر 100 عملية بحث فقط
+         */
+        const limited = searches.slice(0, 100);
 
-
-        /* آخر 100 عملية بحث فقط */
-
-        const limited =
-            searches.slice(
-                0,
-                100
-            );
-
-
-        setData(
-            STORAGE_KEYS.searches,
-            limited
-        );
-
+        write(STORAGE_KEYS.searches, limited);
 
         return item;
-
     }
 
-
-    function getMaterialSearches() {
-
-        return getData(
-            STORAGE_KEYS.searches
-        );
-
+    function clearSearchHistory() {
+        write(STORAGE_KEYS.searches, []);
+        return true;
     }
-
 
     /* =====================================================
-       CITY
-    ===================================================== */
+       REMINDERS
+       ===================================================== */
 
-    function getArabicCity(city) {
+    function getReminders() {
+        return read(STORAGE_KEYS.reminders, []);
+    }
 
-        const cities = {
+    function getReminder(id) {
+        return getReminders().find(item => item.id === id) || null;
+    }
 
-            Riyadh:
-                "الرياض",
+    function saveReminder(reminder) {
+        const reminders = getReminders();
 
-            Jeddah:
-                "جدة",
-
-            Dammam:
-                "الدمام",
-
-            Khobar:
-                "الخبر",
-
-            Makkah:
-                "مكة",
-
-            Madinah:
-                "المدينة المنورة",
-
-            Abha:
-                "أبها",
-
-            Tabuk:
-                "تبوك",
-
-            Qassim:
-                "القصيم",
-
-            Other:
-                "أخرى"
-
+        const item = {
+            id: reminder.id || generateId("REM"),
+            title: reminder.title || "",
+            description: reminder.description || "",
+            date: reminder.date || "",
+            time: reminder.time || "",
+            type: reminder.type || "general",
+            relatedMaterialId: reminder.relatedMaterialId || "",
+            relatedSupplierId: reminder.relatedSupplierId || "",
+            completed: Boolean(reminder.completed),
+            notified: Boolean(reminder.notified),
+            createdAt: reminder.createdAt || now(),
+            updatedAt: now()
         };
 
-
-        return (
-            cities[city] ||
-            city ||
-            ""
+        const existingIndex = reminders.findIndex(
+            reminderItem => reminderItem.id === item.id
         );
 
+        if (existingIndex >= 0) {
+            reminders[existingIndex] = item;
+        } else {
+            reminders.unshift(item);
+        }
+
+        write(STORAGE_KEYS.reminders, reminders);
+
+        return item;
     }
 
+    function updateReminder(id, changes) {
+        const reminders = getReminders();
+
+        const index = reminders.findIndex(item => item.id === id);
+
+        if (index === -1) {
+            return null;
+        }
+
+        reminders[index] = {
+            ...reminders[index],
+            ...changes,
+            id,
+            updatedAt: now()
+        };
+
+        write(STORAGE_KEYS.reminders, reminders);
+
+        return reminders[index];
+    }
+
+    function deleteReminder(id) {
+        const reminders = getReminders();
+
+        const filtered = reminders.filter(item => item.id !== id);
+
+        write(STORAGE_KEYS.reminders, filtered);
+
+        return filtered.length !== reminders.length;
+    }
+
+    function getPendingReminders() {
+        return getReminders().filter(item => !item.completed);
+    }
 
     /* =====================================================
-       DATABASE EXPORT
-    ===================================================== */
+       SETTINGS
+       ===================================================== */
 
-    function exportDatabase() {
+    const DEFAULT_SETTINGS = {
+        assistantName: "مساعد عبدالله",
+        userName: "عبدالله الشحات",
+        language: "ar",
+        voiceEnabled: true,
+        notificationsEnabled: true
+    };
 
+    function getSettings() {
         return {
-
-            suppliers:
-                getSuppliers(),
-
-            contacts:
-                getContacts(),
-
-            materials:
-                getMaterials(),
-
-            searches:
-                getMaterialSearches(),
-
-            exportedAt:
-                new Date().toISOString()
-
+            ...DEFAULT_SETTINGS,
+            ...read(STORAGE_KEYS.settings, {})
         };
-
     }
 
+    function updateSettings(changes) {
+        const settings = {
+            ...getSettings(),
+            ...changes
+        };
+
+        write(STORAGE_KEYS.settings, settings);
+
+        return settings;
+    }
 
     /* =====================================================
-       DATABASE IMPORT
-    ===================================================== */
+       DATABASE SUMMARY
+       ===================================================== */
 
-    function importDatabase(data) {
+    function getSummary() {
+        return {
+            materials: getMaterials().length,
+            suppliers: getSuppliers().length,
+            reminders: getReminders().length,
+            pendingReminders: getPendingReminders().length,
+            searches: getSearches().length
+        };
+    }
 
-        if (!data) {
+    /* =====================================================
+       EXPORT / IMPORT
+       ===================================================== */
+
+    function exportAllData() {
+        return {
+            version: "1.0.0",
+            exportedAt: now(),
+            materials: getMaterials(),
+            suppliers: getSuppliers(),
+            reminders: getReminders(),
+            searches: getSearches(),
+            settings: getSettings()
+        };
+    }
+
+    function importAllData(data) {
+        if (!data || typeof data !== "object") {
             return false;
         }
 
-
-        if (
-            Array.isArray(
-                data.suppliers
-            )
-        ) {
-
-            setData(
-                STORAGE_KEYS.suppliers,
-                data.suppliers
-            );
-
+        if (Array.isArray(data.materials)) {
+            write(STORAGE_KEYS.materials, data.materials);
         }
 
-
-        if (
-            Array.isArray(
-                data.contacts
-            )
-        ) {
-
-            setData(
-                STORAGE_KEYS.contacts,
-                data.contacts
-            );
-
+        if (Array.isArray(data.suppliers)) {
+            write(STORAGE_KEYS.suppliers, data.suppliers);
         }
 
-
-        if (
-            Array.isArray(
-                data.materials
-            )
-        ) {
-
-            setData(
-                STORAGE_KEYS.materials,
-                data.materials
-            );
-
+        if (Array.isArray(data.reminders)) {
+            write(STORAGE_KEYS.reminders, data.reminders);
         }
 
-
-        if (
-            Array.isArray(
-                data.searches
-            )
-        ) {
-
-            setData(
-                STORAGE_KEYS.searches,
-                data.searches
-            );
-
+        if (Array.isArray(data.searches)) {
+            write(STORAGE_KEYS.searches, data.searches);
         }
 
+        if (data.settings && typeof data.settings === "object") {
+            write(STORAGE_KEYS.settings, data.settings);
+        }
 
         return true;
-
     }
 
-
-    /* =====================================================
-       CLEAR DATABASE
-    ===================================================== */
-
-    function clearDatabase() {
-
-        localStorage.removeItem(
-            STORAGE_KEYS.suppliers
-        );
-
-        localStorage.removeItem(
-            STORAGE_KEYS.contacts
-        );
-
-        localStorage.removeItem(
-            STORAGE_KEYS.materials
-        );
-
-        localStorage.removeItem(
-            STORAGE_KEYS.searches
-        );
-
+    function clearAllData() {
+        Object.values(STORAGE_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
 
         return true;
-
     }
-
 
     /* =====================================================
        PUBLIC API
-    ===================================================== */
+       ===================================================== */
 
-    window.ProcureXStore = {
+    window.ProcurementStore = {
 
-        /* Storage */
-
-        getData,
-
-        setData,
-
+        // Storage
+        read,
+        write,
         generateId,
 
-        /* Suppliers */
-
-        getSuppliers,
-
-        getSupplier,
-
-        saveSupplier,
-
-        deleteSupplier,
-
-        searchSuppliers,
-
-        /* Contacts */
-
-        getContacts,
-
-        getContact,
-
-        saveContact,
-
-        deleteContact,
-
-        getSupplierContacts,
-
-        /* Materials */
-
+        // Materials
         getMaterials,
-
         getMaterial,
-
         saveMaterial,
-
+        updateMaterial,
         deleteMaterial,
-
         searchMaterials,
 
-        /* Searches */
+        // Suppliers
+        getSuppliers,
+        getSupplier,
+        saveSupplier,
+        updateSupplier,
+        deleteSupplier,
+        searchSuppliers,
 
-        saveMaterialSearch,
+        // Search
+        getSearches,
+        saveSearch,
+        clearSearchHistory,
 
-        getMaterialSearches,
+        // Reminders
+        getReminders,
+        getReminder,
+        saveReminder,
+        updateReminder,
+        deleteReminder,
+        getPendingReminders,
 
-        /* Helpers */
+        // Settings
+        getSettings,
+        updateSettings,
 
-        getArabicCity,
+        // General
+        getSummary,
 
-        /* Database */
+        // Backup
+        exportAllData,
+        importAllData,
+        clearAllData,
 
-        exportDatabase,
-
-        importDatabase,
-
-        clearDatabase
-
+        // Storage keys
+        keys: STORAGE_KEYS
     };
 
-
-    console.log(
-        "ProcureX Data Store Loaded Successfully."
-    );
+    console.log("✅ ProcurementStore loaded successfully.");
 
 })();
